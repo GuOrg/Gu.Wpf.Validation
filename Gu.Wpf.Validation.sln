@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationScopeBox", "ValidationScopeBox\ValidationScopeBox.csproj", "{B86F6D94-EEEB-400D-92BF-00278C176869}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gu.Wpf.Validation", "Gu.Wpf.Validation\Gu.Wpf.Validation.csproj", "{968C9C2A-9C63-476C-8C89-2A30F762F493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gu.Wpf.Validation.Demo", "Gu.Wpf.Validation.Demo\Gu.Wpf.Validation.Demo.csproj", "{B86F6D94-EEEB-400D-92BF-00278C176869}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{968C9C2A-9C63-476C-8C89-2A30F762F493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{968C9C2A-9C63-476C-8C89-2A30F762F493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{968C9C2A-9C63-476C-8C89-2A30F762F493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{968C9C2A-9C63-476C-8C89-2A30F762F493}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B86F6D94-EEEB-400D-92BF-00278C176869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B86F6D94-EEEB-400D-92BF-00278C176869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B86F6D94-EEEB-400D-92BF-00278C176869}.Release|Any CPU.ActiveCfg = Release|Any CPU

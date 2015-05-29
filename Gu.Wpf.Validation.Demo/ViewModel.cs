@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ValidationScopeBox.Annotations;
+using Gu.Wpf.Validation.Demo.Annotations;
 
-namespace ValidationScopeBox
+namespace Gu.Wpf.Validation.Demo
 {
     public class ViewModel : INotifyPropertyChanged
     {

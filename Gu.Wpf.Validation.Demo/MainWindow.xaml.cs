@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ValidationScopeBox
+namespace Gu.Wpf.Validation.Demo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

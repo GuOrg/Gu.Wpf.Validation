@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace ValidationScopeBox
+namespace Gu.Wpf.Validation
 {
     public sealed class ValidationProxy : DependencyObject, IDisposable
     {
-        private static readonly PropertyPath ControlHasErrorPath = new PropertyPath(Validation.HasErrorProperty);
+        private static readonly PropertyPath ControlHasErrorPath = new PropertyPath(System.Windows.Controls.Validation.HasErrorProperty);
         private static readonly PropertyPath ScopeHasErrorPath = new PropertyPath(ValidationExt.HasErrorProperty);
         private static readonly HasErrorsConverter Converter = new HasErrorsConverter();
 
@@ -73,7 +73,7 @@ namespace ValidationScopeBox
                 {
                     return EmptyErrors;
                 }
-                return Validation.GetErrors(source);
+                return System.Windows.Controls.Validation.GetErrors(source);
             }
         }
 

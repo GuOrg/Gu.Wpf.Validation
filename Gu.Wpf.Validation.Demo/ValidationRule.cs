@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
 
-namespace ValidationScopeBox
+namespace Gu.Wpf.Validation.Demo
 {
     public class MehRule : ValidationRule
     {

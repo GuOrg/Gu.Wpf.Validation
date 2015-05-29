@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace ValidationScopeBox
+namespace Gu.Wpf.Validation
 {
     public static class ValidationExt
     {
