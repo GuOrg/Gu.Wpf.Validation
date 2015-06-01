@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-
-namespace Gu.Wpf.Validation
+﻿namespace Gu.Wpf.Validation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+
     public sealed class ValidationProxy : DependencyObject, IDisposable
     {
         private static readonly PropertyPath ControlHasErrorPath = new PropertyPath(System.Windows.Controls.Validation.HasErrorProperty);

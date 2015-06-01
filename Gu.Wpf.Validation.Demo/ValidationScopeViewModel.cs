@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Gu.Wpf.Validation.Demo.Annotations;
-
-namespace Gu.Wpf.Validation.Demo
+﻿namespace Gu.Wpf.Validation.Demo
 {
-    public class ViewModel : INotifyPropertyChanged
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using Annotations;
+
+    public class ValidationScopeViewModel :  INotifyPropertyChanged
     {
         private string _value;
+        private string _vmValidatedValue;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Value
@@ -16,6 +17,20 @@ namespace Gu.Wpf.Validation.Demo
             {
                 if (value == _value) return;
                 _value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string VmValidatedValue
+        {
+            get { return _vmValidatedValue; }
+            set
+            {
+                if (_vmValidatedValue == value)
+                {
+                    return;
+                }
+                _vmValidatedValue = value;
                 OnPropertyChanged();
             }
         }

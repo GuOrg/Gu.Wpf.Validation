@@ -1,11 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-
 namespace Gu.Wpf.Validation
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows;
+
     public sealed class ValidationProxyCollection : DependencyObject, IEnumerable<ValidationProxy>, IDisposable
     {
         private readonly List<ValidationProxy> _validationProxies = new List<ValidationProxy>();

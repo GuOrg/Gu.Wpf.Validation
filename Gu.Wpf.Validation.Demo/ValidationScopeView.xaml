@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Gu.Wpf.Validation.Demo.ValidationScopeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:validation="http://gu.se/Validation"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <demo:ValidationScopeViewModel />
+    </UserControl.DataContext>
+    <Border BorderThickness="1">
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+
+                <Style.Triggers>
+                    <Trigger Property="validation:ValidationExt.HasError" Value="True">
+                        <Setter Property="BorderBrush" Value="Red" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <StackPanel x:Name="StackPanel">
+            <TextBlock Text="The validation rule is that as soon as the text contains an 's' it is an error" />
+
+            <TextBox>
+                <TextBox.Text>
+                    <Binding Path="Value" UpdateSourceTrigger="LostFocus">
+                        <Binding.ValidationRules>
+                            <demo:MehRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBox x:Name="TextBox">
+                <TextBox.Text>
+                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <demo:MehRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBlock Text="{Binding Value}" />
+
+            <Button Content="Meh" IsEnabled="{Binding (validation:ValidationExt.HasError), ElementName=StackPanel}" />
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace Gu.Wpf.Validation.Demo
+﻿namespace Gu.Wpf.Validation.Demo
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

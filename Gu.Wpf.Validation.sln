@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gu.Wpf.Validation", "Gu.Wpf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gu.Wpf.Validation.Demo", "Gu.Wpf.Validation.Demo\Gu.Wpf.Validation.Demo.csproj", "{B86F6D94-EEEB-400D-92BF-00278C176869}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gu.Wpf.Validation.Tests", "Gu.Wpf.Validation.Tests\Gu.Wpf.Validation.Tests.csproj", "{EA146E87-3F49-407F-9143-E578B2F8E296}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B86F6D94-EEEB-400D-92BF-00278C176869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B86F6D94-EEEB-400D-92BF-00278C176869}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B86F6D94-EEEB-400D-92BF-00278C176869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA146E87-3F49-407F-9143-E578B2F8E296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA146E87-3F49-407F-9143-E578B2F8E296}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA146E87-3F49-407F-9143-E578B2F8E296}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA146E87-3F49-407F-9143-E578B2F8E296}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

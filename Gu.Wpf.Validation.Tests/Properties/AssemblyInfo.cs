@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Gu.Wpf.Validation")]
+[assembly: AssemblyTitle("Gu.Wpf.Validation.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Gu.Wpf.Validation")]
+[assembly: AssemblyProduct("Gu.Wpf.Validation.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +20,7 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c69c03d5-338d-41f5-9634-21ed5cc62262")]
+[assembly: Guid("771e147a-6411-4cf6-a9e1-a7e31564d9c1")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,9 +34,3 @@ using System.Windows.Markup;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly:InternalsVisibleTo("Gu.Wpf.Validation.Tests", AllInternalsVisible = true)]
-[assembly: XmlnsDefinition("http://gu.se/Validation", "Gu.Wpf.Validation")]
-[assembly: XmlnsDefinition("http://gu.se/Validation", "Gu.Wpf.Validation.Internals")]
-[assembly: XmlnsDefinition("http://gu.se/Validation", "Gu.Wpf.Validation.Rules")]
-[assembly: XmlnsDefinition("http://gu.se/Validation", "Gu.Wpf.Validation.StringConverters")]
-[assembly: XmlnsPrefix("http://gu.se/Validation", "validation")]

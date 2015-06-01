@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
-
-namespace Gu.Wpf.Validation
+﻿namespace Gu.Wpf.Validation
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Data;
+    using System.Windows.Media;
+
     public static class ValidationExt
     {
         public static readonly DependencyProperty IsValidationScopeProperty = DependencyProperty.RegisterAttached(
@@ -134,15 +133,6 @@ namespace Gu.Wpf.Validation
         private static void OnHasErrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SetHasError(d, (bool)e.NewValue);
-        }
-
-        private static IEnumerable<DependencyObject> Ancestors(this DependencyObject o)
-        {
-            DependencyObject parent;
-            while ((parent = VisualTreeHelper.GetParent(o))!=null)
-            {
-                yield return parent;
-            }
         }
     }
 }
