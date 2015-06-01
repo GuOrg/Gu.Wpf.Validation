@@ -11,19 +11,21 @@ namespace Gu.Wpf.Validation.Internals
         public virtual object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
             var textBox = (TextBox)parameter;
-            if (!textBox.IsKeyboardFocused)
+            var expression = BindingOperations.GetBindingExpressionBase(textBox, TextBox.TextProperty);
+            if (!textBox.IsKeyboardFocused && expression != null)
             {
                 var hasError = (bool)textBox.GetValue(Validation.HasErrorProperty);
+                
                 textBox.SetIsUpdating(true);
-                var expression = BindingOperations.GetBindingExpressionBase(textBox, TextBox.TextProperty);
                 expression.UpdateSource();
                 textBox.SetIsUpdating(false);
+                
                 var hasErrorAfter = (bool)textBox.GetValue(Validation.HasErrorProperty);
                 if (hasError && !hasErrorAfter)
                 {
                     expression.UpdateSource();
                 }
-                if (!hasErrorAfter)
+                if (!hasError)
                 {
                     var converter = textBox.GetStringConverter();
                     if (converter != null)
