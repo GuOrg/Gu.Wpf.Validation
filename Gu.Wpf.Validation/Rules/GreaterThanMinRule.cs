@@ -16,7 +16,7 @@
 
             if (i < 0)
             {
-                return new ValidationResult(false, "value < min");
+                return new ValidationResult(false, new LessThanMinResult(min, value));
             }
             return ValidationResult.ValidResult;
         }

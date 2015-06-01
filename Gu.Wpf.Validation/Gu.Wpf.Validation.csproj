@@ -57,9 +57,11 @@
     <Compile Include="IValidator.cs" />
     <Compile Include="Rules\ConvertedValidationRule.cs" />
     <Compile Include="DefaultStringConverters.cs" />
-    <Compile Include="Rules\HasValueSourceRule.cs" />
+    <Compile Include="Rules\GreaterThanMaxResult.cs" />
     <Compile Include="Rules\IsRequiredRule.cs" />
     <Compile Include="Rules\LessThanMaxRule.cs" />
+    <Compile Include="Rules\LessThanMinResult.cs" />
+    <Compile Include="Rules\ParseErrorResult.cs" />
     <Compile Include="Rules\RawValueRule.cs" />
     <Compile Include="Rules\RegexResult.cs" />
     <Compile Include="Rules\RegexRule.cs" />

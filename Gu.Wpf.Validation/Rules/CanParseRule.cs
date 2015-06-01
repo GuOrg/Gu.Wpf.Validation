@@ -12,7 +12,7 @@
             {
                 return ValidationResult.ValidResult;
             }
-            return new ValidationResult(false, "Parse failed");
+            return new ValidationResult(false, new ParseErrorResult(text, converter.Type));
         }
     }
 }
