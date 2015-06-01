@@ -17,6 +17,7 @@ Sample:
          validation:Input.IsRequired="True"
          validation:Input.ValidationTrigger="PropertyChanged" />
 ```
+For more samples see demo project.
 
 - Creates a binding Text > validation:Input.Value internally. The binding has validationrules so it uses standard WPF validation.
 - No custom controls.
