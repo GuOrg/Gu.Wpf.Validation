@@ -185,8 +185,8 @@
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            VerticalAlignment="Center"
-                           Padding="0"
-                           Content="{Binding Path=(validation:Input.Culture)}" />
+                           Content="{Binding Path=(validation:Input.Culture)}"
+                           Padding="0" />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"

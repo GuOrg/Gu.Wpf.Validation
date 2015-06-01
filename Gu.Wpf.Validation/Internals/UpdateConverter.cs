@@ -18,8 +18,12 @@ namespace Gu.Wpf.Validation.Internals
                 var expression = BindingOperations.GetBindingExpressionBase(textBox, TextBox.TextProperty);
                 expression.UpdateSource();
                 textBox.SetIsUpdating(false);
-                //var hasError = (bool)textBox.GetValue(Validation.HasErrorProperty);
-                if (!hasError)
+                var hasErrorAfter = (bool)textBox.GetValue(Validation.HasErrorProperty);
+                if (hasError && !hasErrorAfter)
+                {
+                    expression.UpdateSource();
+                }
+                if (!hasErrorAfter)
                 {
                     var converter = textBox.GetStringConverter();
                     if (converter != null)
