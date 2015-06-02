@@ -52,13 +52,12 @@
                          validation:Input.Value="{Binding DoubleValue}" />
             </GroupBox>
 
-            <!--<GroupBox Header="double?">
+            <GroupBox Header="double?">
                 <TextBox validation:Input.Max="{Binding Text,
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding NullableDoubleValue}"
-                         />
+                         validation:Input.Value="{Binding NullableDoubleValue}" />
             </GroupBox>
 
             <GroupBox Header="int">
@@ -66,8 +65,7 @@
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding IntValue}"
-                         />
+                         validation:Input.Value="{Binding IntValue}" />
             </GroupBox>
 
             <GroupBox Header="int?">
@@ -75,16 +73,12 @@
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding NullableIntValue}"
-                         />
+                         validation:Input.Value="{Binding NullableIntValue}" />
             </GroupBox>
 
             <GroupBox Header="string">
-                <TextBox validation:Input.Pattern="{Binding Text,
-                                                            ElementName=Pattern}"
-                         validation:Input.Value="{Binding StringValue}"
-                         />
-            </GroupBox>-->
+                <TextBox validation:Input.Pattern="{Binding Text, ElementName=Pattern}" validation:Input.Value="{Binding StringValue}" />
+            </GroupBox>
         </ListBox>
 
         <Grid Grid.Row="1">
@@ -275,8 +269,14 @@
                                Text="Errors: " />
                     <ListBox Grid.Row="11"
                              Grid.Column="1"
-                             ItemsSource="{Binding Path=(Validation.Errors)}" />
-
+                             ItemsSource="{Binding Path=(Validation.Errors)}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type ValidationError}">
+                                <!--<ContentPresenter Content="{Binding BindingInError}"></ContentPresenter>-->
+                                <ContentPresenter Content="{Binding ErrorContent}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </GroupBox>
         </Grid>
