@@ -4,7 +4,7 @@
 
     public class ULongConverter : StringConverter<ulong>
     {
-        public override string ToString(ulong value, TextBox textBox)
+        public override string ToFormattedString(ulong value, TextBox textBox)
         {
             return value.ToString();
         }

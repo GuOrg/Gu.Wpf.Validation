@@ -4,7 +4,7 @@
 
     public class ShortConverter : StringConverter<short>
     {
-        public override string ToString(short value, TextBox textBox)
+        public override string ToFormattedString(short value, TextBox textBox)
         {
             return value.ToString();
         }

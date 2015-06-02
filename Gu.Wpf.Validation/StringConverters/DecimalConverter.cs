@@ -7,10 +7,15 @@
     {
         protected static readonly ConcurrentDictionary<int, string> Formats = new ConcurrentDictionary<int, string>();
 
-        public override string ToString(decimal value, TextBox textBox)
+        public override string ToFormattedString(decimal value, TextBox textBox)
         {
             var formatString = GetFormatString(textBox);
             return value.ToString(formatString, textBox.GetCulture());
+        }
+
+        public override string ToRawString(decimal value, TextBox textBox)
+        {
+            return value.ToString(textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out decimal result)

@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
 
@@ -10,39 +11,50 @@
     {
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            Debug.Write(string.Format(@"StringFormatConverter.Convert({0}) ", value));
             var textBox = (TextBox)parameter;
-            if (textBox.IsKeyboardFocused || textBox.GetIsUpdating())
+            if (textBox.GetIsUpdating())
             {
-                Debug.WriteLine("Convert: {0} IsKeyboardFocused DoNothing", value);
+                Debug.WriteLine("IsUpdating DoNothing");
+                return Binding.DoNothing;
+            }
+
+            if (textBox.IsKeyboardFocused)
+            {
+                Debug.WriteLine("IsKeyboardFocused DoNothing");
                 return Binding.DoNothing;
             }
 
             var converter = textBox.GetStringConverter();
-
-            Debug.WriteLine("Convert: {0}", value);
-            var convert = converter.ToString(value, textBox);
-            return convert;
+            var formatted = converter.ToFormattedString(value, textBox);
+            Debug.WriteLine(string.Format("formatted: {0}", formatted ?? "null"));
+            textBox.SetIsUpdating(true);
+            Debug.WriteLine("SetRawText: " + converter.ToRawString(value, textBox));
+            textBox.SetRawText(converter.ToRawString(value, textBox));
+            textBox.SetIsUpdating(false);
+            return formatted;
         }
 
         public virtual object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
         {
+            Debug.Write(string.Format(@"StringFormatConverter.ConvertBack(""{0}"") ", value));
             var textBox = (TextBox)parameter;
             if (textBox.GetIsUpdating())
             {
+                Debug.WriteLine("IsUpdating");
                 return textBox.GetValue(Input.ValueProperty);
             }
             var converter = textBox.GetStringConverter();
             object result;
             if (converter.TryParse(value, textBox, out result))
             {
-                Debug.WriteLine(@"ConvertBack: value: ""{0}"" (result:{1}, Value: {2}, Text: ""{3}"")",
-                    value,
+                Debug.WriteLine(@"(result:{0}, Value: {1}, Text: ""{2}"")",
                     textBox.GetValue(),
                     result,
                     textBox.Text);
                 return result;
             }
-            Debug.WriteLine(@"ConvertBack: value: ""{0}"" (Text:""{1}"") Reset", value, textBox.Text);
+            Debug.WriteLine(string.Format(@"(Text:""{0}"") Reset", textBox.Text));
             return Binding.DoNothing;
         }
     }

@@ -4,7 +4,7 @@ namespace Gu.Wpf.Validation.StringConverters
 
     public class UIntConverter : StringConverter<uint>
     {
-        public override string ToString(uint value, TextBox textBox)
+        public override string ToFormattedString(uint value, TextBox textBox)
         {
             return value.ToString();
         }

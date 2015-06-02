@@ -8,16 +8,22 @@
     internal static class TextBoxExt
     {
         internal static readonly DependencyProperty IsUpdatingProperty = DependencyProperty.RegisterAttached(
-                "IsUpdating",
-                typeof(bool),
-                typeof(TextBoxExt),
-                new PropertyMetadata(default(bool)));
-
-        internal static readonly DependencyProperty IsDirtyProperty = DependencyProperty.RegisterAttached(
-            "IsDirty",
+            "IsUpdating",
             typeof(bool),
             typeof(TextBoxExt),
             new PropertyMetadata(default(bool)));
+
+        internal static readonly DependencyProperty OldCultureProperty = DependencyProperty.RegisterAttached(
+            "OldCulture",
+            typeof(IFormatProvider),
+            typeof(TextBoxExt),
+            new PropertyMetadata(null));
+
+        internal static readonly DependencyProperty RawTextProperty = DependencyProperty.RegisterAttached(
+            "RawText",
+            typeof(string),
+            typeof(TextBoxExt),
+            new PropertyMetadata(null));
 
         internal static void SetIsUpdating(this TextBox element, bool value)
         {
@@ -29,14 +35,24 @@
             return (bool)element.GetValue(IsUpdatingProperty);
         }
 
-        internal static void SetIsDirty(this TextBox element, bool value)
+        internal static void SetOldCulture(this TextBox element, IFormatProvider value)
         {
-            element.SetValue(IsDirtyProperty, value);
+            element.SetValue(OldCultureProperty, value);
         }
 
-        internal static bool GetIsDirty(this TextBox element)
+        internal static IFormatProvider GetOldCulture(this TextBox element)
         {
-            return (bool)element.GetValue(IsDirtyProperty);
+            return (IFormatProvider)element.GetValue(OldCultureProperty);
+        }
+
+        internal static void SetRawText(this TextBox element, string value)
+        {
+            element.SetValue(RawTextProperty, value);
+        }
+
+        internal static string GetRawText(this TextBox element)
+        {
+            return (string)element.GetValue(RawTextProperty);
         }
 
         internal static void ResetValue(this TextBox textBox)
@@ -49,7 +65,7 @@
         {
             if (text == null)
             {
-                if (string.IsNullOrEmpty(textBox.Text))
+                if (String.IsNullOrEmpty(textBox.Text))
                 {
                     return;
                 }
@@ -80,6 +96,13 @@
                 return null;
             }
             return propertyInfo.GetValue(source);
+        }
+
+        internal static void Update(this TextBox textBox, DependencyProperty property, object value)
+        {
+            textBox.SetIsUpdating(true);
+            textBox.SetCurrentValue(property, value);
+            textBox.SetIsUpdating(false);
         }
     }
 }

@@ -7,10 +7,15 @@
     {
         protected static readonly ConcurrentDictionary<int, string> Formats = new ConcurrentDictionary<int, string>();
 
-        public override string ToString(float value, TextBox textBox)
+        public override string ToFormattedString(float value, TextBox textBox)
         {
             var formatString = GetFormatString(textBox);
             return value.ToString(formatString, textBox.GetCulture());
+        }
+
+        public override string ToRawString(float value, TextBox textBox)
+        {
+            return value.ToString(textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out float result)

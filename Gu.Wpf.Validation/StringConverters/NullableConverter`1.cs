@@ -7,13 +7,22 @@
     {
         public abstract StringConverter<T> Converter { get; }
 
-        public override string ToString(T? value, TextBox textBox)
+        public override string ToFormattedString(T? value, TextBox textBox)
         {
             if (value == null)
             {
                 return "";
             }
-            return Converter.ToString(value.Value, textBox);
+            return Converter.ToFormattedString(value.Value, textBox);
+        }
+
+        public override string ToRawString(T? value, TextBox textBox)
+        {
+            if (value == null)
+            {
+                return "";
+            }
+            return Converter.ToRawString(value.Value, textBox);
         }
 
         public override bool TryParse(string s, TextBox textBox, out T? result)

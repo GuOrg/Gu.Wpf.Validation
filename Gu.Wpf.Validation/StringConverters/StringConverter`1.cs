@@ -7,9 +7,14 @@
     {
         public Type Type { get { return typeof(T); } }
 
-        string IStringConverter.ToString(object o, TextBox textBox)
+        string IStringConverter.ToFormattedString(object o, TextBox textBox)
         {
-            return ToString((T)o, textBox);
+            return ToFormattedString((T)o, textBox);
+        }
+
+        string IStringConverter.ToRawString(object value, TextBox textBox)
+        {
+            return ToRawString((T)value, textBox);
         }
 
         bool IStringConverter.TryParse(object o, TextBox textBox, out object result)
@@ -29,7 +34,12 @@
             return string.Format("StringConverter<{0}>", Type.Name);
         }
 
-        public abstract string ToString(T value, TextBox textBox);
+        public abstract string ToFormattedString(T value, TextBox textBox);
+
+        public virtual string ToRawString(T value, TextBox textBox)
+        {
+            return ToFormattedString(value, textBox);
+        }
 
         public abstract bool TryParse(string s, TextBox textBox, out T result);
     }

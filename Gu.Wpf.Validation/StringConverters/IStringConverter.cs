@@ -7,7 +7,9 @@
     {
         Type Type { get; }
 
-        string ToString(object o, TextBox textBox);
+        string ToFormattedString(object o, TextBox textBox);
+
+        string ToRawString(object value, TextBox textBox);
 
         bool TryParse(object o, TextBox textBox, out object result);
     }

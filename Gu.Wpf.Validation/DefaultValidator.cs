@@ -11,18 +11,15 @@
         protected static readonly PropertyPath ValuePath = new PropertyPath(Input.ValueProperty);
         protected static readonly PropertyPath CulturePath = new PropertyPath(Input.CultureProperty);
         protected static readonly PropertyPath NumberStylesPath = new PropertyPath(Input.NumberStylesProperty);
-        protected static readonly PropertyPath DecimalDigitsPath = new PropertyPath(Input.DecimalDigitsProperty);
         protected static readonly PropertyPath MinPath = new PropertyPath(Input.MinProperty);
         protected static readonly PropertyPath MaxPath = new PropertyPath(Input.MaxProperty);
         protected static readonly PropertyPath PatternPath = new PropertyPath(Input.PatternProperty);
         protected static readonly PropertyPath IsRequiredPath = new PropertyPath(Input.IsRequiredProperty);
-        protected static readonly PropertyPath IsKeyboardFocusedPath = new PropertyPath(UIElement.IsKeyboardFocusedProperty);
         protected static readonly PropertyPath TextPath = new PropertyPath(TextBox.TextProperty);
-        protected static readonly PropertyPath IsDirtyPath = new PropertyPath(TextBoxExt.IsDirtyProperty);
         protected static readonly PropertyPath HasErrorPath = new PropertyPath(Validation.HasErrorProperty);
         protected static readonly StringFormatConverter StringFormatConverter = new StringFormatConverter();
         protected static readonly ResetValueOnErrorConverter ResetOnErrorConverter = new ResetValueOnErrorConverter();
-        protected static readonly UpdateConverter UpdateConverter = new UpdateConverter();
+        protected static readonly UpdateValidationConverter UpdateValidationConverter = new UpdateValidationConverter();
 
         /// <summary>
         /// Proxy property used for binding HasError to enable resetting Value on error
@@ -33,11 +30,11 @@
             typeof(DefaultValidator),
             new PropertyMetadata(false));
 
-        protected static readonly DependencyProperty IsKeyboardFocusedProxyProperty = DependencyProperty.RegisterAttached(
-            "IsKeyboardFocusedProxy",
-            typeof(bool),
+        protected static readonly DependencyProperty UpdateValidationProxyProperty = DependencyProperty.RegisterAttached(
+            "UpdateValidationProxy",
+            typeof(object[]),
             typeof(DefaultValidator),
-            new PropertyMetadata(false));
+            new PropertyMetadata(null));
 
         public virtual void Bind(TextBox textBox)
         {
@@ -58,42 +55,20 @@
             var hasErrorBinding = CreateBinding(textBox, BindingMode.OneWay, HasErrorPath, ResetOnErrorConverter);
             BindingOperations.SetBinding(textBox, HasErrorProxyProperty, hasErrorBinding);
 
-            // Using a binding to update formatting
-            var updateFormattingBinding = new MultiBinding { Delay = 10 };
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, IsKeyboardFocusedPath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, DecimalDigitsPath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, PatternPath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, IsRequiredPath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MinPath));
-            updateFormattingBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MaxPath));
-            updateFormattingBinding.ConverterParameter = textBox;
-            updateFormattingBinding.Converter = UpdateConverter;
-            BindingOperations.SetBinding(textBox, IsKeyboardFocusedProxyProperty, updateFormattingBinding);
+            var updateValidationBinding = new MultiBinding { Delay = 10 };
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, TextPath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, PatternPath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, IsRequiredPath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MinPath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MaxPath));
+            updateValidationBinding.ConverterParameter = textBox;
+            updateValidationBinding.Converter = UpdateValidationConverter;
+            BindingOperations.SetBinding(textBox, UpdateValidationProxyProperty, updateValidationBinding);
         }
 
-        protected static void SetHasErrorProxy(DependencyObject element, bool value)
-        {
-            element.SetValue(HasErrorProxyProperty, value);
-        }
-
-        protected static bool GetHasErrorProxy(DependencyObject element)
-        {
-            return (bool)element.GetValue(HasErrorProxyProperty);
-        }
-
-        protected static void SetIsKeyboardFocusedProxy(DependencyObject element, bool value)
-        {
-            element.SetValue(IsKeyboardFocusedProxyProperty, value);
-        }
-
-        protected static bool GetIsKeyboardFocusedProxy(DependencyObject element)
-        {
-            return (bool)element.GetValue(IsKeyboardFocusedProxyProperty);
-        }
-
-        private Binding CreateBinding(
+        protected virtual Binding CreateBinding(
             TextBox source,
             BindingMode mode,
             PropertyPath path,
@@ -110,7 +85,7 @@
             };
         }
 
-        private Binding CreateBinding(
+        protected virtual Binding CreateBinding(
             TextBox source,
             BindingMode mode,
             UpdateSourceTrigger trigger,
@@ -128,7 +103,10 @@
             };
         }
 
-        protected static Binding CreateBinding(TextBox source, BindingMode mode, PropertyPath path)
+        protected virtual Binding CreateBinding(
+            TextBox source, 
+            BindingMode mode, 
+            PropertyPath path)
         {
             return new Binding
                     {

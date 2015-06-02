@@ -21,7 +21,7 @@
         public void ToStringTests(double value,string text, string expected)
         {
             _textBox.Text = text;
-            var actual = _converter.ToString(value, _textBox);
+            var actual = _converter.ToFormattedString(value, _textBox);
             Assert.AreEqual(expected, actual);
         }
     }

@@ -7,10 +7,17 @@
     {
         protected static readonly ConcurrentDictionary<int, string> Formats = new ConcurrentDictionary<int, string>();
 
-        public override string ToString(double value, TextBox textBox)
+        public override string ToFormattedString(double value, TextBox textBox)
         {
             var formatString = GetFormatString(textBox);
-            return value.ToString(formatString, textBox.GetCulture());
+            var culture = textBox.GetCulture();
+            return value.ToString(formatString, culture);
+        }
+
+        public override string ToRawString(double value, TextBox textBox)
+        {
+            var culture = textBox.GetCulture();
+            return value.ToString(culture);
         }
 
         public override bool TryParse(string s, TextBox textBox, out double result)

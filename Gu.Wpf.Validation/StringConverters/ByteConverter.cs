@@ -4,7 +4,7 @@ namespace Gu.Wpf.Validation.StringConverters
 
     public class ByteConverter : StringConverter<byte>
     {
-        public override string ToString(byte value, TextBox textBox)
+        public override string ToFormattedString(byte value, TextBox textBox)
         {
             return value.ToString();
         }

@@ -4,7 +4,7 @@
 
     public class IntConverter : StringConverter<int>
     {
-        public override string ToString(int value, TextBox textBox)
+        public override string ToFormattedString(int value, TextBox textBox)
         {
             return value.ToString();
         }

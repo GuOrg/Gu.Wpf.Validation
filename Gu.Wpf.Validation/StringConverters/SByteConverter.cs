@@ -4,7 +4,7 @@ namespace Gu.Wpf.Validation.StringConverters
 
     public class SByteConverter : StringConverter<sbyte>
     {
-        public override string ToString(sbyte value, TextBox textBox)
+        public override string ToFormattedString(sbyte value, TextBox textBox)
         {
             return value.ToString();
         }

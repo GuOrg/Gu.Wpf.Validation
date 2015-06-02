@@ -10,9 +10,14 @@
             get { return typeof(string); }
         }
 
-        public string ToString(object o, TextBox textBox)
+        public string ToFormattedString(object o, TextBox textBox)
         {
             return o as string;
+        }
+
+        public string ToRawString(object value, TextBox textBox)
+        {
+            return value as string;
         }
 
         public bool TryParse(object o, TextBox textBox, out object result)

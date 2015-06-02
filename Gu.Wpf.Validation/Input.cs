@@ -70,9 +70,9 @@ namespace Gu.Wpf.Validation
             new PropertyMetadata(default(object), null, OnMaxCoerce));
 
         public static readonly DependencyProperty ValidationTriggerProperty = DependencyProperty.RegisterAttached(
-            "ValidationTrigger", 
-            typeof (UpdateSourceTrigger), 
-            typeof (Input), 
+            "ValidationTrigger",
+            typeof(UpdateSourceTrigger),
+            typeof(Input),
             new FrameworkPropertyMetadata(UpdateSourceTrigger.PropertyChanged, FrameworkPropertyMetadataOptions.Inherits));
 
         public static readonly DependencyProperty ValidatorProperty = DependencyProperty.RegisterAttached(
@@ -80,6 +80,12 @@ namespace Gu.Wpf.Validation
             typeof(IValidator),
             typeof(Input),
             new FrameworkPropertyMetadata(new DefaultValidator(), FrameworkPropertyMetadataOptions.Inherits));
+
+        public static readonly DependencyProperty FormatterProperty = DependencyProperty.RegisterAttached(
+            "Formatter",
+            typeof(IFormatter),
+            typeof(Input),
+            new FrameworkPropertyMetadata(new DefaultFormatter(), FrameworkPropertyMetadataOptions.Inherits));
 
         public static readonly DependencyProperty NumberStylesMapperProperty = DependencyProperty.RegisterAttached(
             "NumberStylesMapper",
@@ -217,6 +223,16 @@ namespace Gu.Wpf.Validation
         public static IValidator GetValidator(this DependencyObject element)
         {
             return (IValidator)element.GetValue(ValidatorProperty);
+        }
+
+        public static void SetFormatter(this DependencyObject element, IFormatter value)
+        {
+            element.SetValue(FormatterProperty, value);
+        }
+
+        public static IFormatter GetFormatter(this DependencyObject element)
+        {
+            return (IFormatter)element.GetValue(FormatterProperty);
         }
 
         public static void SetNumberStylesMapper(this DependencyObject element, ITypeNumberStyles value)
@@ -433,7 +449,15 @@ namespace Gu.Wpf.Validation
         private static void Setup(TextBox textBox)
         {
             var validator = textBox.GetValidator();
-            validator.Bind(textBox);
+            if (validator != null)
+            {
+                validator.Bind(textBox);
+            }
+            var formatter = textBox.GetFormatter();
+            if (formatter != null)
+            {
+                formatter.Bind(textBox);
+            }
         }
     }
 }

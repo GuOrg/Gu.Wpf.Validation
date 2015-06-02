@@ -4,7 +4,7 @@
 
     public class LongConverter : StringConverter<long>
     {
-        public override string ToString(long value, TextBox textBox)
+        public override string ToFormattedString(long value, TextBox textBox)
         {
             return value.ToString();
         }

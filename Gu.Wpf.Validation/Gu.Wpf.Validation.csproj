@@ -43,12 +43,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultFormatter.cs" />
     <Compile Include="DefaultNumberStyles.cs" />
     <Compile Include="DefaultRules.cs" />
+    <Compile Include="IFormatter.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Internals\BindingExpressionExt.cs" />
+    <Compile Include="Internals\UpdateFormattingConverter.cs" />
     <Compile Include="Internals\TypeExt.cs" />
-    <Compile Include="Internals\UpdateConverter.cs" />
+    <Compile Include="Internals\UpdateValidationConverter.cs" />
     <Compile Include="Internals\ResetValueOnErrorConverter.cs" />
     <Compile Include="Internals\TextBoxExt.cs" />
     <Compile Include="ITypeNumberStyles.cs" />
