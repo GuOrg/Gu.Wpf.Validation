@@ -289,13 +289,13 @@ namespace Gu.Wpf.Validation
 
             if (e.OldValue == Unset)
             {
-                if (textBox.IsInitialized)
+                if (textBox.IsLoaded)
                 {
                     Setup(textBox);
                 }
                 else
                 {
-                    textBox.Initialized += OnInitialized;
+                    textBox.Loaded += OnLoaded;
                 }
             }
         }
@@ -423,10 +423,10 @@ namespace Gu.Wpf.Validation
             return result;
         }
 
-        private static void OnInitialized(object sender, EventArgs e)
+        private static void OnLoaded(object sender, EventArgs e)
         {
             var textBox = (TextBox)sender;
-            textBox.Initialized -= OnInitialized;
+            textBox.Loaded -= OnLoaded;
             Setup(textBox);
         }
 
