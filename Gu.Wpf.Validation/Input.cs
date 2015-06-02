@@ -19,7 +19,7 @@ namespace Gu.Wpf.Validation
             "Value",
             typeof(object),
             typeof(Input),
-            new FrameworkPropertyMetadata(Unset, OnValueChanged, OnValueCoerce)
+            new FrameworkPropertyMetadata(Unset, OnValueChanged)
             {
                 BindsTwoWayByDefault = true,
                 DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus
@@ -31,7 +31,8 @@ namespace Gu.Wpf.Validation
             typeof(Input),
             new FrameworkPropertyMetadata(
                 CultureInfo.GetCultureInfo("en-US"), // Think this is the default in WPF
-                FrameworkPropertyMetadataOptions.Inherits));
+                FrameworkPropertyMetadataOptions.Inherits,
+                OnCultureChanged));
 
         public static readonly DependencyProperty NumberStylesProperty = DependencyProperty.RegisterAttached(
             "NumberStyles",
@@ -303,6 +304,10 @@ namespace Gu.Wpf.Validation
                 return;
             }
 
+            if (d.GetSourceValueType() == null)
+            {
+                d.CoerceValue(SourceValueTypeProperty);
+            }
             if (e.OldValue == Unset)
             {
                 if (textBox.IsLoaded)
@@ -328,17 +333,22 @@ namespace Gu.Wpf.Validation
 
         private static void OnStringConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            d.CoerceValue(MinProperty);
-            d.CoerceValue(MaxProperty);
+            var textBox = d as TextBox;
+            if (textBox != null)
+            {
+                textBox.CoerceValue(MinProperty);
+                textBox.CoerceValue(MaxProperty);
+                textBox.UpdateRawValue();
+            }
         }
 
-        private static object OnValueCoerce(DependencyObject d, object basevalue)
+        private static void OnCultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d.GetSourceValueType() == null && basevalue != Unset)
+            var textBox = d as TextBox;
+            if (textBox != null && textBox.GetSourceValueType() != null)
             {
-                d.CoerceValue(SourceValueTypeProperty);
+                textBox.UpdateRawValue();
             }
-            return basevalue;
         }
 
         private static object OnStringConvertersCoerce(DependencyObject d, object basevalue)

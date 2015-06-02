@@ -3,14 +3,15 @@
     using System;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
 
-    public class ResetValueOnErrorConverter : IValueConverter
+    public class OnErrorConverter : IValueConverter
     {
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.Write(string.Format(@"ResetValueOnErrorConverter.Convert({0}) ", value));
+            Debug.Write(string.Format(@"OnErrorConverter.Convert({0}) ", value));
             var textBox = parameter as TextBox;
             if (textBox == null)
             {
@@ -24,13 +25,16 @@
                 textBox.ResetValue();
                 textBox.SetIsUpdating(false);
             }
-            else
+            else if (!textBox.IsKeyboardFocused)
             {
-                var expression = BindingOperations.GetBindingExpressionBase(textBox, TextBox.TextProperty);
-                if (expression != null)
+                var rawValue = textBox.GetRawValue();
+                if (rawValue != TextBoxExt.Unset)
                 {
-                    Debug.WriteLine("UpdateTarget");
-                    expression.UpdateTarget();
+                    textBox.SetIsUpdating(true);
+                    Debug.WriteLine("UpdateSource");
+                    textBox.SetCurrentValue(Input.ValueProperty, rawValue);
+                    textBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent)); // dunno if this is a good idea.
+                    textBox.SetIsUpdating(false);
                 }
             }
             Debug.WriteLine("");

@@ -18,7 +18,7 @@
         protected static readonly PropertyPath TextPath = new PropertyPath(TextBox.TextProperty);
         protected static readonly PropertyPath HasErrorPath = new PropertyPath(Validation.HasErrorProperty);
         protected static readonly StringFormatConverter StringFormatConverter = new StringFormatConverter();
-        protected static readonly ResetValueOnErrorConverter ResetOnErrorConverter = new ResetValueOnErrorConverter();
+        protected static readonly OnErrorConverter ResetOnErrorConverter = new OnErrorConverter();
         protected static readonly UpdateValidationConverter UpdateValidationConverter = new UpdateValidationConverter();
 
         /// <summary>

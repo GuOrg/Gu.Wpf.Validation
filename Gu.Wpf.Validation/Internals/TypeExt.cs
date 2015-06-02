@@ -17,6 +17,11 @@
                 return "long";
             }
 
+            if (type == typeof(ulong))
+            {
+                return "ulong";
+            }
+
             if (type == typeof(double))
             {
                 return "double";
@@ -25,6 +30,11 @@
             if (type == typeof(int))
             {
                 return "int";
+            }
+
+            if (type == typeof(uint))
+            {
+                return "uint";
             }
 
             if (type == typeof(string))

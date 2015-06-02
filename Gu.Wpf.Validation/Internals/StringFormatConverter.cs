@@ -28,10 +28,8 @@
             var converter = textBox.GetStringConverter();
             var formatted = converter.ToFormattedString(value, textBox);
             Debug.WriteLine(string.Format("formatted: {0}", formatted ?? "null"));
-            textBox.SetIsUpdating(true);
             Debug.WriteLine("SetRawText: " + converter.ToRawString(value, textBox));
             textBox.SetRawText(converter.ToRawString(value, textBox));
-            textBox.SetIsUpdating(false);
             return formatted;
         }
 

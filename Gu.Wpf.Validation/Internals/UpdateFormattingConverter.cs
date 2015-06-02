@@ -26,16 +26,6 @@
                 return value;
             }
 
-            var hasError = (bool)textBox.GetValue(Validation.HasErrorProperty);
-            if (hasError)
-            {
-                if (!Equals(textBox.GetOldCulture(), textBox.GetCulture()))
-                {
-                    UpdateCulture(textBox, converter);
-                }
-                return value;
-            }
-
             TryUpdateTextFromRaw(textBox, converter);
 
             return value;
@@ -61,23 +51,12 @@
 
         protected virtual bool TryGetRawValue(TextBox textBox, IStringConverter converter, out object rawValue)
         {
-            var rawText = textBox.GetRawText();
-            if (converter.TryParse(rawText, textBox, out rawValue))
+            rawValue = textBox.GetRawValue();
+            if (rawValue != TextBoxExt.Unset)
             {
                 return true;
             }
-            var format = textBox.GetCulture();
-            var oldCulture = textBox.GetOldCulture();
-            textBox.Update(Input.CultureProperty, oldCulture);
-            var result = converter.TryParse(rawText, textBox, out rawValue);
-            textBox.Update(Input.CultureProperty, format);
-            return result;
-        }
-
-        protected virtual void UpdateCulture(TextBox textBox, IStringConverter converter)
-        {
-            TryUpdateTextFromRaw(textBox, converter);
-            textBox.SetValue(TextBoxExt.OldCultureProperty, textBox.GetCulture());
+            return false;
         }
 
         private void TryUpdateTextFromRaw(TextBox textBox, IStringConverter converter)

@@ -35,7 +35,6 @@
             {
                 return;
             }
-            textBox.SetValue(TextBoxExt.OldCultureProperty, textBox.GetValue(Input.CultureProperty));
             BindingOperations.SetBinding(textBox, TextProxyProperty, CreateBinding(textBox, TextPath));
             // Using a binding to update formatting
             var binding = new MultiBinding
