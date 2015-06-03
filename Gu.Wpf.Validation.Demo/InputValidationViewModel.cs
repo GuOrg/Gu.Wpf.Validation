@@ -11,11 +11,8 @@
     {
         private double _doubleValue;
         private double? _nullableDoubleValue;
-
         private int _intValue;
-
         private int? _nullableIntValue;
-
         private string _stringValue;
 
         public event PropertyChangedEventHandler PropertyChanged;

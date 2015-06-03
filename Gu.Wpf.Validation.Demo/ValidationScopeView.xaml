@@ -23,10 +23,28 @@
                 </Style.Triggers>
             </Style>
         </Border.Style>
-        <StackPanel x:Name="StackPanel">
-            <TextBlock Text="The validation rule is that as soon as the text contains an 's' it is an error" />
+        <Grid x:Name="StackPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Value}" />
 
-            <TextBox>
+            <TextBlock Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Text="The validation rule is that as soon as the text contains an 's' it is an error" />
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Text="LostFocus" />
+            <TextBox Grid.Row="1" Grid.Column="1">
                 <TextBox.Text>
                     <Binding Path="Value" UpdateSourceTrigger="LostFocus">
                         <Binding.ValidationRules>
@@ -36,7 +54,12 @@
                 </TextBox.Text>
             </TextBox>
 
-            <TextBox x:Name="TextBox">
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="PropertyChanged" />
+            <TextBox x:Name="TextBox"
+                     Grid.Row="2"
+                     Grid.Column="1">
                 <TextBox.Text>
                     <Binding Path="Value" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -46,9 +69,11 @@
                 </TextBox.Text>
             </TextBox>
 
-            <TextBlock Text="{Binding Value}" />
-
-            <Button Content="Meh" IsEnabled="{Binding (validation:ValidationExt.HasError), ElementName=StackPanel}" />
-        </StackPanel>
+            <Button Grid.Row="3"
+                    Grid.Column="1"
+                    Content="Meh"
+                    IsEnabled="{Binding (validation:ValidationExt.HasError),
+                                        ElementName=StackPanel}" />
+        </Grid>
     </Border>
 </UserControl>

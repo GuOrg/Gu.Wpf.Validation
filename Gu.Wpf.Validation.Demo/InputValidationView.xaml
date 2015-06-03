@@ -24,7 +24,9 @@
         <ListBox x:Name="ListBox"
                  Grid.Row="0"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 SelectedIndex="0">
+                 SelectionMode="Single"
+                 SelectedIndex="0"
+                 Focusable="False">
             <ListBox.Resources>
                 <Style TargetType="{x:Type GroupBox}">
                     <Setter Property="MinWidth" Value="60" />

@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.Windows.Controls;
-
-namespace Gu.Wpf.Validation.Demo
+﻿namespace Gu.Wpf.Validation.Demo
 {
+    using System.Globalization;
+    using System.Windows.Controls;
+
     public class MehRule : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
