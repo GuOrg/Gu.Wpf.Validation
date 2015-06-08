@@ -23,10 +23,10 @@
         </Grid.RowDefinitions>
         <ListBox x:Name="ListBox"
                  Grid.Row="0"
+                 Focusable="False"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 SelectionMode="Single"
                  SelectedIndex="0"
-                 Focusable="False">
+                 SelectionMode="Single">
             <ListBox.Resources>
                 <Style TargetType="{x:Type GroupBox}">
                     <Setter Property="MinWidth" Value="60" />

@@ -6,12 +6,12 @@ namespace Gu.Wpf.Validation.StringConverters
     {
         public override string ToFormattedString(byte value, TextBox textBox)
         {
-            return value.ToString();
+            return value.ToString(textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out byte result)
         {
-            return byte.TryParse(s, out result);
+            return byte.TryParse(s, textBox.GetNumberStyles(), textBox.GetCulture(), out result);
         }
     }
 }

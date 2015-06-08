@@ -6,12 +6,12 @@
     {
         public override string ToFormattedString(ushort value, TextBox textBox)
         {
-            return value.ToString();
+            return value.ToString(textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out ushort result)
         {
-            return ushort.TryParse(s, out result);
+            return ushort.TryParse(s, textBox.GetNumberStyles(), textBox.GetCulture(), out result);
         }
     }
 }

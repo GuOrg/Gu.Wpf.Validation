@@ -2,14 +2,15 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Gu.Wpf.Validation")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Attached properties for WPF-textbox")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Johan Larsson")]
 [assembly: AssemblyProduct("Gu.Wpf.Validation")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
@@ -42,3 +43,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://gu.se/Validation", "Gu.Wpf.Validation.Rules")]
 [assembly: XmlnsDefinition("http://gu.se/Validation", "Gu.Wpf.Validation.StringConverters")]
 [assembly: XmlnsPrefix("http://gu.se/Validation", "validation")]
+[assembly: NeutralResourcesLanguageAttribute("en")]

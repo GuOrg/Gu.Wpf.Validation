@@ -6,12 +6,12 @@
     {
         public override string ToFormattedString(ulong value, TextBox textBox)
         {
-            return value.ToString();
+            return value.ToString(textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out ulong result)
         {
-            return ulong.TryParse(s, out result);
+            return ulong.TryParse(s, textBox.GetNumberStyles(), textBox.GetCulture(), out result);
         }
     }
 }
