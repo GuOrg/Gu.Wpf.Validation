@@ -126,12 +126,12 @@ namespace Gu.Wpf.Validation
 
         internal static readonly DependencyProperty SourceValueTypeProperty = SourceValueTypePropertyKey.DependencyProperty;
 
-        public static void SetValue(this TextBox element, object value)
+        public static void SetValue(this System.Windows.Controls.TextBox element, object value)
         {
             element.SetValue(ValueProperty, value);
         }
 
-        public static object GetValue(this TextBox element)
+        public static object GetValue(this System.Windows.Controls.TextBox element)
         {
             return element.GetValue(ValueProperty);
         }
@@ -186,7 +186,7 @@ namespace Gu.Wpf.Validation
             return (string)element.GetValue(PatternProperty);
         }
 
-        public static void SetMin(this TextBox element, object value)
+        public static void SetMin(this System.Windows.Controls.TextBox element, object value)
         {
             element.SetValue(MinProperty, value);
         }
@@ -256,12 +256,12 @@ namespace Gu.Wpf.Validation
             return (ITypeStringConverters)element.GetValue(StringConvertersProperty);
         }
 
-        public static void SetStringConverter(this TextBox element, IStringConverter value)
+        public static void SetStringConverter(this System.Windows.Controls.TextBox element, IStringConverter value)
         {
             element.SetValue(StringConverterProperty, value);
         }
 
-        public static IStringConverter GetStringConverter(this TextBox element)
+        public static IStringConverter GetStringConverter(this System.Windows.Controls.TextBox element)
         {
             return (IStringConverter)element.GetValue(StringConverterProperty);
         }
@@ -276,7 +276,7 @@ namespace Gu.Wpf.Validation
             return (ITypeRules)element.GetValue(TypeRulesProperty);
         }
 
-        public static void SetValidationRules(this TextBox element, IReadOnlyCollection<ValidationRule> value)
+        public static void SetValidationRules(this System.Windows.Controls.TextBox element, IReadOnlyCollection<ValidationRule> value)
         {
             element.SetValue(ValidationRulesProperty, value);
         }
@@ -298,7 +298,7 @@ namespace Gu.Wpf.Validation
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as TextBox;
+            var textBox = d as System.Windows.Controls.TextBox;
             if (textBox == null)
             {
                 return;
@@ -333,7 +333,7 @@ namespace Gu.Wpf.Validation
 
         private static void OnStringConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as TextBox;
+            var textBox = d as System.Windows.Controls.TextBox;
             if (textBox != null)
             {
                 textBox.CoerceValue(MinProperty);
@@ -344,7 +344,7 @@ namespace Gu.Wpf.Validation
 
         private static void OnCultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as TextBox;
+            var textBox = d as System.Windows.Controls.TextBox;
             if (textBox != null && textBox.GetSourceValueType() != null)
             {
                 textBox.UpdateRawValue();
@@ -438,7 +438,7 @@ namespace Gu.Wpf.Validation
             {
                 return basevalue;
             }
-            var textBox = (TextBox)d;
+            var textBox = (System.Windows.Controls.TextBox)d;
             var converter = textBox.GetStringConverter();
             if (converter == null)
             {
@@ -451,12 +451,12 @@ namespace Gu.Wpf.Validation
 
         private static void OnLoaded(object sender, EventArgs e)
         {
-            var textBox = (TextBox)sender;
+            var textBox = (System.Windows.Controls.TextBox)sender;
             textBox.Loaded -= OnLoaded;
             Setup(textBox);
         }
 
-        private static void Setup(TextBox textBox)
+        private static void Setup(System.Windows.Controls.TextBox textBox)
         {
             var validator = textBox.GetValidator();
             if (validator != null)

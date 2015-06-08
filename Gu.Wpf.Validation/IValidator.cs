@@ -4,6 +4,6 @@ namespace Gu.Wpf.Validation
 
     public interface IValidator
     {
-        void Bind(TextBox textBox);
+        void Bind(System.Windows.Controls.TextBox textBox);
     }
 }

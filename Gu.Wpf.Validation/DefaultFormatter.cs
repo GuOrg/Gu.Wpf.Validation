@@ -13,7 +13,7 @@
         protected static readonly PropertyPath IsKeyboardFocusedPath = new PropertyPath(UIElement.IsKeyboardFocusedProperty);
         protected static readonly PropertyPath DecimalDigitsPath = new PropertyPath(Input.DecimalDigitsProperty);
         protected static readonly PropertyPath CulturePath = new PropertyPath(Input.CultureProperty);
-        protected static readonly PropertyPath TextPath = new PropertyPath(TextBox.TextProperty);
+        protected static readonly PropertyPath TextPath = new PropertyPath(System.Windows.Controls.TextBox.TextProperty);
 
         protected static readonly UpdateFormattingConverter UpdateFormattingConverter = new UpdateFormattingConverter();
 
@@ -29,7 +29,7 @@
             typeof(DefaultFormatter),
             new PropertyMetadata(null, OnTextProxyChanged));
 
-        public virtual void Bind(TextBox textBox)
+        public virtual void Bind(System.Windows.Controls.TextBox textBox)
         {
             if (textBox == null)
             {
@@ -50,7 +50,7 @@
         }
 
         protected virtual Binding CreateBinding(
-            TextBox source,
+            System.Windows.Controls.TextBox source,
             PropertyPath path)
         {
             return new Binding
@@ -65,7 +65,7 @@
 
         private static void OnTextProxyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as TextBox;
+            var textBox = d as System.Windows.Controls.TextBox;
             if (textBox.GetIsUpdating())
             {
                 return;

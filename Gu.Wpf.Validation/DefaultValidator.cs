@@ -15,7 +15,7 @@
         protected static readonly PropertyPath MaxPath = new PropertyPath(Input.MaxProperty);
         protected static readonly PropertyPath PatternPath = new PropertyPath(Input.PatternProperty);
         protected static readonly PropertyPath IsRequiredPath = new PropertyPath(Input.IsRequiredProperty);
-        protected static readonly PropertyPath TextPath = new PropertyPath(TextBox.TextProperty);
+        protected static readonly PropertyPath TextPath = new PropertyPath(System.Windows.Controls.TextBox.TextProperty);
         protected static readonly PropertyPath HasErrorPath = new PropertyPath(Validation.HasErrorProperty);
         protected static readonly StringFormatConverter StringFormatConverter = new StringFormatConverter();
         protected static readonly OnErrorConverter ResetOnErrorConverter = new OnErrorConverter();
@@ -36,7 +36,7 @@
             typeof(DefaultValidator),
             new PropertyMetadata(null));
 
-        public virtual void Bind(TextBox textBox)
+        public virtual void Bind(System.Windows.Controls.TextBox textBox)
         {
             if (textBox == null)
             {
@@ -49,7 +49,7 @@
             {
                 textBinding.ValidationRules.Add(rule);
             }
-            BindingOperations.SetBinding(textBox, TextBox.TextProperty, textBinding);
+            BindingOperations.SetBinding(textBox, System.Windows.Controls.TextBox.TextProperty, textBinding);
 
             // Using a binding to reset Value on validation error, nonstandard
             var hasErrorBinding = CreateBinding(textBox, BindingMode.OneWay, HasErrorPath, ResetOnErrorConverter);
@@ -69,7 +69,7 @@
         }
 
         protected virtual Binding CreateBinding(
-            TextBox source,
+            System.Windows.Controls.TextBox source,
             BindingMode mode,
             PropertyPath path,
             IValueConverter converter)
@@ -86,7 +86,7 @@
         }
 
         protected virtual Binding CreateBinding(
-            TextBox source,
+            System.Windows.Controls.TextBox source,
             BindingMode mode,
             UpdateSourceTrigger trigger,
             PropertyPath path,
@@ -104,7 +104,7 @@
         }
 
         protected virtual Binding CreateBinding(
-            TextBox source, 
+            System.Windows.Controls.TextBox source, 
             BindingMode mode, 
             PropertyPath path)
         {
