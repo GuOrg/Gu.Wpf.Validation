@@ -131,6 +131,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(ValueProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static object GetValue(this System.Windows.Controls.TextBox element)
         {
             return element.GetValue(ValueProperty);
@@ -141,6 +143,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(CultureProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.UIElement))]
         public static IFormatProvider GetCulture(this DependencyObject element)
         {
             return (IFormatProvider)element.GetValue(CultureProperty);
@@ -151,6 +155,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(NumberStylesProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static NumberStyles GetNumberStyles(this DependencyObject element)
         {
             return (NumberStyles)element.GetValue(NumberStylesProperty);
@@ -161,6 +167,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(DecimalDigitsProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static int? GetDecimalDigits(this DependencyObject element)
         {
             return (int?)element.GetValue(DecimalDigitsProperty);
@@ -171,6 +179,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(IsRequiredProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static bool GetIsRequired(this DependencyObject element)
         {
             return (bool)element.GetValue(IsRequiredProperty);
@@ -181,6 +191,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(PatternProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static string GetPattern(this DependencyObject element)
         {
             return (string)element.GetValue(PatternProperty);
@@ -191,6 +203,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(MinProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static object GetMin(this DependencyObject element)
         {
             return element.GetValue(MinProperty);
@@ -201,6 +215,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(MaxProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static object GetMax(this DependencyObject element)
         {
             return (object)element.GetValue(MaxProperty);
@@ -211,6 +227,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(ValidationTriggerProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
         public static UpdateSourceTrigger GetValidationTrigger(this DependencyObject element)
         {
             return (UpdateSourceTrigger)element.GetValue(ValidationTriggerProperty);

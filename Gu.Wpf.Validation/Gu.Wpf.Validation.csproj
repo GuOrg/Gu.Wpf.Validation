@@ -55,6 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TextBox.cs" />
     <Compile Include="DefaultFormatter.cs" />
     <Compile Include="DefaultNumberStyles.cs" />
     <Compile Include="DefaultRules.cs" />

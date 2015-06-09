@@ -1,6 +1,7 @@
 ﻿namespace Gu.Wpf.Validation.StringConverters
 {
     using System;
+    using System.ComponentModel;
     using System.Windows.Controls;
 
     public abstract class StringConverter<T> : IStringConverter
@@ -9,12 +10,38 @@
 
         string IStringConverter.ToFormattedString(object o, TextBox textBox)
         {
-            return ToFormattedString((T)o, textBox);
+            T value;
+            try
+            {
+                value = (T)o;
+            }
+            catch (Exception e)
+            {
+                if (DesignerProperties.GetIsInDesignMode(textBox))
+                {
+                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).Name), "o", e);
+                }
+                return o != null ? o.ToString() : "";
+            }
+            return ToFormattedString(value, textBox);
         }
 
-        string IStringConverter.ToRawString(object value, TextBox textBox)
+        string IStringConverter.ToRawString(object o, TextBox textBox)
         {
-            return ToRawString((T)value, textBox);
+            T value;
+            try
+            {
+                value = (T)o;
+            }
+            catch (Exception e)
+            {
+                if (DesignerProperties.GetIsInDesignMode(textBox))
+                {
+                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).Name), "o", e);
+                }
+                return o != null ? o.ToString() : "";
+            }
+            return ToRawString(value, textBox);
         }
 
         bool IStringConverter.TryParse(object o, TextBox textBox, out object result)
