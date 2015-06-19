@@ -53,6 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\StringToIntConverter.cs" />
+    <Compile Include="Converters\TypeToPrettyNameConverter.cs" />
     <Compile Include="InputValidationView.xaml.cs">
       <DependentUpon>InputValidationView.xaml</DependentUpon>
     </Compile>
@@ -122,6 +124,9 @@
       <Project>{968c9c2a-9c63-476c-8c89-2a30f762f493}</Project>
       <Name>Gu.Wpf.Validation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Wpf\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

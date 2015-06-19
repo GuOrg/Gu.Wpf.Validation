@@ -35,6 +35,9 @@
             {
                 return;
             }
+            BindingOperations.ClearBinding(textBox, TextProxyProperty);
+            BindingOperations.ClearBinding(textBox, UpdateFormattingProxyProperty);
+
             BindingOperations.SetBinding(textBox, TextProxyProperty, CreateBinding(textBox, TextPath));
             // Using a binding to update formatting
             var binding = new MultiBinding

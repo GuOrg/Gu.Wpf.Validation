@@ -2,24 +2,27 @@
 {
     using System;
     using System.Globalization;
-    using System.Windows.Controls;
     using System.Windows.Data;
 
-    public class TextBoxChildConverter : IValueConverter
+    public class StringToIntConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var groupBox = value as GroupBox;
-            if (groupBox == null)
+            var s = value as string;
+            if (s == null)
             {
-                return null;
+                return 0;
             }
-            return groupBox.Content as TextBox;
+            return int.Parse(s);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value == null)
+            {
+                return null;
+            }
+            return value.ToString();
         }
     }
 }

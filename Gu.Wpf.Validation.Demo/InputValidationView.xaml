@@ -7,7 +7,8 @@
              xmlns:validation="http://gu.se/Validation"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             >
     <UserControl.DataContext>
         <demo:InputValidationViewModel />
     </UserControl.DataContext>
@@ -16,7 +17,8 @@
           validation:Input.DecimalDigits="{Binding Value,
                                                    ElementName=Digits}"
           validation:Input.IsRequired="{Binding IsChecked,
-                                                ElementName=IsRequired}">
+                                                ElementName=IsRequired}"
+          >
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -26,7 +28,8 @@
                  Focusable="False"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                  SelectedIndex="0"
-                 SelectionMode="Single">
+                 SelectionMode="Single"
+                 >
             <ListBox.Resources>
                 <Style TargetType="{x:Type GroupBox}">
                     <Setter Property="MinWidth" Value="60" />
@@ -51,7 +54,8 @@
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding DoubleValue}" />
+                         validation:Input.Value="{Binding DoubleValue}"
+                         />
             </GroupBox>
 
             <GroupBox Header="double?">
@@ -59,7 +63,8 @@
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding NullableDoubleValue}" />
+                         validation:Input.Value="{Binding NullableDoubleValue}"
+                         />
             </GroupBox>
 
             <GroupBox Header="int">
@@ -67,7 +72,8 @@
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding IntValue}" />
+                         validation:Input.Value="{Binding IntValue}"
+                         />
             </GroupBox>
 
             <GroupBox Header="int?">
@@ -75,11 +81,25 @@
                                                         ElementName=Max}"
                          validation:Input.Min="{Binding Text,
                                                         ElementName=Min}"
-                         validation:Input.Value="{Binding NullableIntValue}" />
+                         validation:Input.Value="{Binding NullableIntValue}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="converted int">
+                <TextBox validation:Input.Max="{Binding Text,
+                                                        ElementName=Max}"
+                         validation:Input.Min="{Binding Text,
+                                                        ElementName=Min}"
+                         validation:Input.Value="{Binding StringIntValue,
+                                                          Converter={StaticResource StringToIntConverter}}"
+                         />
             </GroupBox>
 
             <GroupBox Header="string">
-                <TextBox validation:Input.Pattern="{Binding Text, ElementName=Pattern}" validation:Input.Value="{Binding StringValue}" />
+                <TextBox validation:Input.Pattern="{Binding Text,
+                                                            ElementName=Pattern}"
+                         validation:Input.Value="{Binding StringValue}"
+                         />
             </GroupBox>
         </ListBox>
 
@@ -88,7 +108,9 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <GroupBox Grid.Column="0" Header="Settings">
+            <GroupBox Grid.Column="0"
+                      Header="Settings"
+                      >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -107,16 +129,19 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0"
                                Grid.Column="0"
-                               Text="Culture" />
+                               Text="Culture"
+                               />
                     <ComboBox x:Name="Culture"
                               Grid.Row="0"
                               Grid.Column="1"
                               ItemsSource="{Binding Cultures}"
-                              SelectedIndex="1" />
+                              SelectedIndex="1"
+                              />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
-                               Text="Digits" />
+                               Text="Digits"
+                               />
                     <Slider x:Name="Digits"
                             Grid.Row="1"
                             Grid.Column="1"
@@ -124,47 +149,59 @@
                             Maximum="17"
                             Minimum="-1"
                             TickFrequency="1"
-                            Value="2" />
+                            Value="2"
+                            />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"
-                               Text="Min" />
+                               Text="Min"
+                               />
                     <TextBox x:Name="Min"
                              Grid.Row="2"
-                             Grid.Column="1" />
+                             Grid.Column="1"
+                             />
 
                     <TextBlock Grid.Row="3"
                                Grid.Column="0"
-                               Text="Max" />
+                               Text="Max"
+                               />
                     <TextBox x:Name="Max"
                              Grid.Row="3"
-                             Grid.Column="1" />
+                             Grid.Column="1"
+                             />
 
                     <TextBlock Grid.Row="4"
                                Grid.Column="0"
-                               Text="Pattern" />
-                    <TextBox x:Name="Pattern"
-                             Grid.Row="4"
-                             Grid.Column="1" />
+                               Text="Pattern"
+                               />
+                    <TextBox Grid.Row="4"
+                             Grid.Column="1"
+                             />
 
                     <TextBlock Grid.Row="5"
                                Grid.Column="0"
-                               Text="Is required" />
+                               Text="Is required"
+                               />
                     <CheckBox x:Name="IsRequired"
                               Grid.Row="5"
                               Grid.Column="1"
-                              IsChecked="True" />
+                              IsChecked="True"
+                              />
 
                     <TextBlock Grid.Row="6"
                                Grid.Column="0"
-                               Text="DoubleValue:" />
+                               Text="DoubleValue:"
+                               />
                     <TextBox Grid.Row="6"
                              Grid.Column="1"
-                             Text="{Binding DoubleValue}" />
+                             Text="{Binding DoubleValue}"
+                             />
                 </Grid>
             </GroupBox>
 
-            <GroupBox Grid.Column="1" Header="Debug">
+            <GroupBox Grid.Column="1"
+                      Header="Debug"
+                      >
                 <Grid DataContext="{Binding SelectedItem, Converter={StaticResource TextBoxChildConverter}, ElementName=ListBox}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -187,91 +224,126 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0"
                                Grid.Column="0"
-                               Text="Value: " />
+                               Text="Value: "
+                               />
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.Value)}" />
+                               Text="{Binding Path=(validation:Input.Value)}"
+                               />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
-                               Text="Raw text: " />
+                               Text="SourceValueType: "
+                               />
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:TextBoxExt.RawText)}" />
+                               Text="{Binding Path=(validation:Input.SourceValueType),
+                                              Converter={StaticResource TypeToPrettyNameConverter}}"
+                               />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"
-                               Text="Raw value: " />
-                    <Label Grid.Row="2"
-                           Grid.Column="1"
-                           Content="{Binding Path=(validation:TextBoxExt.RawValue)}"
-                           Padding="0" />
+                               Text="Raw text: "
+                               />
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{Binding Path=(validation:TextBoxExt.RawText)}"
+                               />
 
                     <TextBlock Grid.Row="3"
                                Grid.Column="0"
-                               Text="Culture: " />
+                               Text="Raw value: "
+                               />
                     <Label Grid.Row="3"
+                           Grid.Column="1"
+                           Content="{Binding Path=(validation:TextBoxExt.RawValue)}"
+                           Padding="0"
+                           />
+
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="0"
+                               Text="Culture: "
+                               />
+                    <Label Grid.Row="4"
                            Grid.Column="1"
                            VerticalAlignment="Center"
                            Content="{Binding Path=(validation:Input.Culture)}"
-                           Padding="0" />
-
-                    <TextBlock Grid.Row="4"
-                               Grid.Column="0"
-                               Text="Numberstyles: " />
-                    <TextBlock Grid.Row="4"
-                               Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.NumberStyles)}" />
+                           Padding="0"
+                           />
 
                     <TextBlock Grid.Row="5"
                                Grid.Column="0"
-                               Text="Digits: " />
+                               Text="Numberstyles: "
+                               />
                     <TextBlock Grid.Row="5"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.DecimalDigits)}" />
+                               Text="{Binding Path=(validation:Input.NumberStyles)}"
+                               />
 
                     <TextBlock Grid.Row="6"
                                Grid.Column="0"
-                               Text="IsRequired: " />
+                               Text="Digits: "
+                               />
                     <TextBlock Grid.Row="6"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.IsRequired)}" />
+                               Text="{Binding Path=(validation:Input.DecimalDigits)}"
+                               />
 
                     <TextBlock Grid.Row="7"
                                Grid.Column="0"
-                               Text="Pattern: " />
+                               Text="IsRequired: "
+                               />
                     <TextBlock Grid.Row="7"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.Pattern)}" />
+                               Text="{Binding Path=(validation:Input.IsRequired)}"
+                               />
 
                     <TextBlock Grid.Row="8"
                                Grid.Column="0"
-                               Text="Min: " />
+                               Text="Pattern: "
+                               />
                     <TextBlock Grid.Row="8"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.Min)}" />
+                               Text="{Binding Path=(validation:Input.Pattern)}"
+                               />
 
                     <TextBlock Grid.Row="9"
                                Grid.Column="0"
-                               Text="Max: " />
+                               Text="Min: "
+                               />
                     <TextBlock Grid.Row="9"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:Input.Max)}" />
+                               Text="{Binding Path=(validation:Input.Min)}"
+                               />
 
                     <TextBlock Grid.Row="10"
                                Grid.Column="0"
-                               Text="HasError: " />
-                    <TextBlock Grid.Row="10" Grid.Column="1">
+                               Text="Max: "
+                               />
+                    <TextBlock Grid.Row="10"
+                               Grid.Column="1"
+                               Text="{Binding Path=(validation:Input.Max)}"
+                               />
+
+                    <TextBlock Grid.Row="11"
+                               Grid.Column="0"
+                               Text="HasError: "
+                               />
+                    <TextBlock Grid.Row="11"
+                               Grid.Column="1"
+                               >
                         <Run Text="{Binding Path=(Validation.HasError), Mode=OneWay}" />
                         <Run Text="{Binding Path=(Validation.Errors).Count, Mode=OneWay, StringFormat='{}({0})'}" />
                     </TextBlock>
 
-                    <TextBlock Grid.Row="11"
+                    <TextBlock Grid.Row="12"
                                Grid.Column="0"
-                               Text="Errors: " />
-                    <ListBox Grid.Row="11"
+                               Text="Errors: "
+                               />
+                    <ListBox Grid.Row="12"
                              Grid.Column="1"
-                             ItemsSource="{Binding Path=(Validation.Errors)}">
+                             ItemsSource="{Binding Path=(Validation.Errors)}"
+                             >
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type ValidationError}">
                                 <!--<ContentPresenter Content="{Binding BindingInError}"></ContentPresenter>-->

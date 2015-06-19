@@ -7,5 +7,7 @@
     <Application.Resources>
         <demo:NullConverter x:Key="NullConverter" />
         <converters:TextBoxChildConverter x:Key="TextBoxChildConverter" />
+        <converters:StringToIntConverter x:Key="StringToIntConverter" />
+        <converters:TypeToPrettyNameConverter x:Key="TypeToPrettyNameConverter" />
     </Application.Resources>
 </Application>

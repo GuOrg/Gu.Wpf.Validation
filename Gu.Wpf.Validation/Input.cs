@@ -321,13 +321,26 @@ namespace Gu.Wpf.Validation
             {
                 return;
             }
-
-            if (d.GetSourceValueType() == null)
+            if (e.NewValue != null)
             {
-                d.CoerceValue(SourceValueTypeProperty);
+                var sourceValueType = textBox.GetSourceValueType();
+                var type = e.NewValue.GetType();
+                if (sourceValueType != type)
+                {
+                    textBox.SetSourceValueType(type);
+                    if (textBox.IsLoaded)
+                    {
+                        Setup(textBox); // rebind
+                    }
+                }
             }
+
             if (e.OldValue == Unset)
             {
+                if (d.GetSourceValueType() == null)
+                {
+                    d.CoerceValue(SourceValueTypeProperty);
+                }
                 if (textBox.IsLoaded)
                 {
                     Setup(textBox);

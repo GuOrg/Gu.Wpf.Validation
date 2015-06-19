@@ -43,7 +43,10 @@
             {
                 return;
             }
-
+            BindingOperations.ClearBinding(textBox, System.Windows.Controls.TextBox.TextProperty);
+            BindingOperations.ClearBinding(textBox, HasErrorProxyProperty);
+            BindingOperations.ClearBinding(textBox, UpdateValidationProxyProperty);
+            
             var textBinding = CreateBinding(textBox, BindingMode.TwoWay, textBox.GetValidationTrigger(), ValuePath, StringFormatConverter);
             var rules = textBox.GetValidationRules();
             foreach (var rule in rules)
@@ -106,8 +109,8 @@
         }
 
         protected virtual Binding CreateBinding(
-            System.Windows.Controls.TextBox source, 
-            BindingMode mode, 
+            System.Windows.Controls.TextBox source,
+            BindingMode mode,
             PropertyPath path)
         {
             return new Binding

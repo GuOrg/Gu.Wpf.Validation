@@ -2,19 +2,20 @@
 {
     using System;
     using System.Globalization;
-    using System.Windows.Controls;
     using System.Windows.Data;
 
-    public class TextBoxChildConverter : IValueConverter
+    using Gu.Wpf.Validation.Internals;
+
+    public class TypeToPrettyNameConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var groupBox = value as GroupBox;
-            if (groupBox == null)
+            var type = value as Type;
+            if (type == null)
             {
-                return null;
+                return "null";
             }
-            return groupBox.Content as TextBox;
+            return type.PrettyName();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

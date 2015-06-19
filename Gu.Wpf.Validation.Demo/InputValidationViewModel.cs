@@ -14,6 +14,7 @@
         private int _intValue;
         private int? _nullableIntValue;
         private string _stringValue;
+        private string _stringIntValue = "1";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -77,6 +78,23 @@
                     return;
                 }
                 _nullableIntValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string StringIntValue
+        {
+            get
+            {
+                return _stringIntValue;
+            }
+            set
+            {
+                if (value == _stringIntValue)
+                {
+                    return;
+                }
+                _stringIntValue = value;
                 OnPropertyChanged();
             }
         }
