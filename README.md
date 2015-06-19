@@ -19,7 +19,7 @@ Sample:
 ```
 For more samples see demo project.
 
-- Creates a binding Text > validation:Input.Value internally. The binding has validationrules so it uses standard WPF validation.
+- Creates a binding Text > validation:Input.Value internally. The binding has validationrules so it uses standard WPF validation. It picks up the type from the binding and selects default parsing/validation/formatting based on that. 
 - No custom controls.
 - Higly configurable.
   - IValidator, plug in a validator of your own.
