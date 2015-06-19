@@ -16,6 +16,7 @@
         protected static readonly PropertyPath PatternPath = new PropertyPath(Input.PatternProperty);
         protected static readonly PropertyPath IsRequiredPath = new PropertyPath(Input.IsRequiredProperty);
         protected static readonly PropertyPath TextPath = new PropertyPath(System.Windows.Controls.TextBox.TextProperty);
+        protected static readonly PropertyPath RawValuePath = new PropertyPath(TextBoxExt.RawValueProperty);
         protected static readonly PropertyPath HasErrorPath = new PropertyPath(Validation.HasErrorProperty);
         protected static readonly StringFormatConverter StringFormatConverter = new StringFormatConverter();
         protected static readonly OnErrorConverter ResetOnErrorConverter = new OnErrorConverter();
@@ -57,6 +58,7 @@
 
             var updateValidationBinding = new MultiBinding { Delay = 10 };
             updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, TextPath));
+            updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawValuePath));
             updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
             updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
             updateValidationBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, PatternPath));

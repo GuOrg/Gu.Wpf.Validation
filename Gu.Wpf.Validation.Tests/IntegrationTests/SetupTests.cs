@@ -1,7 +1,8 @@
-﻿namespace Gu.Wpf.Validation.Tests
+﻿namespace Gu.Wpf.Validation.Tests.IntegrationTests
 {
     using System.Globalization;
     using System.Windows.Controls;
+
     using NUnit.Framework;
 
     [RequiresSTA]

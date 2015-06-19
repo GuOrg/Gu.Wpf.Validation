@@ -48,13 +48,15 @@
     <Compile Include="DefaultNumberStylesTests.cs" />
     <Compile Include="DefaultRulesTests.cs" />
     <Compile Include="DefaultStringConvertersTests.cs" />
-    <Compile Include="DummyViewModel.cs" />
+    <Compile Include="Helpers\DummyViewModel.cs" />
     <Compile Include="Helpers\NumericTypesSource.cs" />
+    <Compile Include="IntegrationTests\Double.cs" />
+    <Compile Include="IntegrationTests\NullableDouble.cs" />
     <Compile Include="NamespacesTests.cs" />
-    <Compile Include="SetupTests.cs" />
+    <Compile Include="IntegrationTests\SetupTests.cs" />
     <Compile Include="StringConverters\DoubleConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextBoxTests.cs" />
+    <Compile Include="IntegrationTests\TextBoxTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
