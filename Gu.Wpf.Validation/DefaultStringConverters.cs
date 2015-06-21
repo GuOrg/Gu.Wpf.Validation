@@ -11,10 +11,10 @@
 
         static DefaultStringConverters()
         {
-            var converterTypes = typeof (IStringConverter).Assembly.GetTypes()
-                .Where(
-                    x => typeof (IStringConverter).IsAssignableFrom(x) && (x.IsClass || x.IsValueType) && !x.IsAbstract)
-                .ToArray();
+            var converterTypes = typeof(IStringConverter).Assembly.GetTypes()
+                                                         .Where(x => x != typeof(DefaultStringConverter))
+                                                         .Where(x => typeof(IStringConverter).IsAssignableFrom(x) && (x.IsClass || x.IsValueType) && !x.IsAbstract)
+                                                         .ToArray();
             foreach (var type in converterTypes)
             {
                 var converter = (IStringConverter)Activator.CreateInstance(type);
@@ -34,6 +34,10 @@
             {
                 return converter;
             }
+            converter = new DefaultStringConverter(type);
+            Converters.TryAdd(type, converter);
+            return converter;
+
             throw new ArgumentException(string.Format("Did not find a converter for {0}", type.FullName));
         }
     }

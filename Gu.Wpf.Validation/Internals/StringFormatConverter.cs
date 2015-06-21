@@ -29,6 +29,10 @@
             Debug.WriteLine(string.Format("formatted: {0}", formatted ?? "null"));
             Debug.WriteLine("SetRawText: " + converter.ToRawString(value, textBox));
             textBox.SetRawText(converter.ToRawString(value, textBox));
+            if (formatted == textBox.Text)
+            {
+                return Binding.DoNothing;
+            }
             return formatted;
         }
 

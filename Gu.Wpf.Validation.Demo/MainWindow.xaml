@@ -6,14 +6,19 @@
         Title="MainWindow"
         Width="525"
         Height="350"
-        validation:ValidationExt.IsValidationScope="True">
+        validation:ValidationExt.IsValidationScope="True"
+        >
     <TabControl>
         <TabItem Header="Validation">
             <demo:InputValidationView />
         </TabItem>
 
-      <TabItem Header="Scope">
-        <demo:ValidationScopeView />
-      </TabItem>
+        <TabItem Header="Scope">
+            <demo:ValidationScopeView />
+        </TabItem>
+
+        <TabItem Header="Navigation">
+            <demo:NavigationDebugView />
+        </TabItem>
     </TabControl>
 </Window>

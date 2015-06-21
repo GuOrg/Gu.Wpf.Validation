@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="Gu.Wpf.Validation.Demo.NavigationDebugView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:validation="http://gu.se/Validation"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             >
+    <UserControl.DataContext>
+        <demo:NavigationDebugViewModel />
+    </UserControl.DataContext>
+    <Grid validation:Input.Culture="{Binding SelectedItem,
+                                             ElementName=Culture}"
+          validation:Input.DecimalDigits="{Binding Value,
+                                                   ElementName=Digits}"
+          validation:Input.IsRequired="{Binding IsChecked,
+                                                ElementName=IsRequired}"
+          >
+        <ItemsControl KeyboardNavigation.TabNavigation="Cycle">
+            <GroupBox Header="double">
+                <TextBox validation:Input.Max="{Binding Text,
+                                                        ElementName=Max}"
+                         validation:Input.Min="{Binding Text,
+                                                        ElementName=Min}"
+                         validation:Input.Value="{Binding DoubleValue}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="double?">
+                <TextBox validation:Input.Max="{Binding Text,
+                                                        ElementName=Max}"
+                         validation:Input.Min="{Binding Text,
+                                                        ElementName=Min}"
+                         validation:Input.Value="{Binding NullableDoubleValue}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="int">
+                <TextBox validation:Input.Max="{Binding Text,
+                                                        ElementName=Max}"
+                         validation:Input.Min="{Binding Text,
+                                                        ElementName=Min}"
+                         validation:Input.Value="{Binding IntValue}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="int?">
+                <TextBox validation:Input.Max="{Binding Text,
+                                                        ElementName=Max}"
+                         validation:Input.Min="{Binding Text,
+                                                        ElementName=Min}"
+                         validation:Input.Value="{Binding NullableIntValue}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="converted int">
+                <TextBox validation:Input.Max="{Binding Text,
+                                                        ElementName=Max}"
+                         validation:Input.Min="{Binding Text,
+                                                        ElementName=Min}"
+                         validation:Input.Value="{Binding StringIntValue,
+                                                          Converter={StaticResource StringToIntConverter}}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="string">
+                <TextBox validation:Input.Pattern="{Binding Text,
+                                                            ElementName=Pattern}"
+                         validation:Input.Value="{Binding StringValue}"
+                         />
+            </GroupBox>
+
+            <GroupBox Header="Vanilla string">
+                <TextBox Text="{Binding StringValue}" />
+            </GroupBox>
+
+            <GroupBox Header="Vanilla double?">
+                <TextBox Text="{Binding StringValue}" />
+            </GroupBox>
+        </ItemsControl>
+    </Grid>
+</UserControl>
