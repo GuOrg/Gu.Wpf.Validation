@@ -60,7 +60,7 @@
     <Compile Include="DefaultFormatter.cs" />
     <Compile Include="DefaultNumberStyles.cs" />
     <Compile Include="DefaultRules.cs" />
-    <Compile Include="IFormatter.cs" />
+    <Compile Include="Contracts\IFormatter.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Internals\BindingExpressionExt.cs" />
     <Compile Include="Internals\UpdateFormattingConverter.cs" />
@@ -68,10 +68,10 @@
     <Compile Include="Internals\UpdateValidationConverter.cs" />
     <Compile Include="Internals\OnErrorConverter.cs" />
     <Compile Include="Internals\TextBoxExt.cs" />
-    <Compile Include="ITypeNumberStyles.cs" />
-    <Compile Include="ITypeStringConverters.cs" />
-    <Compile Include="ITypeRules.cs" />
-    <Compile Include="IValidator.cs" />
+    <Compile Include="Contracts\ITypeNumberStyles.cs" />
+    <Compile Include="Contracts\ITypeStringConverters.cs" />
+    <Compile Include="Contracts\ITypeRules.cs" />
+    <Compile Include="Contracts\IValidator.cs" />
     <Compile Include="Rules\ConvertedValidationRule.cs" />
     <Compile Include="DefaultStringConverters.cs" />
     <Compile Include="Rules\GreaterThanMaxResult.cs" />
@@ -112,9 +112,9 @@
     <Compile Include="StringConverters\UIntConverter.cs" />
     <Compile Include="StringConverters\ULongConverter.cs" />
     <Compile Include="StringConverters\UShortConverter.cs" />
-    <Compile Include="ValidationExt.cs" />
-    <Compile Include="ValidationProxy.cs" />
-    <Compile Include="ValidationProxyCollection.cs" />
+    <Compile Include="Scope.cs" />
+    <Compile Include="Scope\ValidationProxy.cs" />
+    <Compile Include="Scope\ErrorProxyCollection.cs" />
     <Compile Include="DefaultValidator.cs" />
   </ItemGroup>
   <ItemGroup />

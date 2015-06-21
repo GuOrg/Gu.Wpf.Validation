@@ -7,73 +7,128 @@
              xmlns:validation="http://gu.se/Validation"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             >
     <UserControl.DataContext>
         <demo:ValidationScopeViewModel />
     </UserControl.DataContext>
-    <Border BorderThickness="1">
-        <Border.Style>
-            <Style TargetType="{x:Type Border}">
-                <Setter Property="BorderBrush" Value="{x:Null}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <GroupBox x:Name="Scope"
+                  BorderThickness="1"
+                  Header="Scope"
+                  validation:Scope.IsValidationScope="True"
+                  >
+            <GroupBox.Style>
+                <Style TargetType="{x:Type GroupBox}">
+                    <Setter Property="BorderBrush" Value="Blue" />
+                    <Style.Triggers>
+                        <Trigger Property="validation:Scope.HasError" Value="True">
+                            <Setter Property="BorderBrush" Value="Red" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </GroupBox.Style>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                <Style.Triggers>
-                    <Trigger Property="validation:ValidationExt.HasError" Value="True">
-                        <Setter Property="BorderBrush" Value="Red" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-        <Grid x:Name="StackPanel">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Text="The validation rule is that as soon as the text contains an 's' it is an error"
+                           />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="LostFocus"
+                           />
+                <TextBox Tag="LostFocus"
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         >
+                    <TextBox.Text>
+                        <Binding Path="Value1"
+                                 UpdateSourceTrigger="LostFocus"
+                                 >
+                            <Binding.ValidationRules>
+                                <demo:MehRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Text="PropertyChanged"
+                           />
+                <TextBox Tag="PropertyChanged"
+                         Grid.Row="2"
+                         Grid.Column="1"
+                         >
+                    <TextBox.Text>
+                        <Binding Path="Value2"
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 >
+                            <Binding.ValidationRules>
+                                <demo:MehRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <Button Grid.Row="3"
+                        Grid.Column="1"
+                        Content="Enabled when scope has error"
+                        IsEnabled="{Binding (validation:Scope.HasError),
+                                            ElementName=Scope}"
+                        />
+
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Value}" />
+            <GroupBox Grid.Column="0"
+                      Header="Scope errors:"
+                      >
+                <ListBox ItemsSource="{Binding Path=(validation:Scope.Errors), ElementName=Scope}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type ValidationError}">
+                            <!--<ContentPresenter Content="{Binding BindingInError}"></ContentPresenter>-->
+                            <ContentPresenter Content="{Binding ErrorContent}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
 
-            <TextBlock Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Text="The validation rule is that as soon as the text contains an 's' it is an error" />
-
-            <TextBlock Grid.Row="1"
-                       Grid.Column="0"
-                       Text="LostFocus" />
-            <TextBox Grid.Row="1" Grid.Column="1">
-                <TextBox.Text>
-                    <Binding Path="Value" UpdateSourceTrigger="LostFocus">
-                        <Binding.ValidationRules>
-                            <demo:MehRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
-
-            <TextBlock Grid.Row="2"
-                       Grid.Column="0"
-                       Text="PropertyChanged" />
-            <TextBox x:Name="TextBox"
-                     Grid.Row="2"
-                     Grid.Column="1">
-                <TextBox.Text>
-                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <demo:MehRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
-
-            <Button Grid.Row="3"
-                    Grid.Column="1"
-                    Content="Meh"
-                    IsEnabled="{Binding (validation:ValidationExt.HasError),
-                                        ElementName=StackPanel}" />
+            <GroupBox Grid.Column="1"
+                      Header="Scope error elements"
+                      >
+                <ListBox ItemsSource="{Binding Path=(validation:Scope.ErrorProxies), ElementName=Scope}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type validation:ValidationProxy}">
+                            <!--<ContentPresenter Content="{Binding BindingInError}"></ContentPresenter>-->
+                            <ContentPresenter Content="{Binding Element.Tag}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
         </Grid>
-    </Border>
+    </Grid>
+
 </UserControl>

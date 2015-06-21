@@ -9,6 +9,9 @@ namespace Gu.Wpf.Validation.Tests.Helpers
     {
         private double _doubleValue;
         private double? _nullableDoubleValue = 0;
+
+        private int _intValue;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double DoubleValue
@@ -18,6 +21,23 @@ namespace Gu.Wpf.Validation.Tests.Helpers
             {
                 if (Equals(value, _doubleValue)) return;
                 _doubleValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int IntValue
+        {
+            get
+            {
+                return _intValue;
+            }
+            set
+            {
+                if (value == _intValue)
+                {
+                    return;
+                }
+                _intValue = value;
                 OnPropertyChanged();
             }
         }

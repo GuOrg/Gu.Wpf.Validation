@@ -37,7 +37,9 @@
             </ListBox.Resources>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Vertical" KeyboardNavigation.TabNavigation="Cycle" />
+                    <WrapPanel KeyboardNavigation.TabNavigation="Cycle"
+                               Orientation="Vertical"
+                               />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>

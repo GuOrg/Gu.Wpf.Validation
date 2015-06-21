@@ -1,9 +1,10 @@
 ﻿<Application x:Class="Gu.Wpf.Validation.Demo.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
              xmlns:converters="clr-namespace:Gu.Wpf.Validation.Demo.Converters"
-             StartupUri="MainWindow.xaml">
+             xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
+             StartupUri="MainWindow.xaml"
+             >
     <Application.Resources>
         <demo:NullConverter x:Key="NullConverter" />
         <converters:TextBoxChildConverter x:Key="TextBoxChildConverter" />

@@ -6,7 +6,7 @@
         Title="MainWindow"
         Width="525"
         Height="350"
-        validation:ValidationExt.IsValidationScope="True"
+       
         >
     <TabControl>
         <TabItem Header="Validation">
