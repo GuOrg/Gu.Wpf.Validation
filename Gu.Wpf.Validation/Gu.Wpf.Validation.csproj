@@ -74,11 +74,11 @@
     <Compile Include="Contracts\IValidator.cs" />
     <Compile Include="Rules\ConvertedValidationRule.cs" />
     <Compile Include="DefaultStringConverters.cs" />
-    <Compile Include="Rules\GreaterThanMaxResult.cs" />
+    <Compile Include="Rules\MustLessThanMaxRuleError.cs" />
     <Compile Include="Rules\IsRequiredRule.cs" />
-    <Compile Include="Rules\LessThanMaxRule.cs" />
-    <Compile Include="Rules\LessThanMinResult.cs" />
-    <Compile Include="Rules\ParseErrorResult.cs" />
+    <Compile Include="Rules\MustLessThanMaxRule.cs" />
+    <Compile Include="Rules\MustGreaterThanMinError.cs" />
+    <Compile Include="Rules\CanParseError.cs" />
     <Compile Include="Rules\RawValueRule.cs" />
     <Compile Include="Rules\RegexResult.cs" />
     <Compile Include="Rules\RegexRule.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="StringConverters\StringConverter`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\CanParseRule.cs" />
-    <Compile Include="Rules\GreaterThanMinRule.cs" />
+    <Compile Include="Rules\MustGreaterThanMinRule.cs" />
     <Compile Include="Internals\StringFormatConverter.cs" />
     <Compile Include="StringConverters\StringToStringConverter.cs" />
     <Compile Include="StringConverters\UIntConverter.cs" />

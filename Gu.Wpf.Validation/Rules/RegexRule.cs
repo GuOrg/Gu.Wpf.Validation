@@ -24,9 +24,9 @@ namespace Gu.Wpf.Validation.Rules
                     return ValidationResult.ValidResult;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return new ValidationResult(false, new RegexResult(text, pattern));
+                return new ValidationResult(false, new RegexResult(text, pattern, e));
             }
             return new ValidationResult(false, new RegexResult(text, pattern));
         }

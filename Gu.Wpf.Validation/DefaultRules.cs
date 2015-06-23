@@ -12,8 +12,8 @@
             new CanParseRule(),
             new IsRequiredRule(), 
             new RegexRule(), 
-            new GreaterThanMinRule(),
-            new LessThanMaxRule(), 
+            new MustGreaterThanMinRule(),
+            new MustLessThanMaxRule(), 
         };
 
         internal static readonly IReadOnlyCollection<ValidationRule> StringRules = new ValidationRule[]

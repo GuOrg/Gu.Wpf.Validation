@@ -5,7 +5,7 @@
 
     using Gu.Wpf.Validation.Internals;
 
-    public class GreaterThanMinRule : RawValueRule
+    public class MustGreaterThanMinRule : RawValueRule
     {
         public override ValidationResult Validate(string _, TextBox target)
         {
@@ -25,7 +25,7 @@
 
             if (i < 0)
             {
-                return new ValidationResult(false, new LessThanMinResult(min, rawValue));
+                return new ValidationResult(false, new MustGreaterThanMinError(min, rawValue));
             }
             return ValidationResult.ValidResult;
         }
