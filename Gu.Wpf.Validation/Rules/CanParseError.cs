@@ -2,6 +2,8 @@
 {
     using System;
 
+    using Gu.Wpf.Validation.Internals;
+
     public class CanParseError
     {
         public CanParseError(string text, Type type)
@@ -24,7 +26,7 @@
             {
                 text = "string.Empty";
             }
-            return string.Format("Parsing: {0} to Type: {1} failed", text, Type);
+            return string.Format("Parsing: {0} to Type: {1} failed", text, Type.PrettyName());
         }
     }
 }

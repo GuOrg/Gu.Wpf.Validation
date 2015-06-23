@@ -43,6 +43,7 @@
             {
                 return;
             }
+
             BindingOperations.ClearBinding(textBox, System.Windows.Controls.TextBox.TextProperty);
             BindingOperations.ClearBinding(textBox, HasErrorProxyProperty);
             BindingOperations.ClearBinding(textBox, UpdateValidationProxyProperty);

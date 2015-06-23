@@ -5,18 +5,18 @@
     using System.Windows.Input;
     using System.Windows.Media;
 
-    public static class TextBox
+    public static partial class Input
     {
         public static readonly DependencyProperty SelectAllOnClickProperty = DependencyProperty.RegisterAttached(
             "SelectAllOnClick",
             typeof(bool),
-            typeof(TextBox),
+            typeof(Input),
             new PropertyMetadata(false, OnSelectAllOnClickChanged));
 
         public static readonly DependencyProperty SelectAllOnDoubleClickProperty = DependencyProperty.RegisterAttached(
             "SelectAllOnDoubleClick",
             typeof(bool),
-            typeof(TextBox),
+            typeof(Input),
             new PropertyMetadata(false, OnSelectAllOnDoubleClickChanged));
 
         private static readonly string GotKeyboardFocusEventName = "GotKeyboardFocus";

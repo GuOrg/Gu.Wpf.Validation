@@ -48,12 +48,15 @@
     <Compile Include="DefaultNumberStylesTests.cs" />
     <Compile Include="DefaultRulesTests.cs" />
     <Compile Include="DefaultStringConvertersTests.cs" />
+    <Compile Include="Helpers\StringToIntConverter.cs" />
     <Compile Include="Helpers\DummyViewModel.cs" />
     <Compile Include="Helpers\NumericTypesSource.cs" />
+    <Compile Include="InputTests\SourceValueTypeTests.cs" />
     <Compile Include="IntegrationTests\Double.cs" />
     <Compile Include="IntegrationTests\NullableDouble.cs" />
     <Compile Include="NamespacesTests.cs" />
     <Compile Include="IntegrationTests\SetupTests.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ScopeTests.cs" />
     <Compile Include="StringConverters\DoubleConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,10 +66,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gu.Wpf.Validation.Demo\Gu.Wpf.Validation.Demo.csproj">
-      <Project>{B86F6D94-EEEB-400D-92BF-00278C176869}</Project>
-      <Name>Gu.Wpf.Validation.Demo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Gu.Wpf.Validation\Gu.Wpf.Validation.csproj">
       <Project>{968c9c2a-9c63-476c-8c89-2a30f762f493}</Project>
       <Name>Gu.Wpf.Validation</Name>

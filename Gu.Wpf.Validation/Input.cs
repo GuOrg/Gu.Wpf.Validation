@@ -9,7 +9,7 @@ namespace Gu.Wpf.Validation
     using Internals;
     using StringConverters;
 
-    public static class Input
+    public static partial class Input
     {
         /// <summary>
         /// This is used to get a notification when Value is bound even if the value is null.
@@ -325,29 +325,36 @@ namespace Gu.Wpf.Validation
             {
                 var sourceValueType = textBox.GetSourceValueType();
                 var type = e.NewValue.GetType();
-                if (sourceValueType != type)
+                if (sourceValueType == null)
                 {
                     textBox.SetSourceValueType(type);
-                    if (textBox.IsLoaded)
+                }
+
+                else if (sourceValueType != type)
+                {
+                    if (sourceValueType.IsNullable())
                     {
-                        Setup(textBox); // rebind
+                        if (Nullable.GetUnderlyingType(sourceValueType) != type)
+                        {
+                            textBox.SetSourceValueType(type); 
+                        }
+                    }
+                    else
+                    {
+                        textBox.SetSourceValueType(type);                        
                     }
                 }
             }
-
-            if (e.OldValue == Unset)
+            else if (textBox.GetSourceValueType() == null)
             {
-                if (d.GetSourceValueType() == null)
+                if (textBox.DataContext != null)
                 {
-                    d.CoerceValue(SourceValueTypeProperty);
-                }
-                if (textBox.IsLoaded)
-                {
-                    Setup(textBox);
-                }
-                else
-                {
-                    textBox.Loaded += OnLoaded;
+                    var expression = BindingOperations.GetBindingExpression(textBox, ValueProperty);
+                    if (expression != null)
+                    {
+                        var fromBinding = expression.GetSourceValueType();
+                        textBox.SetSourceValueType(fromBinding);   
+                    }
                 }
             }
         }
@@ -359,6 +366,8 @@ namespace Gu.Wpf.Validation
                 d.CoerceValue(NumberStylesProperty);
                 d.CoerceValue(StringConverterProperty);
                 d.CoerceValue(ValidationRulesProperty);
+                var textBox = (System.Windows.Controls.TextBox)d;
+                Setup(textBox); // rebind
             }
         }
 
@@ -480,10 +489,10 @@ namespace Gu.Wpf.Validation
             return result;
         }
 
-        private static void OnLoaded(object sender, EventArgs e)
+        private static void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var textBox = (System.Windows.Controls.TextBox)sender;
-            textBox.Loaded -= OnLoaded;
+            textBox.DataContextChanged -= OnDataContextChanged;
             Setup(textBox);
         }
 

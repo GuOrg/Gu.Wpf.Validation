@@ -4,6 +4,8 @@
     using System.ComponentModel;
     using System.Windows.Controls;
 
+    using Gu.Wpf.Validation.Internals;
+
     public abstract class StringConverter<T> : IStringConverter
     {
         public Type Type { get { return typeof(T); } }
@@ -19,7 +21,7 @@
             {
                 if (DesignerProperties.GetIsInDesignMode(textBox))
                 {
-                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).Name), "o", e);
+                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).PrettyName()), "o", e);
                 }
                 return o != null ? o.ToString() : "";
             }
@@ -37,7 +39,7 @@
             {
                 if (DesignerProperties.GetIsInDesignMode(textBox))
                 {
-                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).Name), "o", e);
+                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).PrettyName()), "o", e);
                 }
                 return o != null ? o.ToString() : "";
             }

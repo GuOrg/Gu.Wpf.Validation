@@ -1,9 +1,7 @@
 ﻿namespace Gu.Wpf.Validation
 {
-    using System;
     using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Data;
 
     using Gu.Wpf.Validation.Internals;
@@ -13,6 +11,7 @@
         protected static readonly PropertyPath IsKeyboardFocusedPath = new PropertyPath(UIElement.IsKeyboardFocusedProperty);
         protected static readonly PropertyPath DecimalDigitsPath = new PropertyPath(Input.DecimalDigitsProperty);
         protected static readonly PropertyPath CulturePath = new PropertyPath(Input.CultureProperty);
+        protected static readonly PropertyPath ValuePath = new PropertyPath(Input.ValueProperty);
         protected static readonly PropertyPath TextPath = new PropertyPath(System.Windows.Controls.TextBox.TextProperty);
 
         protected static readonly UpdateFormattingConverter UpdateFormattingConverter = new UpdateFormattingConverter();
@@ -48,6 +47,7 @@
             binding.Bindings.Add(CreateBinding(textBox, IsKeyboardFocusedPath));
             binding.Bindings.Add(CreateBinding(textBox, DecimalDigitsPath));
             binding.Bindings.Add(CreateBinding(textBox, CulturePath));
+            binding.Bindings.Add(CreateBinding(textBox, ValuePath));
             // Using a binding with converter to update formatting
             BindingOperations.SetBinding(textBox, UpdateFormattingProxyProperty, binding);
         }

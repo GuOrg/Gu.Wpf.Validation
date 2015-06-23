@@ -3,14 +3,19 @@ namespace Gu.Wpf.Validation.Tests.Helpers
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
-    using Gu.Wpf.Validation.Demo.Annotations;
+    using Gu.Wpf.Validation.Tests.Annotations;
 
     public class DummyViewModel : INotifyPropertyChanged
     {
+        internal static string NullableDoubleValuePropertyName = "NullableDoubleValue";
+        internal static string DoubleValuePropertyName = "DoubleValue";
+        internal static string StringIntValuePropertyName = "StringIntValue";
         private double _doubleValue;
         private double? _nullableDoubleValue = 0;
 
         private int _intValue;
+
+        private string _stringIntValue;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -49,6 +54,23 @@ namespace Gu.Wpf.Validation.Tests.Helpers
             {
                 if (value.Equals(_nullableDoubleValue)) return;
                 _nullableDoubleValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string StringIntValue
+        {
+            get
+            {
+                return _stringIntValue;
+            }
+            set
+            {
+                if (value == _stringIntValue)
+                {
+                    return;
+                }
+                _stringIntValue = value;
                 OnPropertyChanged();
             }
         }
