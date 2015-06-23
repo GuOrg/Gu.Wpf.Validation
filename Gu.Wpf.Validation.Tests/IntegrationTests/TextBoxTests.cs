@@ -110,7 +110,7 @@
 
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1,23e", TextBox.GetRawText());
-            Assert.AreEqual(TextBoxExt.Unset, TextBox.GetRawValue());
+            Assert.AreEqual(RawValueTracker.Unset, TextBox.GetRawValue());
         }
 
         [Test]
@@ -119,7 +119,7 @@
             TextBox.SetTextUndoable("1.23");
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1.23", TextBox.GetRawText());
-            Assert.AreEqual(TextBoxExt.Unset, TextBox.GetRawValue());
+            Assert.AreEqual(RawValueTracker.Unset, TextBox.GetRawValue());
 
             TextBox.SetCulture(new CultureInfo("en-US"));
 

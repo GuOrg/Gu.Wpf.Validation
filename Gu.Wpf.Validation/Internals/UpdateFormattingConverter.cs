@@ -51,7 +51,7 @@
         protected virtual bool TryGetRawValue(TextBox textBox, IStringConverter converter, out object rawValue)
         {
             rawValue = textBox.GetRawValue();
-            if (rawValue != TextBoxExt.Unset)
+            if (rawValue != RawValueTracker.Unset)
             {
                 return true;
             }

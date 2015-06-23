@@ -51,6 +51,8 @@
     <Compile Include="Helpers\StringToIntConverter.cs" />
     <Compile Include="Helpers\DummyViewModel.cs" />
     <Compile Include="Helpers\NumericTypesSource.cs" />
+    <Compile Include="InputTests\FormattingTests.cs" />
+    <Compile Include="InputTests\RawValuesTests.cs" />
     <Compile Include="InputTests\SourceValueTypeTests.cs" />
     <Compile Include="IntegrationTests\Double.cs" />
     <Compile Include="IntegrationTests\NullableDouble.cs" />

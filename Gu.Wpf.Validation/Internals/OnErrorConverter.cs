@@ -28,7 +28,7 @@
             else if (!textBox.IsKeyboardFocused)
             {
                 var rawValue = textBox.GetRawValue();
-                if (rawValue != TextBoxExt.Unset)
+                if (rawValue != RawValueTracker.Unset)
                 {
                     textBox.SetIsUpdating(true);
                     Debug.WriteLine("UpdateSource");

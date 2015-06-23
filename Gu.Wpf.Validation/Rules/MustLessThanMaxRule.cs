@@ -16,7 +16,7 @@
             }
 
             var rawValue = target.GetRawValue();
-            if (rawValue == TextBoxExt.Unset)
+            if (rawValue == RawValueTracker.Unset)
             {
                 return ValidationResult.ValidResult;
             }

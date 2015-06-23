@@ -27,8 +27,9 @@
             var converter = textBox.GetStringConverter();
             var formatted = converter.ToFormattedString(value, textBox);
             Debug.WriteLine(string.Format("formatted: {0}", formatted ?? "null"));
-            Debug.WriteLine("SetRawText: " + converter.ToRawString(value, textBox));
-            textBox.SetRawText(converter.ToRawString(value, textBox));
+            var rawString = converter.ToRawString(value, textBox);
+            Debug.WriteLine("SetRawText: " + rawString);
+            textBox.SetRawText(rawString);
             if (formatted == textBox.Text)
             {
                 return Binding.DoNothing;
