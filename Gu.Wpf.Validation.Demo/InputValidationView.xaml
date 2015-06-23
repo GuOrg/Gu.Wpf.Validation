@@ -40,6 +40,7 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Focusable" Value="False" />
                     <Style.Triggers>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter Property="IsSelected" Value="True" />

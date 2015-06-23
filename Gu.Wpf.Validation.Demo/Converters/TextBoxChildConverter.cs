@@ -14,6 +14,11 @@
             {
                 return null;
             }
+            var stackPanel = groupBox.Content as StackPanel;
+            if (stackPanel != null)
+            {
+                return stackPanel.Children[0] as TextBox;
+            }
             return groupBox.Content as TextBox;
         }
 
