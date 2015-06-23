@@ -54,6 +54,7 @@
             {
                 textBinding.ValidationRules.Add(rule);
             }
+            RawValueTracker.TrackUserInput(textBox);
             BindingOperations.SetBinding(textBox, System.Windows.Controls.TextBox.TextProperty, textBinding);
 
             // Using a binding to reset Value on validation error, nonstandard

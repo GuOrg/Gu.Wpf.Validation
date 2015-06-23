@@ -7,7 +7,7 @@
 
     public class MustLessThanMaxRule : RawValueRule
     {
-        public override ValidationResult Validate(string _, TextBox target)
+        protected override ValidationResult Validate(string _, TextBox target)
         {
             var max = target.GetMax();
             if (max == null)

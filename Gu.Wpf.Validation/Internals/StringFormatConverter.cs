@@ -17,7 +17,7 @@
                 Debug.WriteLine("IsUpdating DoNothing");
                 return Binding.DoNothing;
             }
-
+            textBox.SetRawValue(value);
             if (textBox.IsKeyboardFocused)
             {
                 Debug.WriteLine("IsKeyboardFocused DoNothing");
@@ -27,9 +27,6 @@
             var converter = textBox.GetStringConverter();
             var formatted = converter.ToFormattedString(value, textBox);
             Debug.WriteLine(string.Format("formatted: {0}", formatted ?? "null"));
-            var rawString = converter.ToRawString(value, textBox);
-            Debug.WriteLine("SetRawText: " + rawString);
-            textBox.SetRawText(rawString);
             if (formatted == textBox.Text)
             {
                 return Binding.DoNothing;

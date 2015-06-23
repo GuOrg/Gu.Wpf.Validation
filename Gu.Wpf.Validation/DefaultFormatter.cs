@@ -22,22 +22,14 @@
             typeof(DefaultFormatter),
             new PropertyMetadata(null));
 
-        protected static readonly DependencyProperty TextProxyProperty = DependencyProperty.RegisterAttached(
-            "TextProxy",
-            typeof(string),
-            typeof(DefaultFormatter),
-            new PropertyMetadata(null, OnTextProxyChanged));
-
         public virtual void Bind(System.Windows.Controls.TextBox textBox)
         {
             if (textBox == null)
             {
                 return;
             }
-            BindingOperations.ClearBinding(textBox, TextProxyProperty);
             BindingOperations.ClearBinding(textBox, UpdateFormattingProxyProperty);
 
-            BindingOperations.SetBinding(textBox, TextProxyProperty, CreateBinding(textBox, TextPath));
             // Using a binding to update formatting
             var binding = new MultiBinding
                               {
@@ -64,18 +56,6 @@
                 ConverterParameter = source,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-        }
-
-        private static void OnTextProxyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = d as System.Windows.Controls.TextBox;
-            if (textBox.GetIsUpdating())
-            {
-                return;
-            }
-            var newValue = (string)e.NewValue;
-            Debug.WriteLine("SetRawText: " + newValue);
-            textBox.SetRawText(newValue);
         }
     }
 }

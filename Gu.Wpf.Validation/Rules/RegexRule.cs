@@ -6,7 +6,7 @@ namespace Gu.Wpf.Validation.Rules
 
     public class RegexRule : RawValueRule
     {
-        public override ValidationResult Validate(string text, TextBox textBox)
+        protected override ValidationResult Validate(string text, TextBox textBox)
         {
             var pattern = textBox.GetPattern();
             if (pattern == null)

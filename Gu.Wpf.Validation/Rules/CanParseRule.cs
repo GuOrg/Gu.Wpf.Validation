@@ -4,7 +4,7 @@
 
     public class CanParseRule : RawValueRule
     {
-        public override ValidationResult Validate(string text, TextBox textBox)
+        protected override ValidationResult Validate(string text, TextBox textBox)
         {
             var converter = textBox.GetStringConverter();
             object temp;

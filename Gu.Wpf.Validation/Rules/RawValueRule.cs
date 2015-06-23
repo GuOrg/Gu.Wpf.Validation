@@ -12,7 +12,7 @@
         {
         }
 
-        public abstract ValidationResult Validate(string text, TextBox textBox);
+        protected abstract ValidationResult Validate(string text, TextBox textBox);
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {

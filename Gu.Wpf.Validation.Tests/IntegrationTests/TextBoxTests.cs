@@ -4,9 +4,11 @@
     using System.ComponentModel;
     using System.Globalization;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Input;
 
     using Gu.Wpf.Validation.Internals;
     using Gu.Wpf.Validation.Tests.Helpers;
@@ -26,7 +28,7 @@
         public void SetUp()
         {
             VmChanges.Clear();
-            Vm = new DummyViewModel();
+            Vm = new DummyViewModel { NullableDoubleValue = 0 };
             Vm.PropertyChanged += VmOnPropertyChanged;
             TextBox = new TextBox { DataContext = Vm };
             TextBox.SetCulture(new CultureInfo("sv-SE"));
@@ -99,24 +101,24 @@
         }
 
         [Test]
-        public void ValidationFailureResetsValue()
+        public async Task ValidationFailureResetsValue()
         {
-            TextBox.SetTextUndoable("1,23");
+            WriteText(TextBox, "1,23", true);
             Assert.AreEqual(1.23, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1,23", TextBox.GetRawText());
             Assert.AreEqual(1.23, TextBox.GetRawValue());
 
-            TextBox.SetTextUndoable("1,23e");
-
+            WriteText(TextBox, "1,23e", true);
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1,23e", TextBox.GetRawText());
+            Assert.AreEqual("1,23e", TextBox.Text);
             Assert.AreEqual(RawValueTracker.Unset, TextBox.GetRawValue());
         }
 
         [Test]
         public void ValidationSuccessUpdatesValue()
         {
-            TextBox.SetTextUndoable("1.23");
+            WriteText(TextBox, "1.23", true);
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1.23", TextBox.GetRawText());
             Assert.AreEqual(RawValueTracker.Unset, TextBox.GetRawValue());
@@ -132,6 +134,12 @@
         protected void VmOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             VmChanges.Add(propertyChangedEventArgs);
+        }
+
+        private static void WriteText(TextBox textBox, string text, bool overwrite)
+        {
+            textBox.SelectAll();
+            TextCompositionManager.StartComposition(new TextComposition(InputManager.Current, textBox, text));
         }
     }
 }

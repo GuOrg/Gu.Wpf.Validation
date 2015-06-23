@@ -4,7 +4,7 @@
 
     public class IsRequiredRule : RawValueRule
     {
-        public override ValidationResult Validate(string text, TextBox textBox)
+        protected override ValidationResult Validate(string text, TextBox textBox)
         {
             if (textBox.GetIsRequired() && string.IsNullOrEmpty(text))
             {

@@ -7,7 +7,7 @@
 
     public class MustGreaterThanMinRule : RawValueRule
     {
-        public override ValidationResult Validate(string _, TextBox target)
+        protected override ValidationResult Validate(string _, TextBox target)
         {
             var min = target.GetMin();
             if (min == null)

@@ -378,7 +378,7 @@ namespace Gu.Wpf.Validation
             {
                 textBox.CoerceValue(MinProperty);
                 textBox.CoerceValue(MaxProperty);
-                textBox.UpdateRawValue();
+                RawValueTracker.Update(textBox);
             }
         }
 
@@ -387,7 +387,7 @@ namespace Gu.Wpf.Validation
             var textBox = d as System.Windows.Controls.TextBox;
             if (textBox != null && textBox.GetSourceValueType() != null)
             {
-                textBox.UpdateRawValue();
+                RawValueTracker.Update(textBox);
             }
         }
 

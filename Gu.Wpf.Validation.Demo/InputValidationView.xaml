@@ -180,6 +180,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -250,6 +251,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -276,79 +278,87 @@
                                Text="Raw text: " />
                     <TextBlock Grid.Row="2"
                                Grid.Column="1"
-                               Text="{Binding Path=(validation:TextBoxExt.RawText)}" />
+                               Text="{Binding Path=(validation:RawValueTracker.RawText)}" />
 
                     <TextBlock Grid.Row="3"
                                Grid.Column="0"
                                Text="Raw value: " />
                     <Label Grid.Row="3"
                            Grid.Column="1"
-                           Content="{Binding Path=(validation:TextBoxExt.RawValue)}"
+                           Content="{Binding Path=(validation:RawValueTracker.RawValue)}"
                            Padding="0" />
 
                     <TextBlock Grid.Row="4"
                                Grid.Column="0"
-                               Text="Culture: " />
+                               Text="Raw value source: " />
                     <Label Grid.Row="4"
+                           Grid.Column="1"
+                           Content="{Binding Path=(validation:RawValueTracker.RawValueSource)}"
+                           Padding="0" />
+
+                    <TextBlock Grid.Row="5"
+                               Grid.Column="0"
+                               Text="Culture: " />
+                    <Label Grid.Row="5"
                            Grid.Column="1"
                            VerticalAlignment="Center"
                            Content="{Binding Path=(validation:Input.Culture)}"
                            Padding="0" />
 
-                    <TextBlock Grid.Row="5"
+                    <TextBlock Grid.Row="6"
                                Grid.Column="0"
                                Text="Numberstyles: " />
-                    <TextBlock Grid.Row="5"
+                    <TextBlock Grid.Row="6"
                                Grid.Column="1"
                                Text="{Binding Path=(validation:Input.NumberStyles)}" />
 
-                    <TextBlock Grid.Row="6"
+                    <TextBlock Grid.Row="7"
                                Grid.Column="0"
                                Text="Digits: " />
-                    <TextBlock Grid.Row="6"
+                    <TextBlock Grid.Row="7"
                                Grid.Column="1"
                                Text="{Binding Path=(validation:Input.DecimalDigits)}" />
 
-                    <TextBlock Grid.Row="7"
+                    <TextBlock Grid.Row="8"
                                Grid.Column="0"
                                Text="IsRequired: " />
-                    <TextBlock Grid.Row="7"
+                    <TextBlock Grid.Row="8"
                                Grid.Column="1"
                                Text="{Binding Path=(validation:Input.IsRequired)}" />
 
-                    <TextBlock Grid.Row="8"
+                    <TextBlock Grid.Row="9"
                                Grid.Column="0"
                                Text="Pattern: " />
-                    <TextBlock Grid.Row="8"
+                    <TextBlock Grid.Row="9"
                                Grid.Column="1"
                                Text="{Binding Path=(validation:Input.Pattern)}" />
 
-                    <TextBlock Grid.Row="9"
+                    <TextBlock Grid.Row="10"
                                Grid.Column="0"
                                Text="Min: " />
-                    <TextBlock Grid.Row="9"
+                    <TextBlock Grid.Row="10"
                                Grid.Column="1"
                                Text="{Binding Path=(validation:Input.Min)}" />
 
-                    <TextBlock Grid.Row="10"
+                    <TextBlock Grid.Row="11"
                                Grid.Column="0"
                                Text="Max: " />
-                    <TextBlock Grid.Row="10"
+                    <TextBlock Grid.Row="11"
                                Grid.Column="1"
                                Text="{Binding Path=(validation:Input.Max)}" />
 
-                    <TextBlock Grid.Row="11"
+                    <TextBlock Grid.Row="12"
                                Grid.Column="0"
                                Text="HasError: " />
-                    <TextBlock Grid.Row="11" Grid.Column="1">
+                    <TextBlock Grid.Row="12" Grid.Column="1">
                         <Run Text="{Binding Path=(Validation.HasError), Mode=OneWay}" />
                         <Run Text="{Binding Path=(Validation.Errors).Count, Mode=OneWay, StringFormat='{}({0})'}" />
                     </TextBlock>
 
-                    <TextBlock Grid.Row="12"
+                    <TextBlock Grid.Row="13"
                                Grid.Column="0"
                                Text="Errors: " />
-                    <ListBox Grid.Row="12"
+                    <ListBox Grid.Row="13"
                              Grid.Column="1"
                              ItemsSource="{Binding Path=(Validation.Errors)}">
                         <ListBox.ItemTemplate>
