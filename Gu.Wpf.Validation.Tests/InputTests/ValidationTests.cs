@@ -1,17 +1,24 @@
 ﻿namespace Gu.Wpf.Validation.Tests.InputTests
 {
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
-    using Helpers;
+
+    using Gu.Wpf.Validation.Rules;
+    using Gu.Wpf.Validation.Tests.Helpers;
+
     using NUnit.Framework;
-    using Rules;
 
     [RequiresSTA]
     public class ValidationTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            
+        }
+
         [Test(Description = "Not sure how we want this")]
         public void WhenRequiredAndNoDataContext()
         {
@@ -93,7 +100,7 @@
         [Test]
         public void UpdatesWhenCultureChanges()
         {
-            var vm = new DummyViewModel() { NullableDoubleValue = 3 };
+            var vm = new DummyViewModel { NullableDoubleValue = 3 };
             var textBox = new TextBox { DataContext = vm };
             var binding = new Binding
             {

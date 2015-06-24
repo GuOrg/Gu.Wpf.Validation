@@ -53,7 +53,7 @@
                     </Style.Triggers>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <!--<GroupBox Header="double (lf)">
+            <GroupBox Header="double (lf)">
                 <StackPanel>
                     <TextBox validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
@@ -191,28 +191,33 @@
                         <Run Text="{Binding StringIntValue}" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>-->
+            </GroupBox>
 
             <GroupBox Header="converted struct">
                 <StackPanel>
-                    <TextBox validation:Input.Max="{Binding Text,
+                    <TextBox validation:Input.IsRequired="True"
+                             validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
                              validation:Input.SourceValueType="{x:Static validation:SourceValueTypes.NullableDouble}"
                              validation:Input.Value="{Binding SampleStruct,
-                                                              Converter={StaticResource SampleStructToNullableDoubleConverter}}"
+                                                              Converter={StaticResource SampleStructToNullableDoubleConverter},
+                                                              UpdateSourceTrigger=PropertyChanged}"
                              />
-                    <TextBlock>
-                        <Run Text="Vm: " />
-                        <Run Text="{Binding SampleStruct}" />
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="Vm: " />
+                        <Label Content="{Binding SampleStruct}" />
+                    </StackPanel>
                 </StackPanel>
             </GroupBox>
 
-            <!--<GroupBox Header="string">
-                <TextBox validation:Input.Pattern="{Binding Text, ElementName=Pattern}" validation:Input.Value="{Binding StringValue}" />
-            </GroupBox>-->
+            <GroupBox Header="string">
+                <TextBox validation:Input.Pattern="{Binding Text,
+                                                            ElementName=Pattern}"
+                         validation:Input.Value="{Binding StringValue}"
+                         />
+            </GroupBox>
         </ListBox>
 
         <Grid Grid.Row="1">

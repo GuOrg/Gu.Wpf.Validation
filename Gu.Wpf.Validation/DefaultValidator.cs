@@ -1,6 +1,8 @@
 ﻿namespace Gu.Wpf.Validation
 {
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -107,7 +109,7 @@
         protected virtual void BindUpdateValidation(TextBox textBox)
         {
             var binding = new MultiBinding();
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawTextPath));
+            //binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawTextPath));
             binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawValuePath));
             binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
             binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
@@ -196,10 +198,16 @@
             {
                 return;
             }
-            textBox.SetIsUpdating(true);
-            expression.UpdateSource();
+            var hadError = expression.HasError;
+            expression.SetNeedsValidation(true);
             expression.ValidateWithoutUpdate();
-            textBox.SetIsUpdating(false);
+            if (hadError)
+            {
+                if (!expression.HasError)
+                {
+                    expression.UpdateSource();
+                }
+            }
         }
     }
 }
