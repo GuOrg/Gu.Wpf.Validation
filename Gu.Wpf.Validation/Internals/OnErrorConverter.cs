@@ -32,7 +32,14 @@
                     Debug.WriteLine(@"{0}.Convert({1}) textBox.SetCurrentValue(Input.ValueProperty, {2}) (textBox.Text: ""{3}"")", GetType().PrettyName(), value.ToDebugString(), rawValue.ToDebugString(), textBox.Text.ToDebugString());
                     textBox.SetIsUpdating(true);
                     textBox.SetCurrentValue(Input.ValueProperty, rawValue);
-                    textBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent)); // dunno if this is a good idea.
+                    var expression = BindingOperations.GetBindingExpression(textBox, Input.ValueProperty);
+                    if (expression != null)
+                    {
+                        if (expression.ParentBinding.UpdateSourceTrigger != UpdateSourceTrigger.PropertyChanged)
+                        {
+                            expression.UpdateSource();
+                        }
+                    }
                     textBox.SetIsUpdating(false);
                 }
             }

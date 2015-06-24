@@ -99,6 +99,17 @@
                 </StackPanel>
             </GroupBox>
 
+            <GroupBox Header="vanilla textbox double? (lf)">
+                <StackPanel>
+                    <TextBox Text="{Binding NullableDoubleValue}"
+                             />
+                    <TextBlock>
+                        <Run Text="Vm: " />
+                        <Run Text="{Binding NullableDoubleValue}" />
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+
             <GroupBox Header="double? (pc)">
                 <StackPanel>
                     <TextBox validation:Input.Max="{Binding Text,

@@ -4,16 +4,12 @@
     using System.ComponentModel;
     using System.Globalization;
     using System.Reflection;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
-    using System.Windows.Input;
-
-    using Gu.Wpf.Validation.Internals;
-    using Gu.Wpf.Validation.Tests.Helpers;
-
+    using Helpers;
     using NUnit.Framework;
+    using Validation.Internals;
 
     [RequiresSTA]
     public abstract class TextBoxTests
@@ -60,6 +56,7 @@
             Assert.AreEqual(0, Property.GetValue(Vm));
             TextBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
             Assert.AreEqual(1.23, Property.GetValue(Vm));
+            Assert.AreEqual(1, VmChanges.Count);
             Assert.AreEqual("1,23", TextBox.GetRawText());
             Assert.AreEqual(1.23, TextBox.GetRawValue());
         }
@@ -69,7 +66,10 @@
         {
             TextBox.WriteText("1,23456");
             TextBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
+            Assert.AreEqual(1, VmChanges.Count);
+
             TextBox.SetDecimalDigits(2);
+            Assert.AreEqual(1, VmChanges.Count);
             Assert.AreEqual("1,23", TextBox.Text);
             Assert.AreEqual("1,23456", TextBox.GetRawText());
             Assert.AreEqual(1.23456, TextBox.GetRawValue());
@@ -77,6 +77,7 @@
             Assert.AreEqual(1.23456, Property.GetValue(Vm));
 
             TextBox.SetDecimalDigits(3);
+            Assert.AreEqual(1, VmChanges.Count);
             Assert.AreEqual("1,235", TextBox.Text);
             Assert.AreEqual("1,23456", TextBox.GetRawText());
             Assert.AreEqual(1.23456, TextBox.GetRawValue());
@@ -84,6 +85,7 @@
             Assert.AreEqual(1.23456, Property.GetValue(Vm));
 
             TextBox.SetDecimalDigits(7);
+            Assert.AreEqual(1, VmChanges.Count);
             Assert.AreEqual("1,2345600", TextBox.Text);
             Assert.AreEqual("1,23456", TextBox.GetRawText());
             Assert.AreEqual(1.23456, TextBox.GetRawValue());
@@ -129,6 +131,7 @@
 
             TextBox.SetCulture(new CultureInfo("en-US"));
 
+            Assert.AreEqual(1, VmChanges.Count);
             Assert.AreEqual(1.23, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual(1.23, Property.GetValue(Vm));
             Assert.AreEqual("1.23", TextBox.GetRawText());
