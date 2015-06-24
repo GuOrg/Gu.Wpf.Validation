@@ -127,5 +127,73 @@
             Assert.AreEqual(1.234, textBox.GetRawValue());
             Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
         }
+
+        [Test]
+        public void RawTextNotAffectedByFormatting()
+        {
+            var vm = new DummyViewModel { NullableDoubleValue = null };
+            int count = 0;
+            vm.PropertyChanged += (_, __) => count++;
+            var textBox = new TextBox { DataContext = vm };
+            textBox.SetCulture(new CultureInfo("en-US"));
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
+            Assert.IsNullOrEmpty(textBox.GetRawText());
+            Assert.AreEqual(null, textBox.GetRawValue());
+
+            textBox.WriteText("1.234");
+            Assert.AreEqual(1, count);
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
+
+            textBox.SetCulture(new CultureInfo("sv-SE"));
+            Assert.AreEqual(1, count);
+            Assert.AreEqual("1,234", textBox.Text);
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
+        }
+
+        [Test]
+        public void RawValueSourceNotAffectedByFormatting()
+        {
+            var vm = new DummyViewModel { NullableDoubleValue = null };
+            int count = 0;
+            vm.PropertyChanged += (_, __) => count++;
+            var textBox = new TextBox { DataContext = vm };
+            textBox.SetCulture(new CultureInfo("en-US"));
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
+            Assert.IsNullOrEmpty(textBox.GetRawText());
+            Assert.AreEqual(null, textBox.GetRawValue());
+
+            vm.NullableDoubleValue = 1.234;
+            Assert.AreEqual(1, count);
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.Binding, textBox.GetRawValueSource());
+
+            textBox.SetCulture(new CultureInfo("sv-SE"));
+            Assert.AreEqual(1, count);
+            Assert.AreEqual("1,234", textBox.Text);
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.Binding, textBox.GetRawValueSource());
+        }
     }
 }
