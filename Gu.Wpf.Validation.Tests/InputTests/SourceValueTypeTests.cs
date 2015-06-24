@@ -20,7 +20,7 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
-            textBox.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+            textBox.RaiseLoadedEvent();
             Assert.AreEqual(null, textBox.GetSourceValueType());
 
             var vm = new DummyViewModel { NullableDoubleValue = null };
@@ -39,6 +39,7 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
             textBox.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
             Assert.AreEqual(typeof(double?), textBox.GetSourceValueType());
 
@@ -58,6 +59,7 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
             Assert.AreEqual(typeof(int), textBox.GetSourceValueType());
         }
 
@@ -68,6 +70,7 @@
             Assert.IsNull(BindingOperations.GetBindingExpression(textBox, System.Windows.Controls.TextBox.TextProperty));
 
             textBox.SetSourceValueType(typeof(int));
+            textBox.RaiseLoadedEvent();
             Assert.NotNull(BindingOperations.GetBindingExpression(textBox, System.Windows.Controls.TextBox.TextProperty));
 
             Assert.AreEqual(DefaultNumberStyles.DefaultInteger, textBox.GetNumberStyles());

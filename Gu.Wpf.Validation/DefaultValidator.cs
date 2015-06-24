@@ -5,9 +5,7 @@
     using System.Windows.Controls;
     using System.Windows.Data;
 
-    using Gu.Wpf.Validation.Rules;
-
-    using Internals;
+    using Gu.Wpf.Validation.Internals;
 
     public class DefaultValidator : IValidator
     {
@@ -42,6 +40,8 @@
         protected static readonly OnErrorConverter ResetOnErrorConverter = new OnErrorConverter();
         protected static readonly UpdateValidationConverter UpdateValidationConverter = new UpdateValidationConverter();
 
+        private static readonly RoutedEventHandler OnLoadedHandler = new RoutedEventHandler(OnLoaded);
+
         public virtual void Bind(TextBox textBox)
         {
             if (textBox == null)
@@ -49,36 +49,75 @@
                 return;
             }
 
+            if (textBox.IsLoaded)
+            {
+                ClearBindings(textBox);
+                AddBindings(textBox);
+            }
+            else
+            {
+                textBox.UpdateHandler(FrameworkElement.LoadedEvent, OnLoadedHandler);
+            }
+        }
+
+        private void AddBindings(TextBox textBox)
+        {
+            RawValueTracker.TrackUserInput(textBox);
+
+            BindTextToValue(textBox);
+
+            BindResetOnErrors(textBox);
+
+            BindUpdateValidation(textBox);
+        }
+
+        protected virtual void ClearBindings(TextBox textBox)
+        {
             BindingOperations.ClearBinding(textBox, TextBox.TextProperty);
             BindingOperations.ClearBinding(textBox, HasErrorProxyProperty);
             BindingOperations.ClearBinding(textBox, UpdateValidationFlagsProperty);
+        }
 
-            RawValueTracker.TrackUserInput(textBox);
-
-            var valueBinding = CreateBinding(textBox, BindingMode.TwoWay, textBox.GetValidationTrigger(), ValuePath, TextToValueConverter);
+        protected virtual void BindTextToValue(TextBox textBox)
+        {
+            var valueBinding = CreateBinding(
+                textBox,
+                BindingMode.TwoWay,
+                textBox.GetValidationTrigger(),
+                ValuePath,
+                TextToValueConverter);
             var rules = textBox.GetValidationRules();
             foreach (var rule in rules)
             {
                 valueBinding.ValidationRules.Add(rule);
             }
             BindingOperations.SetBinding(textBox, TextBox.TextProperty, valueBinding);
+        }
 
-            // Using a binding to reset Value on validation error, nonstandard
-            var hasErrorBinding = CreateBinding(textBox, BindingMode.OneWay, HasErrorPath, ResetOnErrorConverter);
-            BindingOperations.SetBinding(textBox, HasErrorProxyProperty, hasErrorBinding);
+        /// <summary>
+        ///  Using a binding to reset Value on validation error, nonstandard
+        /// </summary>
+        /// <param name="textBox"></param>
+        protected virtual void BindResetOnErrors(TextBox textBox)
+        {
+            var binding = CreateBinding(textBox, BindingMode.OneWay, HasErrorPath, ResetOnErrorConverter);
+            BindingOperations.SetBinding(textBox, HasErrorProxyProperty, binding);
+        }
 
-            var validationDirtyBinding = new MultiBinding();
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawTextPath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawValuePath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, PatternPath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, IsRequiredPath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MinPath));
-            validationDirtyBinding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MaxPath));
-            validationDirtyBinding.ConverterParameter = textBox;
-            validationDirtyBinding.Converter = UpdateValidationConverter;
-            BindingOperations.SetBinding(textBox, UpdateValidationFlagsProperty, validationDirtyBinding);
+        protected virtual void BindUpdateValidation(TextBox textBox)
+        {
+            var binding = new MultiBinding();
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawTextPath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawValuePath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, PatternPath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, IsRequiredPath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MinPath));
+            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MaxPath));
+            binding.ConverterParameter = textBox;
+            binding.Converter = UpdateValidationConverter;
+            BindingOperations.SetBinding(textBox, UpdateValidationFlagsProperty, binding);
         }
 
         protected virtual Binding CreateBinding(
@@ -130,6 +169,17 @@
                 ConverterParameter = source,
                 UpdateSourceTrigger = updateSourceTrigger
             };
+        }
+
+        private static void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+            textBox.RemoveHandler(FrameworkElement.LoadedEvent, OnLoadedHandler);
+            var validator = textBox.GetValidator() as DefaultValidator;
+            if (validator != null)
+            {
+                validator.AddBindings(textBox);
+            }
         }
 
         private static void OnUpdateValidationFlagsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -5,7 +5,8 @@
              xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
              xmlns:validation="http://gu.se/Validation"
              xmlns:wpf="clr-namespace:Gu.Wpf.Validation.Demo.Wpf"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             >
     <Application.Resources>
         <demo:NullConverter x:Key="NullConverter" />
         <converters:TextBoxChildConverter x:Key="TextBoxChildConverter" />
@@ -25,7 +26,9 @@
         <StreamGeometry x:Key="FolderEllipsisGeometry">F1 M 21,30L 56,30L 56,50L 21,50L 21,30 Z M 52,28L 37,28C 38,25 39,24 39,24L 51,24C 51,24 52,25 52,25L 52,28 Z M 54,52C 55,52 56,53 56,55C 56,56 55,57 54,57C 52,57 51,56 51,55C 51,53 52,52 54,52 Z M 47,52C 48,52 49,53 49,55C 49,56 48,57 47,57C 45,57 44,56 44,55C 44,53 45,52 47,52 Z M 40,52C 41,52 42,53 42,55C 42,56 41,57 40,57C 38,57 37,56 37,55C 37,53 38,52 40,52 Z</StreamGeometry>
         <StreamGeometry x:Key="PlayGeometry">F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z</StreamGeometry>
 
-        <Style x:Key="HeaderStyle" TargetType="{x:Type TextBlock}">
+        <Style x:Key="HeaderStyle"
+               TargetType="{x:Type TextBlock}"
+               >
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -38,24 +41,32 @@
         <wpf:ValidationTemplateSelector x:Key="ValidationTemplateSelector">
             <wpf:ValidationTemplateSelector.NoErrorTemplate>
                 <DataTemplate>
-                    <Path Data="{StaticResource CheckMarkGeometry}" Fill="GreenYellow" />
+                    <Path Data="{StaticResource CheckMarkGeometry}"
+                          Fill="GreenYellow"
+                          />
                 </DataTemplate>
             </wpf:ValidationTemplateSelector.NoErrorTemplate>
 
             <wpf:ValidationTemplateSelector.MissingTemplate>
                 <DataTemplate>
-                    <Path Data="{StaticResource ChevronLeftGeometry}" Fill="LightBlue" />
+                    <Path Data="{StaticResource ChevronLeftGeometry}"
+                          Fill="LightBlue"
+                          />
                 </DataTemplate>
             </wpf:ValidationTemplateSelector.MissingTemplate>
 
             <wpf:ValidationTemplateSelector.ErrorsTemplate>
                 <DataTemplate>
-                    <Path Data="{StaticResource CrossGeometry}" Fill="Red" />
+                    <Path Data="{StaticResource CrossGeometry}"
+                          Fill="Red"
+                          />
                 </DataTemplate>
             </wpf:ValidationTemplateSelector.ErrorsTemplate>
         </wpf:ValidationTemplateSelector>
 
-        <Style x:Key="HeaderedSettingStyle" TargetType="{x:Type HeaderedContentControl}">
+        <Style x:Key="HeaderedSettingStyle"
+               TargetType="{x:Type HeaderedContentControl}"
+               >
             <Setter Property="Margin" Value="8,8" />
             <Setter Property="Focusable" Value="False" />
             <Setter Property="Template">
@@ -63,14 +74,19 @@
                     <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                                  />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0" ContentSource="Header" />
+                            <ContentPresenter Grid.Column="0"
+                                              ContentSource="Header"
+                                              />
 
                             <ContentPresenter Grid.Column="1"
                                               Margin="8,0"
-                                              ContentSource="Content" />
+                                              ContentSource="Content"
+                                              />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -78,7 +94,9 @@
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock VerticalAlignment="Center" Text="{Binding}" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding}"
+                                   />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
@@ -86,28 +104,35 @@
 
         <Style x:Key="SymbolHeaderedSettingStyle"
                BasedOn="{StaticResource HeaderedSettingStyle}"
-               TargetType="{x:Type HeaderedContentControl}">
+               TargetType="{x:Type HeaderedContentControl}"
+               >
             <Setter Property="validation:Scope.IsValidationScope" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                                  />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0" ContentSource="Header" />
+                            <ContentPresenter Grid.Column="0"
+                                              ContentSource="Header"
+                                              />
 
                             <ContentPresenter x:Name="ValuePresenter"
                                               Grid.Column="1"
                                               Margin="8,0"
-                                              ContentSource="Content" />
+                                              ContentSource="Content"
+                                              />
 
                             <ContentPresenter Grid.Column="2"
                                               Content="{Binding (validation:Scope.Errors),
                                                                 RelativeSource={RelativeSource TemplatedParent}}"
-                                              ContentTemplateSelector="{StaticResource ValidationTemplateSelector}" />
+                                              ContentTemplateSelector="{StaticResource ValidationTemplateSelector}"
+                                              />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -116,13 +141,18 @@
 
         <Style x:Key="TightHeaderedSettingStyle"
                BasedOn="{StaticResource HeaderedSettingStyle}"
-               TargetType="{x:Type HeaderedContentControl}">
+               TargetType="{x:Type HeaderedContentControl}"
+               >
             <Setter Property="Margin" Value="0,0" />
         </Style>
 
-        <Style x:Key="SettingsListStyle" TargetType="{x:Type ItemsControl}">
+        <Style x:Key="SettingsListStyle"
+               TargetType="{x:Type ItemsControl}"
+               >
             <Style.Resources>
-                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}" TargetType="{x:Type HeaderedContentControl}" />
+                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}"
+                       TargetType="{x:Type HeaderedContentControl}"
+                       />
             </Style.Resources>
             <Setter Property="Grid.IsSharedSizeScope" Value="True" />
             <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
@@ -137,14 +167,17 @@
                         </ControlTemplate.Resources>-->
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                                  />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         Grid.IsSharedSizeScope="True"
-                                        IsItemsHost="True" />
+                                        IsItemsHost="True"
+                                        />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -153,9 +186,12 @@
 
         <Style x:Key="TightSettingsListStyle"
                BasedOn="{StaticResource SettingsListStyle}"
-               TargetType="{x:Type ItemsControl}">
+               TargetType="{x:Type ItemsControl}"
+               >
             <Style.Resources>
-                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}" TargetType="{x:Type HeaderedContentControl}" />
+                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}"
+                       TargetType="{x:Type HeaderedContentControl}"
+                       />
             </Style.Resources>
         </Style>
     </Application.Resources>

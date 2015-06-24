@@ -26,7 +26,6 @@
                 return MissingTemplate;
             }
             return ErrorsTemplate;
-            return base.SelectTemplate(item, container);
         }
     }
 }

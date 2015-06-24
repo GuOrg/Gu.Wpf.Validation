@@ -2,6 +2,7 @@
 {
     using System.Diagnostics;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Data;
 
     using Gu.Wpf.Validation.Internals;
@@ -22,26 +23,42 @@
             typeof(DefaultFormatter),
             new PropertyMetadata(null));
 
-        public virtual void Bind(System.Windows.Controls.TextBox textBox)
+        private static readonly RoutedEventHandler OnLoadedHandler = new RoutedEventHandler(OnLoaded);
+
+        public virtual void Bind(TextBox textBox)
         {
             if (textBox == null)
             {
                 return;
             }
-            BindingOperations.ClearBinding(textBox, UpdateFormattingProxyProperty);
+            if (textBox.IsLoaded)
+            {
+                ClearBindings(textBox);
+                AddBinding(textBox);
+            }
+            else
+            {
+                textBox.UpdateHandler(FrameworkElement.LoadedEvent, OnLoadedHandler);
+            }
+        }
 
-            // Using a binding to update formatting
-            var binding = new MultiBinding
-                              {
-                                  Converter = UpdateFormattingConverter,
-                                  ConverterParameter = textBox
-                              };
+        /// <summary>
+        /// Using a binding with converter to update formatting
+        /// </summary>
+        /// <param name="textBox"></param>
+        protected virtual void AddBinding(TextBox textBox)
+        {
+            var binding = new MultiBinding { Converter = UpdateFormattingConverter, ConverterParameter = textBox };
             binding.Bindings.Add(CreateBinding(textBox, IsKeyboardFocusedPath));
             binding.Bindings.Add(CreateBinding(textBox, DecimalDigitsPath));
             binding.Bindings.Add(CreateBinding(textBox, CulturePath));
             binding.Bindings.Add(CreateBinding(textBox, RawTextPath));
-            // Using a binding with converter to update formatting
             BindingOperations.SetBinding(textBox, UpdateFormattingProxyProperty, binding);
+        }
+
+        protected virtual void ClearBindings(TextBox textBox)
+        {
+            BindingOperations.ClearBinding(textBox, UpdateFormattingProxyProperty);
         }
 
         protected virtual Binding CreateBinding(
@@ -56,6 +73,17 @@
                 ConverterParameter = source,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
+        }
+
+        private static void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+            textBox.RemoveHandler(FrameworkElement.LoadedEvent, OnLoadedHandler);
+            var formatter = textBox.GetFormatter() as DefaultFormatter;
+            if (formatter != null)
+            {
+                formatter.AddBinding(textBox);
+            }
         }
     }
 }

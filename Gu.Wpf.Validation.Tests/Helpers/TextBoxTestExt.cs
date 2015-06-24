@@ -1,5 +1,6 @@
 ﻿namespace Gu.Wpf.Validation.Tests.Helpers
 {
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
 
@@ -12,6 +13,11 @@
                 textBox.SelectAll();
             }
             TextCompositionManager.StartComposition(new TextComposition(InputManager.Current, textBox, text));
+        }
+
+        public static void RaiseLoadedEvent(this TextBox textBox)
+        {
+            textBox.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
         }
     }
 }

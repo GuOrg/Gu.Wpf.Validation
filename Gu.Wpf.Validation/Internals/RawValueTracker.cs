@@ -41,11 +41,14 @@
             typeof(RawValueTracker),
             new PropertyMetadata(default(bool)));
 
+        private static readonly RoutedEventHandler OnUserInputHandler = new RoutedEventHandler(OnUserInput);
+        private static readonly RoutedEventHandler RoutedEventHandler = new RoutedEventHandler(OnTextChanged);
+
         public static void TrackUserInput(TextBox textBox)
         {
-            textBox.AddHandler(UIElement.PreviewKeyDownEvent, new RoutedEventHandler(OnUserInput));
-            textBox.AddHandler(UIElement.PreviewTextInputEvent, new RoutedEventHandler(OnUserInput));
-            textBox.AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(OnTextChanged));
+            textBox.UpdateHandler(UIElement.PreviewKeyDownEvent, OnUserInputHandler);
+            textBox.UpdateHandler(UIElement.PreviewTextInputEvent, OnUserInputHandler);
+            textBox.UpdateHandler(TextBoxBase.TextChangedEvent, RoutedEventHandler);
         }
 
         private static void SetRawText(this TextBox element, string value)
@@ -213,6 +216,12 @@
                 textBox.SetRawText(textBox.Text);
             }
             textBox.SetIsReceivingUserInput(false);
+        }
+
+        internal static void UpdateHandler(this TextBox textbox, RoutedEvent routedEvent, RoutedEventHandler handler)
+        {
+            textbox.RemoveHandler(routedEvent, handler);
+            textbox.AddHandler(routedEvent, handler);
         }
     }
 }

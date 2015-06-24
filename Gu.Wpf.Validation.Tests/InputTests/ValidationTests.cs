@@ -22,6 +22,9 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
+            Assert.Inconclusive("Not sure how we want this");
             textBox.SetIsRequired(true);
             AssertError<IsRequiredError>(textBox);
 
@@ -39,6 +42,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetIsRequired(true);
             AssertError<IsRequiredError>(textBox);
 
@@ -57,6 +62,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetIsRequired(true);
             AssertError<IsRequiredError>(textBox);
 
@@ -74,6 +81,7 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
 
             textBox.SetIsRequired(true);
             AssertError<IsRequiredError>(textBox);
@@ -93,6 +101,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetCulture(new CultureInfo("en-US"));
 
             textBox.WriteText("1,2", true);
@@ -116,6 +126,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetMax(4.0);
             textBox.WriteText("5", true);
             AssertError<MustBeLessThanMaxError>(textBox);
@@ -133,6 +145,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.WriteText("5", true);
 
             textBox.SetMax(4.0);
@@ -153,6 +167,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetMax(4.0);
             vm.NullableDoubleValue = 5;
             AssertError<MustBeLessThanMaxError>(textBox);
@@ -171,6 +187,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetMax(4);
             textBox.WriteText("5", true);
             AssertError<MustBeLessThanMaxError>(textBox);
@@ -189,6 +207,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.SetMin(6.0);
             textBox.WriteText("5", true);
             AssertError<MustBeGreaterThanMinError>(textBox);

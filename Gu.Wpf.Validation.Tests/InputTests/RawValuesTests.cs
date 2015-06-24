@@ -28,6 +28,7 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
             Assert.IsNullOrEmpty(textBox.GetRawText());
             Assert.AreEqual(null, textBox.GetRawValue());
 
@@ -52,21 +53,21 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             Assert.IsNullOrEmpty(textBox.GetRawText());
             Assert.AreEqual(null, textBox.GetRawValue());
 
             textBox.WriteText("1.234");
 
-            Assert.AreEqual("1.23", textBox.Text);
             Assert.AreEqual("1.234", textBox.GetRawText());
             Assert.AreEqual(1.234, textBox.GetRawValue());
             Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
 
-            TextCompositionManager.StartComposition(new TextComposition(InputManager.Current, textBox, "56"));
+            textBox.WriteText("56", false);
 
-            Assert.AreEqual("1.24", textBox.Text);
-            Assert.AreEqual("1.2356", textBox.GetRawText());
-            Assert.AreEqual(1.2356, textBox.GetRawValue());
+            Assert.AreEqual("1.23456", textBox.GetRawText());
+            Assert.AreEqual(1.23456, textBox.GetRawValue());
             Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
         }
 
@@ -84,6 +85,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             Assert.IsNullOrEmpty(textBox.GetRawText());
             Assert.AreEqual(null, textBox.GetRawValue());
 
@@ -108,6 +111,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             Assert.IsNullOrEmpty(textBox.GetRawText());
             Assert.AreEqual(null, textBox.GetRawValue());
 

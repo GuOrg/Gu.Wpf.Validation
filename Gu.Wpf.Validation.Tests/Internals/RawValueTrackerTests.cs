@@ -26,6 +26,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.WriteText("1.234");
             Assert.AreEqual("1.234", textBox.GetRawText());
             Assert.AreEqual(1.234, textBox.GetRawValue());
@@ -46,6 +48,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             vm.NullableDoubleValue = 1.234;
             Assert.AreEqual("1.234", textBox.GetRawText());
             Assert.AreEqual(1.234, textBox.GetRawValue());
@@ -66,6 +70,8 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+
             textBox.WriteText("1,234");
             Assert.AreEqual("1,234", textBox.GetRawText());
             Assert.AreEqual(RawValueTracker.Unset, textBox.GetRawValue());
