@@ -5,6 +5,7 @@
              xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:validation="http://gu.se/Validation"
+             xmlns:wpf="clr-namespace:Gu.Wpf.Validation.Demo.Wpf"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -30,7 +31,7 @@
                     </Style.Triggers>
                 </Style>
             </GroupBox.Style>
-            <Grid>
+            <Grid IsSharedSizeScope="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -39,7 +40,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -78,7 +79,25 @@
                     </TextBox.Text>
                 </TextBox>
 
-                <Button Grid.Row="3"
+                <HeaderedContentControl Grid.Row="3"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Header="Symbols"
+                                        Style="{StaticResource SymbolHeaderedSettingStyle}">
+                    <TextBox Grid.Row="2"
+                             Grid.Column="1"
+                             Tag="HeaderedPropertyChanged">
+                        <TextBox.Text>
+                            <Binding Path="Value2" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <demo:MehRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </HeaderedContentControl>
+
+                <Button Grid.Row="4"
                         Grid.Column="1"
                         Content="Enabled when scope has error"
                         IsEnabled="{Binding (validation:Scope.HasError),

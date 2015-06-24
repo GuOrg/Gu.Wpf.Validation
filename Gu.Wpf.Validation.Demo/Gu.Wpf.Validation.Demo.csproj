@@ -76,6 +76,7 @@
     <Compile Include="ValidationScopeViewModel.cs">
       <DependentUpon>ValidationScopeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wpf\ValidationTemplateSelector.cs" />
     <Compile Include="Wpf\SharedSizeGroups.cs" />
     <Page Include="InputValidationView.xaml">
       <SubType>Designer</SubType>

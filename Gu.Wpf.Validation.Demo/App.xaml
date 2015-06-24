@@ -3,28 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Gu.Wpf.Validation.Demo.Converters"
              xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
+             xmlns:validation="http://gu.se/Validation"
              xmlns:wpf="clr-namespace:Gu.Wpf.Validation.Demo.Wpf"
-             StartupUri="MainWindow.xaml"
-             >
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
         <demo:NullConverter x:Key="NullConverter" />
         <converters:TextBoxChildConverter x:Key="TextBoxChildConverter" />
         <converters:StringToIntConverter x:Key="StringToIntConverter" />
         <converters:StringToNullableIntConverter x:Key="StringToNullableIntConverter" />
         <converters:TypeToPrettyNameConverter x:Key="TypeToPrettyNameConverter" />
+        <StreamGeometry x:Key="CrossPath">M0,0 L10,10 M0,10 L10,0</StreamGeometry>
+        <StreamGeometry x:Key="CheckMarkGeometry">F1 M 24,33L 35,44L 52,22L 57,27L 35,54L 19,38L 24,33 Z</StreamGeometry>
+        <StreamGeometry x:Key="CancelGeometry">F1 M 38,19C 48,19 57,28 57,38C 57,48 48,57 38,57C 28,57 19,48 19,38C 19,28 28,19 38,19 Z M 38,24C 35,24 33,25 30,26L 50,46C 51,43 52,41 52,38C 52,30 46,24 38,24 Z M 24,38C 24,46 30,52 38,52C 41,52 43,51 46,50L 26,30C 25,33 24,35 24,38 Z</StreamGeometry>
+        <StreamGeometry x:Key="ChevronLeftGeometry">F1 M 36,38L 39,41L 51,52L 40,52L 25,38L 40,23L 51,23L 39,34L 36,38 Z</StreamGeometry>
+        <StreamGeometry x:Key="CogsGeometry">F1 M 33,69C 33,70 34,71 34,73C 36,73 37,73 38,73C 41,73 43,73 46,72C 42,69 40,64 40,59C 40,48 49,40 59,40C 64,40 69,42 72,45C 73,43 73,40 73,38C 73,36 73,35 73,33C 70,32 68,31 66,31L 66,23C 64,22 61,22 59,22L 57,30C 54,30 51,31 48,32L 43,26C 41,27 40,28 38,29L 41,37C 39,39 37,41 35,44L 27,41C 26,43 25,45 25,47L 32,51C 31,54 31,56 31,59L 31,61L 23,64C 23,66 24,68 24,70L 33,69 Z M 27,37L 35,39C 36,38 37,36 37,34L 30,29C 31,27 31,25 31,22L 31,20L 39,17C 39,15 38,13 38,11L 29,12C 28,9 27,7 26,5C 23,6 20,8 17,10C 20,13 22,18 22,22C 22,33 14,41 3,41C 4,44 4,48 5,51C 8,50 11,50 14,49L 19,55C 21,54 22,53 24,52L 21,44C 23,42 25,40 27,37 Z</StreamGeometry>
+        <StreamGeometry x:Key="ConnectGeometry">F1 M 26,28L 20,22C 19,22 19,21 20,20C 21,19 22,19 22,20L 28,26C 32,23 39,23 42,27L 27,42C 23,39 23,32 26,28 Z M 49,34C 53,37 53,44 50,48L 56,54C 57,54 57,55 56,56C 55,57 54,57 54,56L 48,50C 44,53 37,53 34,49L 37,46L 34,43C 33,42 33,41 34,40C 35,39 37,39 37,40L 40,42L 42,40L 40,37C 39,37 39,35 40,34C 41,33 42,33 43,34L 46,37L 49,34 Z</StreamGeometry>
+        <StreamGeometry x:Key="CrossGeometry">F1 M 27,22L 38,33L 49,22L 54,27L 43,38L 54,49L 49,54L 38,43L 27,54L 22,49L 33,38L 22,27L 27,22 Z</StreamGeometry>
+        <StreamGeometry x:Key="FolderOpenGeometry">F1 M 19,50L 28,34L 63,34L 54,50L 19,50 Z M 19,28L 35,28C 36,25 37,24 37,24L 49,24C 49,24 50,25 50,25L 50,28L 54,28L 54,32L 27,32L 19,46L 19,28 Z</StreamGeometry>
+        <StreamGeometry x:Key="DeleteGeometry">F1 M 25,24L 51,24C 52,24 52,27 52,27L 24,27C 24,27 24,24 25,24 Z M 36,20L 40,20C 41,20 42,21 42,21C 42,22 41,23 40,23L 36,23C 35,23 34,22 34,21C 34,21 35,20 36,20 Z M 28,29L 48,29C 49,29 50,29 50,30L 48,54C 48,55 48,55 47,55L 29,55C 28,55 28,55 28,54L 26,30C 26,29 27,29 28,29 Z M 30,32L 30,52L 33,52L 33,32L 30,32 Z M 36,32L 36,52L 40,52L 40,32L 36,32 Z M 43,32L 43,52L 46,52L 46,32L 43,32 Z</StreamGeometry>
+        <StreamGeometry x:Key="NewDocumentGeometry">F1 M 52,38L 57,41L 50,49L 50,49L 60,47L 60,53L 50,51L 50,52L 57,59L 51,62L 48,53L 48,53L 44,62L 39,59L 46,51L 46,51L 36,53L 36,47L 46,49L 46,49L 39,41L 45,38L 48,47L 48,47L 52,38 Z M 20,17L 43,17L 56,30L 56,39L 52,37L 52,34L 39,34L 39,21L 24,21L 24,55L 41,55L 38,59L 20,59L 20,17 Z M 43,22L 43,30L 51,30L 43,22 Z</StreamGeometry>
+        <StreamGeometry x:Key="FolderEllipsisGeometry">F1 M 21,30L 56,30L 56,50L 21,50L 21,30 Z M 52,28L 37,28C 38,25 39,24 39,24L 51,24C 51,24 52,25 52,25L 52,28 Z M 54,52C 55,52 56,53 56,55C 56,56 55,57 54,57C 52,57 51,56 51,55C 51,53 52,52 54,52 Z M 47,52C 48,52 49,53 49,55C 49,56 48,57 47,57C 45,57 44,56 44,55C 44,53 45,52 47,52 Z M 40,52C 41,52 42,53 42,55C 42,56 41,57 40,57C 38,57 37,56 37,55C 37,53 38,52 40,52 Z</StreamGeometry>
+        <StreamGeometry x:Key="PlayGeometry">F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z</StreamGeometry>
 
-
-        <Style x:Key="HeaderStyle"
-               TargetType="{x:Type TextBlock}"
-               >
+        <Style x:Key="HeaderStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-        <Style x:Key="HeaderedSettingStyle"
-               TargetType="{x:Type HeaderedContentControl}"
-               >
+        <Style TargetType="{x:Type Path}">
+            <Setter Property="Stretch" Value="Uniform" />
+        </Style>
+
+        <wpf:ValidationTemplateSelector x:Key="ValidationTemplateSelector">
+            <wpf:ValidationTemplateSelector.NoErrorTemplate>
+                <DataTemplate>
+                    <Path Data="{StaticResource CheckMarkGeometry}" Fill="GreenYellow" />
+                </DataTemplate>
+            </wpf:ValidationTemplateSelector.NoErrorTemplate>
+
+            <wpf:ValidationTemplateSelector.MissingTemplate>
+                <DataTemplate>
+                    <Path Data="{StaticResource ChevronLeftGeometry}" Fill="LightBlue" />
+                </DataTemplate>
+            </wpf:ValidationTemplateSelector.MissingTemplate>
+
+            <wpf:ValidationTemplateSelector.ErrorsTemplate>
+                <DataTemplate>
+                    <Path Data="{StaticResource CrossGeometry}" Fill="Red" />
+                </DataTemplate>
+            </wpf:ValidationTemplateSelector.ErrorsTemplate>
+        </wpf:ValidationTemplateSelector>
+
+        <Style x:Key="HeaderedSettingStyle" TargetType="{x:Type HeaderedContentControl}">
             <Setter Property="Margin" Value="8,8" />
             <Setter Property="Focusable" Value="False" />
             <Setter Property="Template">
@@ -32,18 +63,14 @@
                     <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"
-                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
-                                                  />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0"
-                                              ContentSource="Header"
-                                              />
+                            <ContentPresenter Grid.Column="0" ContentSource="Header" />
+
                             <ContentPresenter Grid.Column="1"
                                               Margin="8,0"
-                                              ContentSource="Content"
-                                              />
+                                              ContentSource="Content" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -51,29 +78,51 @@
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock VerticalAlignment="Center"
-                                   Text="{Binding}"
-                                   />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding}" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style x:Key="SymbolHeaderedSettingStyle"
+               BasedOn="{StaticResource HeaderedSettingStyle}"
+               TargetType="{x:Type HeaderedContentControl}">
+            <Setter Property="validation:Scope.IsValidationScope" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="20" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Grid.Column="0" ContentSource="Header" />
+
+                            <ContentPresenter x:Name="ValuePresenter"
+                                              Grid.Column="1"
+                                              Margin="8,0"
+                                              ContentSource="Content" />
+
+                            <ContentPresenter Grid.Column="2"
+                                              Content="{Binding (validation:Scope.Errors),
+                                                                RelativeSource={RelativeSource TemplatedParent}}"
+                                              ContentTemplateSelector="{StaticResource ValidationTemplateSelector}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="TightHeaderedSettingStyle"
                BasedOn="{StaticResource HeaderedSettingStyle}"
-               TargetType="{x:Type HeaderedContentControl}"
-               >
+               TargetType="{x:Type HeaderedContentControl}">
             <Setter Property="Margin" Value="0,0" />
         </Style>
 
-        <Style x:Key="SettingsListStyle"
-               TargetType="{x:Type ItemsControl}"
-               >
+        <Style x:Key="SettingsListStyle" TargetType="{x:Type ItemsControl}">
             <Style.Resources>
-                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}"
-                                   TargetType="{x:Type HeaderedContentControl}"
-                                   />
+                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}" TargetType="{x:Type HeaderedContentControl}" />
             </Style.Resources>
             <Setter Property="Grid.IsSharedSizeScope" Value="True" />
             <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
@@ -88,17 +137,14 @@
                         </ControlTemplate.Resources>-->
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"
-                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
-                                                  />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         Grid.IsSharedSizeScope="True"
-                                        IsItemsHost="True"
-                                        />
+                                        IsItemsHost="True" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -106,13 +152,10 @@
         </Style>
 
         <Style x:Key="TightSettingsListStyle"
-               TargetType="{x:Type ItemsControl}"
                BasedOn="{StaticResource SettingsListStyle}"
-               >
+               TargetType="{x:Type ItemsControl}">
             <Style.Resources>
-                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}"
-                                   TargetType="{x:Type HeaderedContentControl}"
-                                   />
+                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}" TargetType="{x:Type HeaderedContentControl}" />
             </Style.Resources>
         </Style>
     </Application.Resources>
