@@ -53,7 +53,7 @@
                     </Style.Triggers>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <GroupBox Header="double (lf)">
+            <!--<GroupBox Header="double (lf)">
                 <StackPanel>
                     <TextBox validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
@@ -189,6 +189,23 @@
                     <TextBlock>
                         <Run Text="Vm: " />
                         <Run Text="{Binding StringIntValue}" />
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>-->
+
+            <GroupBox Header="converted struct">
+                <StackPanel>
+                    <TextBox validation:Input.Max="{Binding Text,
+                                                            ElementName=Max}"
+                             validation:Input.Min="{Binding Text,
+                                                            ElementName=Min}"
+                             validation:Input.SourceValueType="{x:Static validation:SourceValueTypes.NullableDouble}"
+                             validation:Input.Value="{Binding SampleStruct,
+                                                              Converter={StaticResource SampleStructToNullableDoubleConverter}}"
+                             />
+                    <TextBlock>
+                        <Run Text="Vm: " />
+                        <Run Text="{Binding SampleStruct}" />
                     </TextBlock>
                 </StackPanel>
             </GroupBox>

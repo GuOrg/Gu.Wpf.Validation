@@ -7,6 +7,8 @@
     using System.Runtime.CompilerServices;
     using Annotations;
 
+    using Gu.Wpf.Validation.Demo.Misc;
+
     public class InputValidationViewModel : INotifyPropertyChanged
     {
         private double _doubleValue;
@@ -15,6 +17,8 @@
         private int? _nullableIntValue;
         private string _stringValue;
         private string _stringIntValue = "1";
+
+        private SampleStruct _sampleStruct;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -112,6 +116,23 @@
                     return;
                 }
                 _stringValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public SampleStruct SampleStruct
+        {
+            get
+            {
+                return _sampleStruct;
+            }
+            set
+            {
+                if (value == _sampleStruct)
+                {
+                    return;
+                }
+                _sampleStruct = value;
                 OnPropertyChanged();
             }
         }

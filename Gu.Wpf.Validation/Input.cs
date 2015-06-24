@@ -2,6 +2,7 @@ namespace Gu.Wpf.Validation
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
@@ -118,13 +119,11 @@ namespace Gu.Wpf.Validation
             typeof(Input),
             new PropertyMetadata(default(IReadOnlyCollection<ValidationRule>), null, OnValidationRulesCoerce));
 
-        private static readonly DependencyPropertyKey SourceValueTypePropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+        public static readonly DependencyProperty SourceValueTypeProperty = DependencyProperty.RegisterAttached(
             "SourceValueType",
             typeof(Type),
             typeof(Input),
             new PropertyMetadata(default(Type), OnSourceValueTypeChanged, OnSourceValueTypeCoerce));
-
-        internal static readonly DependencyProperty SourceValueTypeProperty = SourceValueTypePropertyKey.DependencyProperty;
 
         public static void SetValue(this TextBox element, object value)
         {
@@ -304,12 +303,14 @@ namespace Gu.Wpf.Validation
             return (IReadOnlyCollection<ValidationRule>)element.GetValue(ValidationRulesProperty);
         }
 
-        internal static void SetSourceValueType(this DependencyObject element, Type value)
+        public static void SetSourceValueType(this DependencyObject element, Type value)
         {
-            element.SetValue(SourceValueTypePropertyKey, value);
+            element.SetValue(SourceValueTypeProperty, value);
         }
 
-        internal static Type GetSourceValueType(this DependencyObject element)
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
+        public static Type GetSourceValueType(this DependencyObject element)
         {
             return (Type)element.GetValue(SourceValueTypeProperty);
         }
@@ -352,8 +353,20 @@ namespace Gu.Wpf.Validation
                     var expression = BindingOperations.GetBindingExpression(textBox, ValueProperty);
                     if (expression != null)
                     {
-                        var fromBinding = expression.GetSourceValueType();
-                        textBox.SetSourceValueType(fromBinding);   
+                        var converter = expression.ParentBinding.Converter;
+                        if (converter != null)
+                        {
+                            if (DesignMode.IsInDesignMode)
+                            {
+                                var message = string.Format("Cannot figure out SourceValueType when binding with converter tat can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
+                                throw new ArgumentException( message);
+                            }
+                        }
+                        else
+                        {
+                            var fromBinding = expression.GetSourceValueType();
+                            textBox.SetSourceValueType(fromBinding);  
+                        }
                     }
                 }
             }

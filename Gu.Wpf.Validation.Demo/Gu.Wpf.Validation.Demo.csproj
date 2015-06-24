@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\SampleStructToNullableDoubleConverter.cs" />
     <Compile Include="Converters\StringToIntConverter.cs" />
     <Compile Include="Converters\StringToNullableIntConverter.cs" />
     <Compile Include="Converters\TypeToPrettyNameConverter.cs" />
@@ -63,6 +64,7 @@
       <DependentUpon>InputValidationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\NullConverter.cs" />
+    <Compile Include="Misc\SampleStruct.cs" />
     <Compile Include="NavigationDebugView.xaml.cs">
       <DependentUpon>NavigationDebugView.xaml</DependentUpon>
     </Compile>

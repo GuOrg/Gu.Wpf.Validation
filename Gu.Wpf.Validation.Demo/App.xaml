@@ -12,7 +12,9 @@
         <converters:TextBoxChildConverter x:Key="TextBoxChildConverter" />
         <converters:StringToIntConverter x:Key="StringToIntConverter" />
         <converters:StringToNullableIntConverter x:Key="StringToNullableIntConverter" />
+        <converters:SampleStructToNullableDoubleConverter x:Key="SampleStructToNullableDoubleConverter" />
         <converters:TypeToPrettyNameConverter x:Key="TypeToPrettyNameConverter" />
+       
         <StreamGeometry x:Key="CrossPath">M0,0 L10,10 M0,10 L10,0</StreamGeometry>
         <StreamGeometry x:Key="CheckMarkGeometry">F1 M 24,33L 35,44L 52,22L 57,27L 35,54L 19,38L 24,33 Z</StreamGeometry>
         <StreamGeometry x:Key="CancelGeometry">F1 M 38,19C 48,19 57,28 57,38C 57,48 48,57 38,57C 28,57 19,48 19,38C 19,28 28,19 38,19 Z M 38,24C 35,24 33,25 30,26L 50,46C 51,43 52,41 52,38C 52,30 46,24 38,24 Z M 24,38C 24,46 30,52 38,52C 41,52 43,51 46,50L 26,30C 25,33 24,35 24,38 Z</StreamGeometry>

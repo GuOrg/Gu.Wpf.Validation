@@ -27,9 +27,39 @@
                 return "double";
             }
 
+            if (type == typeof(float))
+            {
+                return "float";
+            }
+
+            if (type == typeof(decimal))
+            {
+                return "decimal";
+            }
+
             if (type == typeof(int))
             {
                 return "int";
+            }
+
+            if (type == typeof(short))
+            {
+                return "short";
+            }
+
+            if (type == typeof(ushort))
+            {
+                return "short";
+            }
+
+            if (type == typeof(byte))
+            {
+                return "byte";
+            }
+
+            if (type == typeof(sbyte))
+            {
+                return "sbyte";
             }
 
             if (type == typeof(uint))
