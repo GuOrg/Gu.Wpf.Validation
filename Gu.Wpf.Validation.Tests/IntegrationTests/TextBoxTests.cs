@@ -28,7 +28,11 @@
         public void SetUp()
         {
             VmChanges.Clear();
-            Vm = new DummyViewModel { NullableDoubleValue = 0 };
+            Vm = new DummyViewModel
+                     {
+                         DoubleValue = 0,
+                         NullableDoubleValue = 0
+                     };
             Vm.PropertyChanged += VmOnPropertyChanged;
             TextBox = new TextBox { DataContext = Vm };
             TextBox.SetCulture(new CultureInfo("sv-SE"));
@@ -51,7 +55,7 @@
         [Test]
         public void EditingTextUpdatesValueAndVm()
         {
-            TextBox.SetTextUndoable("1,23");
+            TextBox.WriteText("1,23");
             Assert.AreEqual(1.23, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual(0, Property.GetValue(Vm));
             TextBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
@@ -63,7 +67,7 @@
         [Test]
         public void ChangingDecimalDigitsOnlyChangesUi()
         {
-            TextBox.SetTextUndoable("1,23456");
+            TextBox.WriteText("1,23456");
             TextBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
             TextBox.SetDecimalDigits(2);
             Assert.AreEqual("1,23", TextBox.Text);
@@ -90,7 +94,7 @@
         [Test]
         public void ChangingCultureOnlyChangesUi()
         {
-            TextBox.SetTextUndoable("1,2345");
+            TextBox.WriteText("1,2345");
             TextBox.SetDecimalDigits(2);
             TextBox.SetCulture(new CultureInfo("en-US"));
             Assert.AreEqual("1.23", TextBox.Text);
@@ -101,14 +105,14 @@
         }
 
         [Test]
-        public async Task ValidationFailureResetsValue()
+        public void ValidationFailureResetsValue()
         {
-            WriteText(TextBox, "1,23", true);
+            TextBox.WriteText("1,23", true);
             Assert.AreEqual(1.23, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1,23", TextBox.GetRawText());
             Assert.AreEqual(1.23, TextBox.GetRawValue());
 
-            WriteText(TextBox, "1,23e", true);
+            TextBox.WriteText("1,23e", true);
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1,23e", TextBox.GetRawText());
             Assert.AreEqual("1,23e", TextBox.Text);
@@ -118,7 +122,7 @@
         [Test]
         public void ValidationSuccessUpdatesValue()
         {
-            WriteText(TextBox, "1.23", true);
+            TextBox.WriteText("1.23", true);
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1.23", TextBox.GetRawText());
             Assert.AreEqual(RawValueTracker.Unset, TextBox.GetRawValue());
@@ -134,12 +138,6 @@
         protected void VmOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             VmChanges.Add(propertyChangedEventArgs);
-        }
-
-        private static void WriteText(TextBox textBox, string text, bool overwrite)
-        {
-            textBox.SelectAll();
-            TextCompositionManager.StartComposition(new TextComposition(InputManager.Current, textBox, text));
         }
     }
 }

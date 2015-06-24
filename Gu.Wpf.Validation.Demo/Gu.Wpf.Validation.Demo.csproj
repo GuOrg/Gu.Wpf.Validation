@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\StringToIntConverter.cs" />
+    <Compile Include="Converters\StringToNullableIntConverter.cs" />
     <Compile Include="Converters\TypeToPrettyNameConverter.cs" />
     <Compile Include="InputValidationView.xaml.cs">
       <DependentUpon>InputValidationView.xaml</DependentUpon>
@@ -75,6 +76,7 @@
     <Compile Include="ValidationScopeViewModel.cs">
       <DependentUpon>ValidationScopeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wpf\SharedSizeGroups.cs" />
     <Page Include="InputValidationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,9 +135,7 @@
       <Name>Gu.Wpf.Validation</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Wpf\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

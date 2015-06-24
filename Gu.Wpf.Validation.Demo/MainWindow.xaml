@@ -5,9 +5,7 @@
         xmlns:validation="http://gu.se/Validation"
         Title="MainWindow"
         Width="525"
-        Height="350"
-       
-        >
+        Height="350">
     <TabControl>
         <TabItem Header="Validation">
             <demo:InputValidationView />

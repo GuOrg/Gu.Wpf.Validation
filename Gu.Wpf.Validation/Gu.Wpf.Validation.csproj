@@ -57,6 +57,9 @@
   <ItemGroup>
     <Compile Include="Internals\RawValueSource.cs" />
     <Compile Include="Internals\RawValueTracker.cs" />
+    <Compile Include="Internals\ToStringExt.cs" />
+    <Compile Include="Internals\UpdateValidationFlags.cs" />
+    <Compile Include="Rules\IsRequiredError.cs" />
     <Compile Include="StringConverters\DefaultStringConverter.cs" />
     <Compile Include="TextBox.cs" />
     <Compile Include="DefaultFormatter.cs" />
@@ -76,10 +79,10 @@
     <Compile Include="Contracts\IValidator.cs" />
     <Compile Include="Rules\ConvertedValidationRule.cs" />
     <Compile Include="DefaultStringConverters.cs" />
-    <Compile Include="Rules\MustLessThanMaxRuleError.cs" />
+    <Compile Include="Rules\MustBeLessThanMaxError.cs" />
     <Compile Include="Rules\IsRequiredRule.cs" />
-    <Compile Include="Rules\MustLessThanMaxRule.cs" />
-    <Compile Include="Rules\MustGreaterThanMinError.cs" />
+    <Compile Include="Rules\MustBeLessThanMaxRule.cs" />
+    <Compile Include="Rules\MustBeGreaterThanMinError.cs" />
     <Compile Include="Rules\CanParseError.cs" />
     <Compile Include="Rules\RawValueRule.cs" />
     <Compile Include="Rules\RegexResult.cs" />
@@ -108,8 +111,8 @@
     <Compile Include="StringConverters\StringConverter`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\CanParseRule.cs" />
-    <Compile Include="Rules\MustGreaterThanMinRule.cs" />
-    <Compile Include="Internals\StringFormatConverter.cs" />
+    <Compile Include="Rules\MustBeGreaterThanMinRule.cs" />
+    <Compile Include="Internals\TextToValueConverter.cs" />
     <Compile Include="StringConverters\StringToStringConverter.cs" />
     <Compile Include="StringConverters\UIntConverter.cs" />
     <Compile Include="StringConverters\ULongConverter.cs" />

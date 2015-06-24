@@ -36,7 +36,7 @@
         public void PromotesChildrenHasErrors()
         {
             Assert.IsFalse(Scope.GetHasError(_grid));
-            _doubleBox.SetTextUndoable("abc");
+            _doubleBox.WriteText("abc");
             Assert.IsTrue(Scope.GetHasError(_grid));
         }
 
@@ -44,9 +44,9 @@
         public void AggregatesChildrenErrors()
         {
             CollectionAssert.IsEmpty(Scope.GetErrors(_grid));
-            _doubleBox.SetTextUndoable("abc");
+            _doubleBox.WriteText("abc");
             Assert.AreEqual(1, Scope.GetErrors(_grid).Count());
-            _intBox.SetTextUndoable("bdfas");
+            _intBox.WriteText("bdfas");
             Assert.AreEqual(2, Scope.GetErrors(_grid).Count());
         }
 

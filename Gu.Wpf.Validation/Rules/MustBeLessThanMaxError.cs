@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class MustLessThanMaxRuleError
+    public class MustBeLessThanMaxError
     {
-        public MustLessThanMaxRuleError(object max, object value)
+        public MustBeLessThanMaxError(object max, object value)
         {
             Type = max.GetType();
             Max = max;

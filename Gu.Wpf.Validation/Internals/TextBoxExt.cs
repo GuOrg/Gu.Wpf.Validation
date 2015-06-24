@@ -80,18 +80,5 @@
             }
             return propertyInfo.GetValue(source);
         }
-
-        internal static void ResetValue(this TextBox textBox)
-        {
-            var sourceValue = textBox.GetSourceValue();
-            textBox.SetCurrentValue(Input.ValueProperty, sourceValue);
-        }
-
-        internal static void Update(this TextBox textBox, DependencyProperty property, object value)
-        {
-            textBox.SetIsUpdating(true);
-            textBox.SetCurrentValue(property, value);
-            textBox.SetIsUpdating(false);
-        }
     }
 }

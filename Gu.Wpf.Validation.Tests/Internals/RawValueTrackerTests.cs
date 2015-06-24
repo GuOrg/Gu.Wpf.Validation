@@ -1,11 +1,9 @@
-﻿namespace Gu.Wpf.Validation.Tests.InputTests
+﻿namespace Gu.Wpf.Validation.Tests.Internals
 {
-    using System;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
-    using System.Windows.Input;
 
     using Gu.Wpf.Validation.Internals;
     using Gu.Wpf.Validation.Tests.Helpers;
@@ -13,10 +11,10 @@
     using NUnit.Framework;
 
     [RequiresSTA]
-    public class RawValuesTests
+    public class RawValueTrackerTests
     {
         [Test]
-        public void UpdatesWhenVmChanges()
+        public void UpdatesOnInput()
         {
             var vm = new DummyViewModel { NullableDoubleValue = null };
             var textBox = new TextBox { DataContext = vm };
@@ -28,18 +26,34 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
-            Assert.IsNullOrEmpty(textBox.GetRawText());
-            Assert.AreEqual(null, textBox.GetRawValue());
+            textBox.WriteText("1.234");
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
+        }
 
-            vm.NullableDoubleValue = 1.23456;
+        [Test]
+        public void UpdatesOnBinding()
+        {
+            var vm = new DummyViewModel { NullableDoubleValue = null };
+            var textBox = new TextBox { DataContext = vm };
+            textBox.SetCulture(new CultureInfo("en-US"));
+            textBox.SetDecimalDigits(2);
 
-            Assert.AreEqual("1.23456", textBox.GetRawText());
-            Assert.AreEqual(1.23456, textBox.GetRawValue());
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            vm.NullableDoubleValue = 1.234;
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
             Assert.AreEqual(RawValueSource.Binding, textBox.GetRawValueSource());
         }
 
         [Test]
-        public void UpdatesOnUserInput()
+        public void ResetsOnCulture()
         {
             var vm = new DummyViewModel { NullableDoubleValue = null };
             var textBox = new TextBox { DataContext = vm };
@@ -52,73 +66,40 @@
                 Mode = BindingMode.TwoWay
             };
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
-            Assert.IsNullOrEmpty(textBox.GetRawText());
-            Assert.AreEqual(null, textBox.GetRawValue());
-
-            textBox.WriteText("1.234");
-
-            Assert.AreEqual("1.23", textBox.Text);
-            Assert.AreEqual("1.234", textBox.GetRawText());
-            Assert.AreEqual(1.234, textBox.GetRawValue());
-            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
-
-            TextCompositionManager.StartComposition(new TextComposition(InputManager.Current, textBox, "56"));
-
-            Assert.AreEqual("1.24", textBox.Text);
-            Assert.AreEqual("1.2356", textBox.GetRawText());
-            Assert.AreEqual(1.2356, textBox.GetRawValue());
-            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
-        }
-
-        [Test]
-        public void UpdatesOnUserErrorInput()
-        {
-            var vm = new DummyViewModel { NullableDoubleValue = null };
-            var textBox = new TextBox { DataContext = vm };
-            textBox.SetCulture(new CultureInfo("en-US"));
-            textBox.SetDecimalDigits(2);
-
-            var binding = new Binding
-            {
-                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
-                Mode = BindingMode.TwoWay
-            };
-            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
-            Assert.IsNullOrEmpty(textBox.GetRawText());
-            Assert.AreEqual(null, textBox.GetRawValue());
-
-            textBox.WriteText("1.2dae");
-
-            Assert.AreEqual("1.2dae", textBox.GetRawText());
-            Assert.AreEqual(RawValueTracker.Unset, textBox.GetRawValue());
-            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
-        }
-
-        [Test]
-        public void UpdatesRawValueOnCultureChange()
-        {
-            var vm = new DummyViewModel { NullableDoubleValue = null };
-            var textBox = new TextBox { DataContext = vm };
-            textBox.SetCulture(new CultureInfo("en-US"));
-            textBox.SetDecimalDigits(2);
-
-            var binding = new Binding
-            {
-                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
-                Mode = BindingMode.TwoWay
-            };
-            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
-            Assert.IsNullOrEmpty(textBox.GetRawText());
-            Assert.AreEqual(null, textBox.GetRawValue());
-
             textBox.WriteText("1,234");
-
             Assert.AreEqual("1,234", textBox.GetRawText());
             Assert.AreEqual(RawValueTracker.Unset, textBox.GetRawValue());
             Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
 
             textBox.SetCulture(new CultureInfo("sv-SE"));
             Assert.AreEqual("1,234", textBox.GetRawText());
+            Assert.AreEqual(1.234, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
+        }
+
+        [Test]
+        public void ResetsOnDataContext()
+        {
+            var textBox = new TextBox();
+            textBox.SetCulture(new CultureInfo("en-US"));
+            textBox.SetDecimalDigits(2);
+
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+
+            Assert.Inconclusive("What is most right here? Maybe propagating the value from vm -> view");
+            textBox.WriteText("1.234");
+            Assert.AreEqual("1.234", textBox.GetRawText());
+            Assert.AreEqual(RawValueTracker.Unset, textBox.GetRawValue());
+            Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
+
+            var vm = new DummyViewModel { NullableDoubleValue = null };
+            textBox.DataContext = vm;
+            Assert.AreEqual("1.234", textBox.GetRawText());
             Assert.AreEqual(1.234, textBox.GetRawValue());
             Assert.AreEqual(RawValueSource.User, textBox.GetRawValueSource());
         }

@@ -12,9 +12,8 @@
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.WriteLine(string.Format(@"UpdateFormattingConverter.Convert({0}) ", value));
             var textBox = (TextBox)parameter;
-            if (textBox.IsKeyboardFocused || textBox.GetIsUpdating())
+            if (textBox.IsKeyboardFocused || textBox.GetIsUpdating() || textBox.GetIsReceivingUserInput())
             {
                 return value;
             }
@@ -25,6 +24,7 @@
                 return value;
             }
 
+            Debug.WriteLine(@"{0}.Convert({1}) -> TryUpdateTextFromRaw(textBox, converter) textBox.Text: ", value.ToDebugString(), textBox.Text.ToDebugString());
             TryUpdateTextFromRaw(textBox, converter);
 
             return value;

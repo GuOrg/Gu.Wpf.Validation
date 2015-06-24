@@ -56,19 +56,19 @@ namespace Gu.Wpf.Validation
             "Pattern",
             typeof(string),
             typeof(Input),
-            new PropertyMetadata(default(string)));
+            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.Inherits));
 
         public static readonly DependencyProperty MinProperty = DependencyProperty.RegisterAttached(
             "Min",
             typeof(object),
             typeof(Input),
-            new PropertyMetadata(default(object), null, OnMinCoerce));
+            new FrameworkPropertyMetadata(default(object), FrameworkPropertyMetadataOptions.Inherits, null, OnMinCoerce));
 
         public static readonly DependencyProperty MaxProperty = DependencyProperty.RegisterAttached(
             "Max",
             typeof(object),
             typeof(Input),
-            new PropertyMetadata(default(object), null, OnMaxCoerce));
+            new FrameworkPropertyMetadata(default(object), FrameworkPropertyMetadataOptions.Inherits, null, OnMaxCoerce));
 
         public static readonly DependencyProperty ValidationTriggerProperty = DependencyProperty.RegisterAttached(
             "ValidationTrigger",
@@ -126,14 +126,14 @@ namespace Gu.Wpf.Validation
 
         internal static readonly DependencyProperty SourceValueTypeProperty = SourceValueTypePropertyKey.DependencyProperty;
 
-        public static void SetValue(this System.Windows.Controls.TextBox element, object value)
+        public static void SetValue(this TextBox element, object value)
         {
             element.SetValue(ValueProperty, value);
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
-        public static object GetValue(this System.Windows.Controls.TextBox element)
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
+        public static object GetValue(this TextBox element)
         {
             return element.GetValue(ValueProperty);
         }
@@ -144,7 +144,7 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.UIElement))]
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static IFormatProvider GetCulture(this DependencyObject element)
         {
             return (IFormatProvider)element.GetValue(CultureProperty);
@@ -156,7 +156,7 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static NumberStyles GetNumberStyles(this DependencyObject element)
         {
             return (NumberStyles)element.GetValue(NumberStylesProperty);
@@ -168,7 +168,7 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static int? GetDecimalDigits(this DependencyObject element)
         {
             return (int?)element.GetValue(DecimalDigitsProperty);
@@ -180,7 +180,7 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static bool GetIsRequired(this DependencyObject element)
         {
             return (bool)element.GetValue(IsRequiredProperty);
@@ -192,19 +192,19 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static string GetPattern(this DependencyObject element)
         {
             return (string)element.GetValue(PatternProperty);
         }
 
-        public static void SetMin(this System.Windows.Controls.TextBox element, object value)
+        public static void SetMin(this TextBox element, object value)
         {
             element.SetValue(MinProperty, value);
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static object GetMin(this DependencyObject element)
         {
             return element.GetValue(MinProperty);
@@ -216,7 +216,7 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static object GetMax(this DependencyObject element)
         {
             return (object)element.GetValue(MaxProperty);
@@ -228,7 +228,7 @@ namespace Gu.Wpf.Validation
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(System.Windows.Controls.TextBox))]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static UpdateSourceTrigger GetValidationTrigger(this DependencyObject element)
         {
             return (UpdateSourceTrigger)element.GetValue(ValidationTriggerProperty);
@@ -274,12 +274,12 @@ namespace Gu.Wpf.Validation
             return (ITypeStringConverters)element.GetValue(StringConvertersProperty);
         }
 
-        public static void SetStringConverter(this System.Windows.Controls.TextBox element, IStringConverter value)
+        public static void SetStringConverter(this TextBox element, IStringConverter value)
         {
             element.SetValue(StringConverterProperty, value);
         }
 
-        public static IStringConverter GetStringConverter(this System.Windows.Controls.TextBox element)
+        public static IStringConverter GetStringConverter(this TextBox element)
         {
             return (IStringConverter)element.GetValue(StringConverterProperty);
         }
@@ -294,7 +294,7 @@ namespace Gu.Wpf.Validation
             return (ITypeRules)element.GetValue(TypeRulesProperty);
         }
 
-        public static void SetValidationRules(this System.Windows.Controls.TextBox element, IReadOnlyCollection<ValidationRule> value)
+        public static void SetValidationRules(this TextBox element, IReadOnlyCollection<ValidationRule> value)
         {
             element.SetValue(ValidationRulesProperty, value);
         }
@@ -316,7 +316,7 @@ namespace Gu.Wpf.Validation
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as System.Windows.Controls.TextBox;
+            var textBox = d as TextBox;
             if (textBox == null)
             {
                 return;
@@ -366,14 +366,14 @@ namespace Gu.Wpf.Validation
                 d.CoerceValue(NumberStylesProperty);
                 d.CoerceValue(StringConverterProperty);
                 d.CoerceValue(ValidationRulesProperty);
-                var textBox = (System.Windows.Controls.TextBox)d;
+                var textBox = (TextBox)d;
                 Setup(textBox); // rebind
             }
         }
 
         private static void OnStringConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as System.Windows.Controls.TextBox;
+            var textBox = d as TextBox;
             if (textBox != null)
             {
                 textBox.CoerceValue(MinProperty);
@@ -384,7 +384,7 @@ namespace Gu.Wpf.Validation
 
         private static void OnCultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = d as System.Windows.Controls.TextBox;
+            var textBox = d as TextBox;
             if (textBox != null && textBox.GetSourceValueType() != null)
             {
                 RawValueTracker.Update(textBox);
@@ -473,12 +473,19 @@ namespace Gu.Wpf.Validation
 
         private static object CoerceMinMax(DependencyObject d, object basevalue)
         {
+            var textBox = d as TextBox;
+            {
+                if (textBox == null)
+                {
+                    return basevalue;
+                }
+            }
             var s = basevalue as string;
             if (s == null)
             {
                 return basevalue;
             }
-            var textBox = (System.Windows.Controls.TextBox)d;
+
             var converter = textBox.GetStringConverter();
             if (converter == null)
             {
@@ -489,14 +496,7 @@ namespace Gu.Wpf.Validation
             return result;
         }
 
-        private static void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = (System.Windows.Controls.TextBox)sender;
-            textBox.DataContextChanged -= OnDataContextChanged;
-            Setup(textBox);
-        }
-
-        private static void Setup(System.Windows.Controls.TextBox textBox)
+        private static void Setup(TextBox textBox)
         {
             var validator = textBox.GetValidator();
             if (validator != null)

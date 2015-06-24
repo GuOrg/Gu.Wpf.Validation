@@ -10,24 +10,20 @@ namespace Gu.Wpf.Validation.Internals
     {
         public virtual object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.WriteLine(string.Format(@"UpdateValidationConverter.Convert({0}) ", value));
             var textBox = (TextBox)parameter;
-            if (textBox == null)
+            var flags = textBox.GetValue(DefaultValidator.UpdateValidationFlagsProperty) as UpdateValidationFlags;
+            if (flags == null)
             {
-                return value;
+                //Debug.WriteLine(@"{0}.Convert({1}) -> UpdateSource(textBox) (flags == null) textBox.Text: {2}", GetType().PrettyName(), value.ToDebugString(), textBox.Text.ToDebugString());
+                return new UpdateValidationFlags(value);
             }
-            if (textBox.GetIsUpdating())
+
+            var newFlags = flags.Update(value);
+            if (!Equals(flags, newFlags))
             {
-                return value;
+                //Debug.WriteLine(@"{0}.Convert({1}) -> UpdateSource(textBox) (!Equals(flags, newFlags)) textBox.Text: {2}", GetType().PrettyName(), value.ToDebugString(), textBox.Text.ToDebugString());
             }
-            var expression = BindingOperations.GetBindingExpressionBase(textBox, TextBox.TextProperty);
-            if (expression != null)
-            {
-                textBox.SetIsUpdating(true);
-                expression.UpdateSource();
-                textBox.SetIsUpdating(false);
-            }
-            return value;
+            return newFlags;
         }
 
         public virtual object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)

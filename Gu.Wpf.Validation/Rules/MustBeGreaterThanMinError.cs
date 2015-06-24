@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class MustGreaterThanMinError
+    public class MustBeGreaterThanMinError
     {
-        public MustGreaterThanMinError(object min, object value)
+        public MustBeGreaterThanMinError(object min, object value)
         {
             Type = min.GetType();
             Min = min;

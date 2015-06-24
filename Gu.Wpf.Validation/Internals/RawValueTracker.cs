@@ -1,13 +1,11 @@
 ﻿namespace Gu.Wpf.Validation.Internals
 {
+    using System;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-
-    using Gu.Wpf.Validation.StringConverters;
+    using System.Windows.Data;
 
     public static class RawValueTracker
     {
@@ -37,10 +35,17 @@
 
         public static readonly DependencyProperty RawValueSourceProperty = RawValueSourcePropertyKey.DependencyProperty;
 
+        private static readonly DependencyProperty IsReceivingUserInputProperty = DependencyProperty.RegisterAttached(
+            "IsReceivingUserInput",
+            typeof(bool),
+            typeof(RawValueTracker),
+            new PropertyMetadata(default(bool)));
+
         public static void TrackUserInput(TextBox textBox)
         {
-            //textBox.AddHandler(TextBoxBase.TextChangedEvent, new TextChangedEventHandler(OnTextChanged), true);
-            TextCompositionManager.AddPreviewTextInputHandler(textBox, OnTextInput);
+            textBox.AddHandler(UIElement.PreviewKeyDownEvent, new RoutedEventHandler(OnUserInput));
+            textBox.AddHandler(UIElement.PreviewTextInputEvent, new RoutedEventHandler(OnUserInput));
+            textBox.AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(OnTextChanged));
         }
 
         private static void SetRawText(this TextBox element, string value)
@@ -73,6 +78,27 @@
             return (RawValueSource)element.GetValue(RawValueSourceProperty);
         }
 
+        private static void SetIsReceivingUserInput(this DependencyObject element, bool value)
+        {
+            element.SetValue(IsReceivingUserInputProperty, value);
+        }
+
+        public static bool GetIsReceivingUserInput(this DependencyObject element)
+        {
+            return (bool)element.GetValue(IsReceivingUserInputProperty);
+        }
+
+        internal static void ResetValue(this TextBox textBox)
+        {
+            var expression = BindingOperations.GetBindingExpression(textBox, Input.ValueProperty);
+            if (expression != null)
+            {
+                textBox.SetIsUpdating(true);
+                expression.UpdateTarget();
+                textBox.SetIsUpdating(false);
+            }
+        }
+
         private static void OnRawValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue == Unset)
@@ -80,16 +106,16 @@
                 return;
             }
             var textBox = (TextBox)d;
+            if (textBox.GetIsUpdating())
+            {
+                return;
+            }
             Debug.Assert(!textBox.GetIsUpdating());
             var rawText = textBox.GetRawText();
+            string rawString;
             if (e.NewValue == null)
             {
-                if (!string.IsNullOrEmpty(rawText))
-                {
-                    textBox.SetRawText(string.Empty);
-                    textBox.SetRawValueSource(RawValueSource.Binding);
-                    Debug.WriteLine("OnRawValueChanged: Text: {0}, Value: {1}, Source: {2}", "string.Empty", e.NewValue, RawValueSource.Binding);
-                }
+                rawString = string.Empty;
             }
             else
             {
@@ -98,12 +124,23 @@
                 {
                     return;
                 }
-                var rawString = converter.ToRawString(e.NewValue, textBox);
-                if (rawString != rawText)
+                rawString = converter.ToRawString(e.NewValue, textBox);
+            }
+
+            if (rawString != rawText)
+            {
+                Debug.WriteLine(@"OnRawValueChanged({0}) -> textBox.SetRawText({1}) textBox.Text: {2}", e.NewValue.ToDebugString(), rawString.ToDebugString(), textBox.Text.ToDebugString());
+                textBox.SetRawText(rawString);
+                if (textBox.GetIsReceivingUserInput())
                 {
-                    textBox.SetRawText(rawString);
+                    Debug.WriteLine(@"OnRawValueChanged({0}) -> SetRawValueSource(textBox, RawValueSource.User) textBox.Text: {1}", e.NewValue.ToDebugString(), textBox.Text.ToDebugString());
+                    SetRawValueSource(textBox, RawValueSource.User);
+                    textBox.SetIsReceivingUserInput(false);
+                }
+                else
+                {
+                    Debug.WriteLine(@"OnRawValueChanged({0}) -> textBox.SetRawValueSource(RawValueSource.Binding) textBox.Text: {1}", e.NewValue.ToDebugString(), textBox.Text.ToDebugString());
                     textBox.SetRawValueSource(RawValueSource.Binding);
-                    Debug.WriteLine("OnRawValueChanged: Text: {0}, Value: {1}, Source: {2}", rawString, e.NewValue, RawValueSource.Binding);
                 }
             }
         }
@@ -128,14 +165,14 @@
                 {
                     textBox.SetRawValue(value);
                     textBox.SetRawValueSource(RawValueSource.User);
-                    Debug.WriteLine("OnRawTextChanged: Text: {0}, Value: {1}, Source: {2}", e.NewValue, value, RawValueSource.User);
+                    Debug.WriteLine(@"OnRawTextChanged: Text: {0}, Value: {1}, Source: {2}", e.NewValue, value, RawValueSource.User);
                 }
             }
             else
             {
                 textBox.SetRawValue(Unset);
                 textBox.SetRawValueSource(RawValueSource.User);
-                Debug.WriteLine("OnRawTextChanged: Text: {0}, Value: {1}, Source: {2}", e.NewValue, value, RawValueSource.User);
+                Debug.WriteLine(@"OnRawTextChanged: Text: {0}, Value: {1}, Source: {2}", e.NewValue, value, RawValueSource.User);
             }
         }
 
@@ -146,52 +183,36 @@
             {
                 var converter = textBox.GetStringConverter();
                 object value;
-                if (converter.TryParse(textBox.GetRawText(), textBox, out value))
+                var rawText = textBox.GetRawText();
+                if (converter.TryParse(rawText, textBox, out value))
                 {
+                    textBox.SetIsUpdating(true);
                     textBox.SetRawValue(value);
+                    textBox.SetIsUpdating(false);
                 }
             }
             else
             {
+                textBox.SetIsUpdating(true);
                 textBox.SetRawValue(rawValue);
+                textBox.SetIsUpdating(false);
             }
         }
 
-
-        private static void OnTextInput(object sender, TextCompositionEventArgs e)
+        private static void OnUserInput(object sender, RoutedEventArgs e)
         {
             var textBox = (TextBox)sender;
-            if (!textBox.GetIsUpdating())
-            {
-                SetRawText(textBox, GetText(textBox, e));
-            }
+            textBox.SetIsReceivingUserInput(true);
         }
 
-        private static string GetText(TextBox txt, TextCompositionEventArgs e)
+        private static void OnTextChanged(object sender, RoutedEventArgs e)
         {
-            int selectionStart = txt.SelectionStart;
-            if (txt.Text.Length < selectionStart)
+            var textBox = (TextBox)sender;
+            if (textBox.GetIsReceivingUserInput())
             {
-                selectionStart = txt.Text.Length;
+                textBox.SetRawText(textBox.Text);
             }
-
-            int selectionLength = txt.SelectionLength;
-            if (txt.Text.Length < selectionStart + selectionLength)
-            {
-                selectionLength = txt.Text.Length - selectionStart;
-            }
-
-            var realtext = txt.Text.Remove(selectionStart, selectionLength);
-
-            int caretIndex = txt.CaretIndex;
-            if (realtext.Length < caretIndex)
-            {
-                caretIndex = realtext.Length;
-            }
-
-            var newtext = realtext.Insert(caretIndex, e.Text);
-
-            return newtext;
+            textBox.SetIsReceivingUserInput(false);
         }
     }
 }

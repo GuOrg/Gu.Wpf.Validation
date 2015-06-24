@@ -6,19 +6,14 @@
     {
         protected override ValidationResult Validate(string text, TextBox textBox)
         {
-            if (textBox.GetIsRequired() && string.IsNullOrEmpty(text))
+            if (textBox.GetIsRequired())
             {
-                return new ValidationResult(false, new RequiredResult());
+                if (string.IsNullOrEmpty(text))
+                {
+                    return new ValidationResult(false, new IsRequiredError());
+                }
             }
             return ValidationResult.ValidResult;
-        }
-    }
-
-    public class RequiredResult
-    {
-        public override string ToString()
-        {
-            return "Value is required";
         }
     }
 }

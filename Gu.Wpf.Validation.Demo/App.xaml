@@ -3,12 +3,117 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Gu.Wpf.Validation.Demo.Converters"
              xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
+             xmlns:wpf="clr-namespace:Gu.Wpf.Validation.Demo.Wpf"
              StartupUri="MainWindow.xaml"
              >
     <Application.Resources>
         <demo:NullConverter x:Key="NullConverter" />
         <converters:TextBoxChildConverter x:Key="TextBoxChildConverter" />
         <converters:StringToIntConverter x:Key="StringToIntConverter" />
+        <converters:StringToNullableIntConverter x:Key="StringToNullableIntConverter" />
         <converters:TypeToPrettyNameConverter x:Key="TypeToPrettyNameConverter" />
+
+
+        <Style x:Key="HeaderStyle"
+               TargetType="{x:Type TextBlock}"
+               >
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="HeaderedSettingStyle"
+               TargetType="{x:Type HeaderedContentControl}"
+               >
+            <Setter Property="Margin" Value="8,8" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                                  />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Grid.Column="0"
+                                              ContentSource="Header"
+                                              />
+                            <ContentPresenter Grid.Column="1"
+                                              Margin="8,0"
+                                              ContentSource="Content"
+                                              />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding}"
+                                   />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="TightHeaderedSettingStyle"
+               BasedOn="{StaticResource HeaderedSettingStyle}"
+               TargetType="{x:Type HeaderedContentControl}"
+               >
+            <Setter Property="Margin" Value="0,0" />
+        </Style>
+
+        <Style x:Key="SettingsListStyle"
+               TargetType="{x:Type ItemsControl}"
+               >
+            <Style.Resources>
+                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}"
+                                   TargetType="{x:Type HeaderedContentControl}"
+                                   />
+            </Style.Resources>
+            <Setter Property="Grid.IsSharedSizeScope" Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+            <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                        <!--<ControlTemplate.Resources>
+                            <Style BasedOn="{StaticResource HeaderedSettingStyle}"
+                                   TargetType="{x:Type HeaderedContentControl}"
+                                   />
+                        </ControlTemplate.Resources>-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                                  />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Row="0"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Grid.IsSharedSizeScope="True"
+                                        IsItemsHost="True"
+                                        />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TightSettingsListStyle"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource SettingsListStyle}"
+               >
+            <Style.Resources>
+                <Style BasedOn="{StaticResource TightHeaderedSettingStyle}"
+                                   TargetType="{x:Type HeaderedContentControl}"
+                                   />
+            </Style.Resources>
+        </Style>
     </Application.Resources>
 </Application>
