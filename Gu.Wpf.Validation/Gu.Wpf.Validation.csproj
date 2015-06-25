@@ -60,6 +60,7 @@
     <Compile Include="Internals\RawValueTracker.cs" />
     <Compile Include="Internals\ToStringExt.cs" />
     <Compile Include="Internals\UpdateValidationFlags.cs" />
+    <Compile Include="OnValidationErrorStrategy.cs" />
     <Compile Include="Rules\IsRequiredError.cs" />
     <Compile Include="SourceValueTypes.cs" />
     <Compile Include="StringConverters\DefaultStringConverter.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Internals\UpdateFormattingConverter.cs" />
     <Compile Include="Internals\TypeExt.cs" />
     <Compile Include="Internals\UpdateValidationConverter.cs" />
-    <Compile Include="Internals\OnErrorConverter.cs" />
     <Compile Include="Internals\TextBoxExt.cs" />
     <Compile Include="Contracts\ITypeNumberStyles.cs" />
     <Compile Include="Contracts\ITypeStringConverters.cs" />

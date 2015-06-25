@@ -5,13 +5,12 @@
 
     public static class DesignMode
     {
-        private static readonly DependencyObject Dummy= new DependencyObject();
+        private static readonly DependencyObject Dummy = new DependencyObject();
+        internal static bool? IsInDesignModeForTests = null;
+
         public static bool IsInDesignMode
         {
-            get
-            {
-                return DesignerProperties.GetIsInDesignMode(Dummy);
-            }
+            get { return IsInDesignModeForTests ?? DesignerProperties.GetIsInDesignMode(Dummy); }
         }
     }
 }

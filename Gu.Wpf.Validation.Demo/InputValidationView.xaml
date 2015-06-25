@@ -30,6 +30,7 @@
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                  SelectedIndex="0"
                  SelectionMode="Single"
+                 validation:Input.OnValidationErrorStrategy="{Binding StrategyVm.Strategy}"
                  >
             <ListBox.Resources>
                 <Style TargetType="{x:Type GroupBox}">
@@ -99,7 +100,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="vanilla textbox double? (lf)">
+            <!--<GroupBox Header="vanilla textbox double? (lf)">
                 <StackPanel>
                     <TextBox Text="{Binding NullableDoubleValue}"
                              />
@@ -108,7 +109,7 @@
                         <Run Text="{Binding NullableDoubleValue}" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>
+            </GroupBox>-->
 
             <GroupBox Header="double? (pc)">
                 <StackPanel>
@@ -217,7 +218,7 @@
                                                               UpdateSourceTrigger=PropertyChanged}"
                              />
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Text="Vm: " />
+                        <TextBlock Text="Vm: " />
                         <Label Content="{Binding SampleStruct}" />
                     </StackPanel>
                 </StackPanel>
@@ -236,6 +237,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+
             <GroupBox Grid.Column="0"
                       Header="Settings"
                       >
@@ -265,7 +267,6 @@
                         <TextBox x:Name="Max" />
                     </HeaderedContentControl>
 
-
                     <HeaderedContentControl Header="Pattern">
                         <TextBox x:Name="Pattern" />
                     </HeaderedContentControl>
@@ -274,6 +275,20 @@
                         <CheckBox x:Name="IsRequired"
                                   IsChecked="True"
                                   />
+                    </HeaderedContentControl>
+
+                    <HeaderedContentControl Header="On error strategy">
+                        <StackPanel>
+                            <CheckBox Content="UpdateSourceOnSuccess"
+                                      IsChecked="{Binding StrategyVm.UpdateSourceOnSuccess}"
+                                      />
+                            <CheckBox Content="UpdateSourceOnError"
+                                      IsChecked="{Binding StrategyVm.UpdateSourceOnError}"
+                                      />
+                            <CheckBox Content="ResetValueOnError"
+                                      IsChecked="{Binding StrategyVm.ResetValueOnError}"
+                                      />
+                        </StackPanel>
                     </HeaderedContentControl>
                 </ItemsControl>
             </GroupBox>

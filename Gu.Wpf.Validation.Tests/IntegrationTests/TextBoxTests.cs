@@ -97,6 +97,7 @@
         public void ChangingCultureOnlyChangesUi()
         {
             TextBox.WriteText("1,2345");
+            TextBox.RaiseLostFocusEvent();
             TextBox.SetDecimalDigits(2);
             TextBox.SetCulture(new CultureInfo("en-US"));
             Assert.AreEqual("1.23", TextBox.Text);
@@ -124,7 +125,10 @@
         [Test]
         public void ValidationSuccessUpdatesValue()
         {
+            TextBox.SetCulture(new CultureInfo("sv-SE"));
             TextBox.WriteText("1.23", true);
+            TextBox.RaiseLostFocusEvent();
+            Assert.AreEqual(0, VmChanges.Count);
             Assert.AreEqual(0, TextBox.GetValue(Input.ValueProperty));
             Assert.AreEqual("1.23", TextBox.GetRawText());
             Assert.AreEqual(RawValueTracker.Unset, TextBox.GetRawValue());

@@ -1,8 +1,6 @@
 ﻿namespace Gu.Wpf.Validation.Tests
 {
     using System;
-    using System.Linq;
-    using System.Reflection;
 
     using Gu.Wpf.Validation.Internals;
     using Gu.Wpf.Validation.Tests.Helpers;
@@ -14,10 +12,17 @@
         [TestCaseSource(typeof(NumericTypesSource)), Explicit("Code gen")]
         public void NullableHasProperty(Type type)
         {
-            foreach (var source in new NumericTypesSource().Where(f=>f.IsNullable()))
+            foreach (var source in new NumericTypesSource())
             {
-                var underlyingType = Nullable.GetUnderlyingType(source);
-                Console.WriteLine("public static readonly Type Nullable{0} = typeof({1}?);", underlyingType.Name, underlyingType.PrettyName());
+                if (source.IsNullable())
+                {
+                    var underlyingType = Nullable.GetUnderlyingType(source);
+                    Console.WriteLine("public static readonly Type Nullable{0} = typeof({1}?);", underlyingType.Name, underlyingType.PrettyName());
+                }
+                else
+                {
+                    Console.WriteLine("public static readonly Type {0} = typeof({1});", source.Name, source.PrettyName());
+                }
             }
             //if (type.IsNullable())
             //{

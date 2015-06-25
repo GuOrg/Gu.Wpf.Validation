@@ -12,12 +12,22 @@
             {
                 textBox.SelectAll();
             }
-            TextCompositionManager.StartComposition(new TextComposition(InputManager.Current, textBox, text));
+            var composition = new TextComposition(InputManager.Current, textBox, text);
+            TextCompositionManager.StartComposition(composition);
+            if (text == "")
+            {
+                textBox.Text = "";
+            }
         }
 
         public static void RaiseLoadedEvent(this TextBox textBox)
         {
             textBox.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+        }
+
+        public static void RaiseLostFocusEvent(this TextBox textBox)
+        {
+            textBox.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
         }
     }
 }

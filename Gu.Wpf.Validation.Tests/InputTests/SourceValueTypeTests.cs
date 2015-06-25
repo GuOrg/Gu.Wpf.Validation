@@ -1,8 +1,10 @@
 ﻿namespace Gu.Wpf.Validation.Tests.InputTests
 {
+    using System;
     using System.Windows;
     using System.Windows.Data;
 
+    using Gu.Wpf.Validation.Internals;
     using Gu.Wpf.Validation.Tests.Helpers;
 
     using NUnit.Framework;
@@ -29,7 +31,7 @@
         }
 
         [Test]
-        public void NullableDouble()
+        public void NullableDoubleNull()
         {
             var vm = new DummyViewModel { NullableDoubleValue = null };
             var textBox = new System.Windows.Controls.TextBox { DataContext = vm };
@@ -48,7 +50,26 @@
         }
 
         [Test]
-        public void WithConverter()
+        public void NullableDoubleNotNull()
+        {
+            var vm = new DummyViewModel { NullableDoubleValue = 1 };
+            var textBox = new System.Windows.Controls.TextBox { DataContext = vm };
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+            textBox.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+            Assert.AreEqual(typeof(double?), textBox.GetSourceValueType());
+
+            vm.NullableDoubleValue = 1;
+            Assert.AreEqual(typeof(double?), textBox.GetSourceValueType());
+        }
+
+        [Test]
+        public void WithConverterThrowsInDesignModeIfNoExplicitSourceValueType()
         {
             var vm = new DummyViewModel { StringIntValue = "1" };
             var textBox = new System.Windows.Controls.TextBox { DataContext = vm };
@@ -58,7 +79,24 @@
                 Path = new PropertyPath(DummyViewModel.StringIntValuePropertyName),
                 Mode = BindingMode.TwoWay
             };
+            DesignMode.IsInDesignModeForTests = true;
+            Assert.Throws<ArgumentException>(() => BindingOperations.SetBinding(textBox, Input.ValueProperty, binding));
+        }
+
+        [Test]
+        public void WithConverterExplicit()
+        {
+            var vm = new DummyViewModel { StringIntValue = "1" };
+            var textBox = new System.Windows.Controls.TextBox { DataContext = vm };
+            var binding = new Binding
+            {
+                Converter = new StringToIntConverter(),
+                Path = new PropertyPath(DummyViewModel.StringIntValuePropertyName),
+                Mode = BindingMode.TwoWay
+            };
+            textBox.SetSourceValueType(SourceValueTypes.Int32);
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            DesignMode.IsInDesignModeForTests = true;
             textBox.RaiseLoadedEvent();
             Assert.AreEqual(typeof(int), textBox.GetSourceValueType());
         }

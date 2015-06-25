@@ -40,6 +40,27 @@
         }
 
         [Test]
+        public void WhenRequiredReactsOnInput()
+        {
+            var textBox = new TextBox { DataContext = new DummyViewModel { NullableDoubleValue = 1 } };
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.SetIsRequired(true);
+            textBox.RaiseLoadedEvent();
+            AssertNoError(textBox);
+
+            textBox.WriteText("");
+            AssertError<IsRequiredError>(textBox);
+
+            textBox.WriteText("1");
+            AssertNoError(textBox);
+        }
+
+        [Test]
         public void WhenRequiredButMissing()
         {
             var textBox = new TextBox { DataContext = new DummyViewModel { NullableDoubleValue = null } };
@@ -56,6 +77,66 @@
 
             textBox.SetIsRequired(false);
             AssertNoError(textBox);
+        }
+
+        [Test]
+        public void WhenRequiredButMissingAndHasRequiredOnLoaded()
+        {
+            var textBox = new TextBox { DataContext = new DummyViewModel { NullableDoubleValue = null } };
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.SetIsRequired(true);
+            textBox.RaiseLoadedEvent();
+
+            AssertError<IsRequiredError>(textBox);
+
+            textBox.SetIsRequired(false);
+            AssertNoError(textBox);
+        }
+
+        [Test]
+        public void WhenRequiredUpdateSourceOnErrorIfUpdateSourceOnError()
+        {
+            var vm = new DummyViewModel { NullableDoubleValue = 1 };
+            var textBox = new TextBox { DataContext = vm };
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            textBox.SetIsRequired(true);
+            textBox.SetOnValidationErrorStrategy(OnValidationErrorStrategy.UpdateSourceOnError);
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+            
+            textBox.WriteText("");
+            AssertError<IsRequiredError>(textBox);
+            Assert.AreEqual(null, vm.NullableDoubleValue);
+        }
+
+        [Test]
+        public void WhenRequiredDoesNotUpdateSourceOnError()
+        {
+            var vm = new DummyViewModel { NullableDoubleValue = 1 };
+            var textBox = new TextBox { DataContext = vm };
+            var binding = new Binding
+            {
+                Path = new PropertyPath(DummyViewModel.NullableDoubleValuePropertyName),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            textBox.SetIsRequired(true);
+            textBox.SetOnValidationErrorStrategy(OnValidationErrorStrategy.Default);
+            BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
+            textBox.RaiseLoadedEvent();
+            textBox.WriteText("");
+            AssertError<IsRequiredError>(textBox);
+            Assert.AreEqual(1, vm.NullableDoubleValue);
         }
 
         [Test]
@@ -193,6 +274,7 @@
                 Converter = new StringToIntConverter(),
                 Mode = BindingMode.TwoWay
             };
+            textBox.SetSourceValueType(SourceValueTypes.Int32);
             BindingOperations.SetBinding(textBox, Input.ValueProperty, binding);
             textBox.RaiseLoadedEvent();
 

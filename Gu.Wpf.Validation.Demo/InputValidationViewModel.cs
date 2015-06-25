@@ -20,6 +20,11 @@
 
         private SampleStruct _sampleStruct;
 
+        public InputValidationViewModel()
+        {
+            StrategyVm = new StrategyVm();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IEnumerable<IFormatProvider> Cultures
@@ -29,6 +34,8 @@
                 return new[] { CultureInfo.GetCultureInfo("sv"), CultureInfo.GetCultureInfo("en"), };
             }
         }
+
+        public StrategyVm StrategyVm { get; private set; }
 
         public double DoubleValue
         {

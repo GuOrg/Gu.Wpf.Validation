@@ -71,6 +71,7 @@
     <Compile Include="NavigationDebugViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Converters\TextBoxChildConverter.cs" />
+    <Compile Include="StartegyVm.cs" />
     <Compile Include="ValidationRule.cs" />
     <Compile Include="ValidationScopeView.xaml.cs">
       <DependentUpon>ValidationScopeView.xaml</DependentUpon>

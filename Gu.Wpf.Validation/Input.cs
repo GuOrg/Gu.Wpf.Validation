@@ -2,16 +2,22 @@ namespace Gu.Wpf.Validation
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
-    using Internals;
-    using StringConverters;
+
+    using Gu.Wpf.Validation.Internals;
+    using Gu.Wpf.Validation.StringConverters;
 
     public static partial class Input
     {
+        public static readonly RoutedEvent ValidationDirtyEvent = EventManager.RegisterRoutedEvent(
+            "ValidationDirty",
+            RoutingStrategy.Direct,
+            typeof(RoutedEventHandler),
+            typeof(Input));
+
         /// <summary>
         /// This is used to get a notification when Value is bound even if the value is null.
         /// </summary>
@@ -77,6 +83,12 @@ namespace Gu.Wpf.Validation
             typeof(Input),
             new FrameworkPropertyMetadata(UpdateSourceTrigger.PropertyChanged, FrameworkPropertyMetadataOptions.Inherits));
 
+        public static readonly DependencyProperty OnValidationErrorStrategyProperty = DependencyProperty.RegisterAttached(
+            "OnValidationErrorStrategy",
+            typeof(OnValidationErrorStrategy),
+            typeof(Input),
+            new FrameworkPropertyMetadata(OnValidationErrorStrategy.Default, FrameworkPropertyMetadataOptions.Inherits));
+
         public static readonly DependencyProperty ValidatorProperty = DependencyProperty.RegisterAttached(
             "Validator",
             typeof(IValidator),
@@ -117,7 +129,10 @@ namespace Gu.Wpf.Validation
             "ValidationRules",
             typeof(IReadOnlyCollection<ValidationRule>),
             typeof(Input),
-            new PropertyMetadata(default(IReadOnlyCollection<ValidationRule>), null, OnValidationRulesCoerce));
+            new FrameworkPropertyMetadata(
+                default(IReadOnlyCollection<ValidationRule>),
+                FrameworkPropertyMetadataOptions.NotDataBindable,
+                null, OnValidationRulesCoerce));
 
         public static readonly DependencyProperty SourceValueTypeProperty = DependencyProperty.RegisterAttached(
             "SourceValueType",
@@ -128,6 +143,16 @@ namespace Gu.Wpf.Validation
         public static void SetValue(this TextBox element, object value)
         {
             element.SetValue(ValueProperty, value);
+        }
+
+        public static void AddValidationDirtyHandler(this UIElement o, RoutedEventHandler handler)
+        {
+            o.AddHandler(ValidationDirtyEvent, handler);
+        }
+
+        public static void RemoveValidationDirtyHandler(this UIElement o, RoutedEventHandler handler)
+        {
+            o.RemoveHandler(ValidationDirtyEvent, handler);
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
@@ -233,6 +258,18 @@ namespace Gu.Wpf.Validation
             return (UpdateSourceTrigger)element.GetValue(ValidationTriggerProperty);
         }
 
+        public static void SetOnValidationErrorStrategy(this DependencyObject element, OnValidationErrorStrategy value)
+        {
+            element.SetValue(OnValidationErrorStrategyProperty, value);
+        }
+
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
+        public static OnValidationErrorStrategy GetOnValidationErrorStrategy(this DependencyObject element)
+        {
+            return (OnValidationErrorStrategy)element.GetValue(OnValidationErrorStrategyProperty);
+        }
+
         public static void SetValidator(this DependencyObject element, IValidator value)
         {
             element.SetValue(ValidatorProperty, value);
@@ -298,6 +335,8 @@ namespace Gu.Wpf.Validation
             element.SetValue(ValidationRulesProperty, value);
         }
 
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static IReadOnlyCollection<ValidationRule> GetValidationRules(this DependencyObject element)
         {
             return (IReadOnlyCollection<ValidationRule>)element.GetValue(ValidationRulesProperty);
@@ -322,51 +361,48 @@ namespace Gu.Wpf.Validation
             {
                 return;
             }
-            if (e.NewValue != null)
-            {
-                var sourceValueType = textBox.GetSourceValueType();
-                var type = e.NewValue.GetType();
-                if (sourceValueType == null)
-                {
-                    textBox.SetSourceValueType(type);
-                }
+            //if (e.NewValue != null)
+            //{
+            //    var sourceValueType = textBox.GetSourceValueType();
+            //    var type = e.NewValue.GetType();
+            //    if (sourceValueType == null)
+            //    {
+            //        textBox.SetSourceValueType(type);
+            //    }
 
-                else if (sourceValueType != type)
+            //    else if (sourceValueType != type)
+            //    {
+            //        if (sourceValueType.IsNullable())
+            //        {
+            //            if (Nullable.GetUnderlyingType(sourceValueType) != type)
+            //            {
+            //                textBox.SetSourceValueType(type);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            textBox.SetSourceValueType(type);
+            //        }
+            //    }
+            //}
+            if (textBox.GetSourceValueType() == null)
+            {
+                var expression = BindingOperations.GetBindingExpression(textBox, ValueProperty);
+                if (expression != null)
                 {
-                    if (sourceValueType.IsNullable())
+                    var converter = expression.ParentBinding.Converter;
+                    if (converter != null)
                     {
-                        if (Nullable.GetUnderlyingType(sourceValueType) != type)
+                        if (DesignMode.IsInDesignMode)
                         {
-                            textBox.SetSourceValueType(type); 
+                            var message = string.Format("Cannot figure out SourceValueType when binding with converter tat can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
+                            throw new ArgumentException(message);
                         }
                     }
                     else
                     {
-                        textBox.SetSourceValueType(type);                        
-                    }
-                }
-            }
-            else if (textBox.GetSourceValueType() == null)
-            {
-                if (textBox.DataContext != null)
-                {
-                    var expression = BindingOperations.GetBindingExpression(textBox, ValueProperty);
-                    if (expression != null)
-                    {
-                        var converter = expression.ParentBinding.Converter;
-                        if (converter != null)
-                        {
-                            if (DesignMode.IsInDesignMode)
-                            {
-                                var message = string.Format("Cannot figure out SourceValueType when binding with converter tat can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
-                                throw new ArgumentException( message);
-                            }
-                        }
-                        else
-                        {
-                            var fromBinding = expression.GetSourceValueType();
-                            textBox.SetSourceValueType(fromBinding);  
-                        }
+                        var fromBinding = expression.GetSourceValueType();
+                        textBox.SetSourceValueType(fromBinding);
                     }
                 }
             }

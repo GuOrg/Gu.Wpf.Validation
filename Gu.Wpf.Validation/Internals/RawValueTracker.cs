@@ -1,11 +1,9 @@
 ﻿namespace Gu.Wpf.Validation.Internals
 {
-    using System;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
-    using System.Windows.Data;
 
     public static class RawValueTracker
     {
@@ -89,17 +87,6 @@
         public static bool GetIsReceivingUserInput(this DependencyObject element)
         {
             return (bool)element.GetValue(IsReceivingUserInputProperty);
-        }
-
-        internal static void ResetValue(this TextBox textBox)
-        {
-            var expression = BindingOperations.GetBindingExpression(textBox, Input.ValueProperty);
-            if (expression != null)
-            {
-                textBox.SetIsUpdating(true);
-                expression.UpdateTarget();
-                textBox.SetIsUpdating(false);
-            }
         }
 
         private static void OnRawValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -192,13 +179,8 @@
                     textBox.SetIsUpdating(true);
                     textBox.SetRawValue(value);
                     textBox.SetIsUpdating(false);
+                    textBox.RaiseEvent(DefaultValidator.ValidationDirtyArgs);
                 }
-            }
-            else
-            {
-                textBox.SetIsUpdating(true);
-                textBox.SetRawValue(rawValue);
-                textBox.SetIsUpdating(false);
             }
         }
 
