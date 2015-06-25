@@ -66,7 +66,7 @@
 
         internal static object GetRawValue(this DependencyObject element)
         {
-            return (object)element.GetValue(RawValueProperty);
+            return element.GetValue(RawValueProperty);
         }
 
         private static void SetRawValueSource(this DependencyObject element, RawValueSource value)
@@ -133,6 +133,8 @@
                     textBox.SetRawValueSource(RawValueSource.Binding);
                 }
             }
+            textBox.RaiseEvent(Input.ValidationDirtyArgs);
+            textBox.RaiseEvent(Input.FormattingDirtyArgs);
         }
 
         private static void OnRawTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -164,6 +166,8 @@
                 textBox.SetRawValueSource(RawValueSource.User);
                 Debug.WriteLine(@"OnRawTextChanged: Text: {0}, Value: {1}, Source: {2}", e.NewValue, value, RawValueSource.User);
             }
+            textBox.RaiseEvent(Input.ValidationDirtyArgs);
+            textBox.RaiseEvent(Input.FormattingDirtyArgs);
         }
 
         internal static void Update(TextBox textBox)
@@ -179,7 +183,7 @@
                     textBox.SetIsUpdating(true);
                     textBox.SetRawValue(value);
                     textBox.SetIsUpdating(false);
-                    textBox.RaiseEvent(DefaultValidator.ValidationDirtyArgs);
+                    textBox.RaiseEvent(Input.ValidationDirtyArgs);
                 }
             }
         }
@@ -198,12 +202,6 @@
                 textBox.SetRawText(textBox.Text);
             }
             textBox.SetIsReceivingUserInput(false);
-        }
-
-        internal static void UpdateHandler(this TextBox textbox, RoutedEvent routedEvent, RoutedEventHandler handler)
-        {
-            textbox.RemoveHandler(routedEvent, handler);
-            textbox.AddHandler(routedEvent, handler);
         }
     }
 }

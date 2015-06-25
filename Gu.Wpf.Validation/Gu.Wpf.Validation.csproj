@@ -55,25 +55,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Internals\BindingHelper.cs" />
     <Compile Include="Internals\DesignMode.cs" />
     <Compile Include="Internals\RawValueSource.cs" />
     <Compile Include="Internals\RawValueTracker.cs" />
     <Compile Include="Internals\ToStringExt.cs" />
-    <Compile Include="Internals\Flags.cs" />
+    <Compile Include="Internals\UiElementExt.cs" />
     <Compile Include="OnValidationErrorStrategy.cs" />
     <Compile Include="Rules\IsRequiredError.cs" />
     <Compile Include="SourceValueTypes.cs" />
     <Compile Include="StringConverters\DefaultStringConverter.cs" />
-    <Compile Include="TextBox.cs" />
+    <Compile Include="Input.TextBox.cs" />
     <Compile Include="DefaultFormatter.cs" />
     <Compile Include="DefaultNumberStyles.cs" />
     <Compile Include="DefaultRules.cs" />
     <Compile Include="Contracts\IFormatter.cs" />
-    <Compile Include="Input.cs" />
+    <Compile Include="Input.Validation.cs" />
     <Compile Include="Internals\BindingExpressionExt.cs" />
     <Compile Include="Internals\UpdateFormattingConverter.cs" />
     <Compile Include="Internals\TypeExt.cs" />
-    <Compile Include="Internals\FlagsConverter.cs" />
     <Compile Include="Internals\TextBoxExt.cs" />
     <Compile Include="Contracts\ITypeNumberStyles.cs" />
     <Compile Include="Contracts\ITypeStringConverters.cs" />
@@ -124,7 +124,9 @@
     <Compile Include="Scope\ErrorProxyCollection.cs" />
     <Compile Include="DefaultValidator.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Input.Formatting.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

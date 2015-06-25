@@ -9,30 +9,12 @@
 
     public class DefaultValidator : IValidator
     {
-        internal static readonly DependencyProperty UpdateValidationFlagsProperty = DependencyProperty.RegisterAttached(
-            "UpdateValidationFlags",
-            typeof(Flags),
-            typeof(DefaultValidator),
-            new PropertyMetadata(null, OnUpdateValidationFlagsChanged));
-
         protected static readonly PropertyPath ValuePath = new PropertyPath(Input.ValueProperty);
-        protected static readonly PropertyPath CulturePath = new PropertyPath(Input.CultureProperty);
-        protected static readonly PropertyPath NumberStylesPath = new PropertyPath(Input.NumberStylesProperty);
-        protected static readonly PropertyPath MinPath = new PropertyPath(Input.MinProperty);
-        protected static readonly PropertyPath MaxPath = new PropertyPath(Input.MaxProperty);
-        protected static readonly PropertyPath PatternPath = new PropertyPath(Input.PatternProperty);
-        protected static readonly PropertyPath IsRequiredPath = new PropertyPath(Input.IsRequiredProperty);
         protected static readonly PropertyPath TextPath = new PropertyPath(TextBox.TextProperty);
-        protected static readonly PropertyPath RawValuePath = new PropertyPath(RawValueTracker.RawValueProperty);
-        protected static readonly PropertyPath RawTextPath = new PropertyPath(RawValueTracker.RawTextProperty);
-        protected static readonly PropertyPath UpdateValidationFlagsPath = new PropertyPath(UpdateValidationFlagsProperty);
         protected static readonly TextToValueConverter TextToValueConverter = new TextToValueConverter();
-        protected static readonly FlagsConverter FlagsConverter = new FlagsConverter(DefaultValidator.UpdateValidationFlagsProperty);
 
-        private static readonly RoutedEventHandler OnLoadedHandler = new RoutedEventHandler(OnLoaded);
-        private static readonly RoutedEventHandler OnValidationDirtyHandler = new RoutedEventHandler(OnValidationDirty);
-
-        internal static readonly RoutedEventArgs ValidationDirtyArgs = new RoutedEventArgs(Input.ValidationDirtyEvent);
+        protected static readonly RoutedEventHandler OnLoadedHandler = OnLoaded;
+        protected static readonly RoutedEventHandler OnValidationDirtyHandler = OnValidationDirty;
 
         public virtual void Bind(TextBox textBox)
         {
@@ -43,8 +25,8 @@
 
             if (textBox.IsLoaded)
             {
-                ClearBindings(textBox);
-                AddBindings(textBox);
+                AddHandlers(textBox);
+                UpdateValidation(textBox);
             }
             else
             {
@@ -52,23 +34,21 @@
             }
         }
 
-        private void AddBindings(TextBox textBox)
+        protected virtual void AddHandlers(TextBox textBox)
         {
             RawValueTracker.TrackUserInput(textBox);
             textBox.UpdateHandler(Input.ValidationDirtyEvent, OnValidationDirtyHandler);
             BindTextToValue(textBox);
-            BindUpdateValidation(textBox);
         }
 
-        protected virtual void ClearBindings(TextBox textBox)
+        protected virtual void RemoveHandlers(TextBox textBox)
         {
             BindingOperations.ClearBinding(textBox, TextBox.TextProperty);
-            BindingOperations.ClearBinding(textBox, UpdateValidationFlagsProperty);
         }
 
         protected virtual void BindTextToValue(TextBox textBox)
         {
-            var binding = CreateBinding(
+            var binding = BindingHelper.CreateBinding(
                 textBox,
                 BindingMode.TwoWay,
                 textBox.GetValidationTrigger(),
@@ -80,73 +60,6 @@
                 binding.ValidationRules.Add(rule);
             }
             BindingOperations.SetBinding(textBox, TextBox.TextProperty, binding);
-        }
-
-        protected virtual void BindUpdateValidation(TextBox textBox)
-        {
-            var binding = new MultiBinding();
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawTextPath));
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, RawValuePath));
-            //binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, CulturePath));
-            //binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, NumberStylesPath));
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, PatternPath));
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, IsRequiredPath));
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MinPath));
-            binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MaxPath));
-            binding.ConverterParameter = textBox;
-            binding.Converter = FlagsConverter;
-            BindingOperations.SetBinding(textBox, UpdateValidationFlagsProperty, binding);
-        }
-
-        protected virtual Binding CreateBinding(
-            TextBox source,
-            BindingMode mode,
-            PropertyPath path,
-            IValueConverter converter)
-        {
-            return CreateBinding(source, mode, UpdateSourceTrigger.PropertyChanged, path, converter);
-        }
-
-        protected virtual Binding CreateBinding(
-            TextBox source,
-            BindingMode mode,
-            UpdateSourceTrigger trigger,
-            PropertyPath path,
-            IValueConverter converter)
-        {
-            return new Binding
-            {
-                Path = path,
-                Source = source,
-                Mode = mode,
-                UpdateSourceTrigger = trigger,
-                Converter = converter,
-                ConverterParameter = source
-            };
-        }
-
-        protected virtual Binding CreateBinding(
-            TextBox source,
-            BindingMode mode,
-            PropertyPath path)
-        {
-            return CreateBinding(source, mode, UpdateSourceTrigger.PropertyChanged, path);
-        }
-
-        protected virtual Binding CreateBinding(
-            TextBox source,
-            BindingMode mode,
-            UpdateSourceTrigger updateSourceTrigger,
-            PropertyPath path)
-        {
-            return new Binding
-            {
-                Path = path,
-                Source = source,
-                Mode = mode,
-                ConverterParameter = source,
-                UpdateSourceTrigger = updateSourceTrigger
-            };
         }
 
         protected virtual void UpdateValidation(TextBox textBox)
@@ -235,18 +148,9 @@
             var validator = textBox.GetValidator() as DefaultValidator;
             if (validator != null)
             {
-                validator.AddBindings(textBox);
+                validator.AddHandlers(textBox);
+                validator.UpdateValidation(textBox);
             }
-        }
-
-        private static void OnUpdateValidationFlagsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = (TextBox)d;
-            if (textBox.GetIsUpdating())
-            {
-                return;
-            }
-            textBox.RaiseEvent(ValidationDirtyArgs);
         }
 
         private static void OnValidationDirty(object sender, RoutedEventArgs e)

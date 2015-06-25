@@ -63,6 +63,8 @@
     <Compile Include="NamespacesTests.cs" />
     <Compile Include="IntegrationTests\SetupTests.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Sandbox\DescriptorLeaks.cs" />
+    <Compile Include="Sandbox\RoutedEventLeaks.cs" />
     <Compile Include="ScopeTests.cs" />
     <Compile Include="SourceValueTypesTests.cs" />
     <Compile Include="StringConverters\DoubleConverterTests.cs" />
@@ -78,9 +80,7 @@
       <Name>Gu.Wpf.Validation</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Sandbox\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

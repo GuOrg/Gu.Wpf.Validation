@@ -6,44 +6,45 @@
     using System.Windows.Input;
     using System.Windows.Media;
 
+    using Gu.Wpf.Validation.Internals;
+
     public static partial class Input
     {
         public static readonly DependencyProperty SelectAllOnClickProperty = DependencyProperty.RegisterAttached(
             "SelectAllOnClick",
             typeof(bool),
             typeof(Input),
-            new PropertyMetadata(false, OnSelectAllOnClickChanged));
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, OnSelectAllOnClickChanged));
 
         public static readonly DependencyProperty SelectAllOnDoubleClickProperty = DependencyProperty.RegisterAttached(
             "SelectAllOnDoubleClick",
             typeof(bool),
             typeof(Input),
-            new PropertyMetadata(false, OnSelectAllOnDoubleClickChanged));
-
-        private static readonly string GotKeyboardFocusEventName = "GotKeyboardFocus";
-        private static readonly string PreviewMouseLeftButtonDownEventName = "PreviewMouseLeftButtonDown";
-        private static readonly string MouseDoubleClickEventName = "MouseDoubleClick";
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, OnSelectAllOnDoubleClickChanged));
+        private static readonly RoutedEventHandler OnKeyboardFocusSelectTextHandler = new RoutedEventHandler(OnKeyboardFocusSelectText);
+        private static readonly MouseButtonEventHandler OnMouseLeftButtonDownHandler = new MouseButtonEventHandler(OnMouseLeftButtonDown);
+        private static readonly MouseButtonEventHandler OnMouseDoubleClickHandler = new MouseButtonEventHandler(OnMouseDoubleClick);
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(TextBoxBase))]
-        public static bool GetSelectAllOnClick(this TextBoxBase o)
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetSelectAllOnClick(this UIElement o)
         {
             return (bool)o.GetValue(SelectAllOnClickProperty);
         }
 
-        public static void SetSelectAllOnClick(this TextBoxBase o, bool value)
+        public static void SetSelectAllOnClick(this UIElement o, bool value)
         {
             o.SetValue(SelectAllOnClickProperty, value);
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(TextBoxBase))]
-        public static bool GetSelectAllOnDoubleClick(this TextBoxBase element)
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetSelectAllOnDoubleClick(this UIElement element)
         {
             return (bool)element.GetValue(SelectAllOnDoubleClickProperty);
         }
 
-        public static void SetSelectAllOnDoubleClick(this TextBoxBase element, bool value)
+        public static void SetSelectAllOnDoubleClick(this UIElement element, bool value)
         {
             element.SetValue(SelectAllOnDoubleClickProperty, value);
         }
@@ -51,36 +52,38 @@
         private static void OnSelectAllOnClickChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var box = d as TextBoxBase;
-            if (box != null)
+            if (box == null)
             {
-                var isSelecting = (e.NewValue as bool?).GetValueOrDefault(false);
-                if (isSelecting)
-                {
-                    WeakEventManager<TextBoxBase, KeyboardFocusChangedEventArgs>.AddHandler(box, GotKeyboardFocusEventName, OnKeyboardFocusSelectText);
-                    WeakEventManager<TextBoxBase, MouseButtonEventArgs>.AddHandler(box, PreviewMouseLeftButtonDownEventName, OnMouseLeftButtonDown);
-                }
-                else
-                {
-                    WeakEventManager<TextBoxBase, KeyboardFocusChangedEventArgs>.RemoveHandler(box, GotKeyboardFocusEventName, OnKeyboardFocusSelectText);
-                    WeakEventManager<TextBoxBase, MouseButtonEventArgs>.RemoveHandler(box, PreviewMouseLeftButtonDownEventName, OnMouseLeftButtonDown);
-                }
+                return;
+            }
+            var isSelecting = (e.NewValue as bool?).GetValueOrDefault(false);
+            if (isSelecting)
+            {
+                box.UpdateHandler(UIElement.GotKeyboardFocusEvent, OnKeyboardFocusSelectTextHandler);
+                box.UpdateHandler(UIElement.PreviewMouseLeftButtonDownEvent, OnMouseLeftButtonDownHandler);
+            }
+            else
+            {
+                box.RemoveHandler(UIElement.GotKeyboardFocusEvent, OnKeyboardFocusSelectTextHandler);
+                box.RemoveHandler(UIElement.PreviewMouseLeftButtonDownEvent, OnMouseLeftButtonDownHandler);
             }
         }
 
         private static void OnSelectAllOnDoubleClickChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var box = d as TextBoxBase;
-            if (box != null)
+            if (box == null)
             {
-                var isSelecting = (e.NewValue as bool?).GetValueOrDefault(false);
-                if (isSelecting)
-                {
-                    WeakEventManager<TextBoxBase, MouseButtonEventArgs>.AddHandler(box, MouseDoubleClickEventName, OnMouseDoubleClick);
-                }
-                else
-                {
-                    WeakEventManager<TextBoxBase, MouseButtonEventArgs>.RemoveHandler(box, MouseDoubleClickEventName, OnMouseDoubleClick);
-                }
+                return;
+            }
+            var isSelecting = (e.NewValue as bool?).GetValueOrDefault(false);
+            if (isSelecting)
+            {
+                box.UpdateHandler(Control.MouseDoubleClickEvent, OnMouseDoubleClickHandler);
+            }
+            else
+            {
+                box.RemoveHandler(Control.MouseDoubleClickEvent, OnMouseDoubleClickHandler);
             }
         }
 
@@ -121,7 +124,7 @@
             return parent as TextBoxBase;
         }
 
-        private static void OnKeyboardFocusSelectText(object sender, KeyboardFocusChangedEventArgs e)
+        private static void OnKeyboardFocusSelectText(object sender, RoutedEventArgs e)
         {
             var box = e.OriginalSource as TextBox;
             if (box != null)

@@ -1,33 +1,22 @@
 namespace Gu.Wpf.Validation
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
 
     using Gu.Wpf.Validation.Internals;
-    using Gu.Wpf.Validation.StringConverters;
 
     public static partial class Input
     {
-        public static readonly ConcurrentDictionary<int, string> Formats = new ConcurrentDictionary<int, string>();
-
         public static readonly RoutedEvent ValidationDirtyEvent = EventManager.RegisterRoutedEvent(
             "ValidationDirty",
             RoutingStrategy.Direct,
             typeof(RoutedEventHandler),
             typeof(Input));
 
-        public static readonly RoutedEvent FormattingDirtyEvent = EventManager.RegisterRoutedEvent(
-            "FormattingDirty",
-            RoutingStrategy.Direct,
-            typeof(RoutedEventHandler),
-            typeof(Input));
-
-        internal static readonly RoutedEventArgs FormattingDirtyArgs = new RoutedEventArgs(Input.FormattingDirtyEvent);
+        internal static readonly RoutedEventArgs ValidationDirtyArgs = new RoutedEventArgs(Input.ValidationDirtyEvent);
 
         /// <summary>
         /// This is used to get a notification when Value is bound even if the value is null.
@@ -43,56 +32,29 @@ namespace Gu.Wpf.Validation
                 DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus
             });
 
-        public static readonly DependencyProperty CultureProperty = DependencyProperty.RegisterAttached(
-            "Culture",
-            typeof(IFormatProvider),
-            typeof(Input),
-            new FrameworkPropertyMetadata(
-                CultureInfo.GetCultureInfo("en-US"), // Think this is the default in WPF
-                FrameworkPropertyMetadataOptions.Inherits,
-                OnCultureChanged));
-
-        public static readonly DependencyProperty NumberStylesProperty = DependencyProperty.RegisterAttached(
-            "NumberStyles",
-            typeof(NumberStyles),
-            typeof(Input),
-            new FrameworkPropertyMetadata(NumberStyles.None, FrameworkPropertyMetadataOptions.Inherits, null, OnCoerceNumberStyles));
-
-        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.RegisterAttached(
-            "StringFormat",
-            typeof(string),
-            typeof(Input),
-            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.Inherits, OnStringFormatChanged));
-
-        public static readonly DependencyProperty DecimalDigitsProperty = DependencyProperty.RegisterAttached(
-            "DecimalDigits",
-            typeof(int?),
-            typeof(Input),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnDecimalDigitsChanged));
-
         public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.RegisterAttached(
             "IsRequired",
             typeof(bool),
             typeof(Input),
-            new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.Inherits));
+            new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.Inherits, UpdateValidation));
 
         public static readonly DependencyProperty PatternProperty = DependencyProperty.RegisterAttached(
             "Pattern",
             typeof(string),
             typeof(Input),
-            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.Inherits));
+            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.Inherits, UpdateValidation));
 
         public static readonly DependencyProperty MinProperty = DependencyProperty.RegisterAttached(
             "Min",
             typeof(object),
             typeof(Input),
-            new FrameworkPropertyMetadata(default(object), FrameworkPropertyMetadataOptions.Inherits, null, OnMinCoerce));
+            new FrameworkPropertyMetadata(default(object), FrameworkPropertyMetadataOptions.Inherits, UpdateValidation, OnMinCoerce));
 
         public static readonly DependencyProperty MaxProperty = DependencyProperty.RegisterAttached(
             "Max",
             typeof(object),
             typeof(Input),
-            new FrameworkPropertyMetadata(default(object), FrameworkPropertyMetadataOptions.Inherits, null, OnMaxCoerce));
+            new FrameworkPropertyMetadata(default(object), FrameworkPropertyMetadataOptions.Inherits, UpdateValidation, OnMaxCoerce));
 
         public static readonly DependencyProperty ValidationTriggerProperty = DependencyProperty.RegisterAttached(
             "ValidationTrigger",
@@ -111,30 +73,6 @@ namespace Gu.Wpf.Validation
             typeof(IValidator),
             typeof(Input),
             new FrameworkPropertyMetadata(new DefaultValidator(), FrameworkPropertyMetadataOptions.Inherits));
-
-        public static readonly DependencyProperty FormatterProperty = DependencyProperty.RegisterAttached(
-            "Formatter",
-            typeof(IFormatter),
-            typeof(Input),
-            new FrameworkPropertyMetadata(new DefaultFormatter(), FrameworkPropertyMetadataOptions.Inherits));
-
-        public static readonly DependencyProperty NumberStylesMapperProperty = DependencyProperty.RegisterAttached(
-            "NumberStylesMapper",
-            typeof(ITypeNumberStyles),
-            typeof(Input),
-            new FrameworkPropertyMetadata(new DefaultNumberStyles(), FrameworkPropertyMetadataOptions.Inherits));
-
-        public static readonly DependencyProperty StringConvertersProperty = DependencyProperty.RegisterAttached(
-            "StringConverters",
-            typeof(ITypeStringConverters),
-            typeof(Input),
-            new FrameworkPropertyMetadata(new DefaultStringConverters(), FrameworkPropertyMetadataOptions.Inherits, null, OnStringConvertersCoerce));
-
-        public static readonly DependencyProperty StringConverterProperty = DependencyProperty.RegisterAttached(
-            "StringConverter",
-            typeof(IStringConverter),
-            typeof(Input),
-            new PropertyMetadata(default(IStringConverter), OnStringConverterChanged, OnStringConverterCoerce));
 
         public static readonly DependencyProperty TypeRulesProperty = DependencyProperty.RegisterAttached(
             "TypeRules",
@@ -167,16 +105,6 @@ namespace Gu.Wpf.Validation
             o.RemoveHandler(ValidationDirtyEvent, handler);
         }
 
-        public static void AddFormattingDirtyHandler(this UIElement o, RoutedEventHandler handler)
-        {
-            o.AddHandler(FormattingDirtyEvent, handler);
-        }
-
-        public static void RemoveFormattingDirtyHandler(this UIElement o, RoutedEventHandler handler)
-        {
-            o.RemoveHandler(FormattingDirtyEvent, handler);
-        }
-
         public static void SetValue(this TextBox element, object value)
         {
             element.SetValue(ValueProperty, value);
@@ -187,54 +115,6 @@ namespace Gu.Wpf.Validation
         public static object GetValue(this TextBox element)
         {
             return element.GetValue(ValueProperty);
-        }
-
-        public static void SetCulture(this DependencyObject element, IFormatProvider value)
-        {
-            element.SetValue(CultureProperty, value);
-        }
-
-        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(UIElement))]
-        public static IFormatProvider GetCulture(this DependencyObject element)
-        {
-            return (IFormatProvider)element.GetValue(CultureProperty);
-        }
-
-        public static void SetNumberStyles(this DependencyObject element, NumberStyles value)
-        {
-            element.SetValue(NumberStylesProperty, value);
-        }
-
-        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(TextBox))]
-        public static NumberStyles GetNumberStyles(this DependencyObject element)
-        {
-            return (NumberStyles)element.GetValue(NumberStylesProperty);
-        }
-
-        public static void SetStringFormat(this DependencyObject element, string value)
-        {
-            element.SetValue(StringFormatProperty, value);
-        }
-
-        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(TextBox))]
-        public static string GetStringFormat(this DependencyObject element)
-        {
-            return (string)element.GetValue(StringFormatProperty);
-        }
-
-        public static void SetDecimalDigits(this DependencyObject element, int? value)
-        {
-            element.SetValue(DecimalDigitsProperty, value);
-        }
-
-        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
-        [AttachedPropertyBrowsableForType(typeof(TextBox))]
-        public static int? GetDecimalDigits(this DependencyObject element)
-        {
-            return (int?)element.GetValue(DecimalDigitsProperty);
         }
 
         public static void SetIsRequired(this DependencyObject element, bool value)
@@ -317,46 +197,6 @@ namespace Gu.Wpf.Validation
         public static IValidator GetValidator(this DependencyObject element)
         {
             return (IValidator)element.GetValue(ValidatorProperty);
-        }
-
-        public static void SetFormatter(this DependencyObject element, IFormatter value)
-        {
-            element.SetValue(FormatterProperty, value);
-        }
-
-        public static IFormatter GetFormatter(this DependencyObject element)
-        {
-            return (IFormatter)element.GetValue(FormatterProperty);
-        }
-
-        public static void SetNumberStylesMapper(this DependencyObject element, ITypeNumberStyles value)
-        {
-            element.SetValue(NumberStylesMapperProperty, value);
-        }
-
-        public static ITypeNumberStyles GetNumberStylesMapper(this DependencyObject element)
-        {
-            return (ITypeNumberStyles)element.GetValue(NumberStylesMapperProperty);
-        }
-
-        public static void SetStringConverters(this DependencyObject element, ITypeStringConverters value)
-        {
-            element.SetValue(StringConvertersProperty, value);
-        }
-
-        public static ITypeStringConverters GetStringConverters(this DependencyObject element)
-        {
-            return (ITypeStringConverters)element.GetValue(StringConvertersProperty);
-        }
-
-        public static void SetStringConverter(this TextBox element, IStringConverter value)
-        {
-            element.SetValue(StringConverterProperty, value);
-        }
-
-        public static IStringConverter GetStringConverter(this TextBox element)
-        {
-            return (IStringConverter)element.GetValue(StringConverterProperty);
         }
 
         public static void SetTypeRules(this DependencyObject element, ITypeRules value)
@@ -447,6 +287,15 @@ namespace Gu.Wpf.Validation
             }
         }
 
+        private static void UpdateValidation(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var textBox = d as TextBox;
+            if (textBox != null)
+            {
+                textBox.RaiseEvent(ValidationDirtyArgs);
+            }
+        }
+
         private static void OnSourceValueTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
@@ -457,97 +306,6 @@ namespace Gu.Wpf.Validation
                 var textBox = (TextBox)d;
                 Setup(textBox); // rebind
             }
-        }
-
-        private static void OnDecimalDigitsChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var digits = e.NewValue as int?;
-            if (digits != null)
-            {
-                if (digits < 0)
-                {
-                    var format = Formats.GetOrAdd(digits.Value, d => String.Format("0.{0}", new string('#', -1 * d)));
-                    o.SetStringFormat(format);
-                }
-                else
-                {
-                    var format = Formats.GetOrAdd(digits.Value, d => String.Format("F{0}", d));
-                    o.SetStringFormat(format);
-                }
-            }
-        }
-
-        private static void OnStringFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = d as TextBox;
-            if (textBox != null)
-            {
-                textBox.RaiseEvent(FormattingDirtyArgs);
-            }
-        }
-
-        private static void OnStringConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = d as TextBox;
-            if (textBox != null)
-            {
-                textBox.CoerceValue(MinProperty);
-                textBox.CoerceValue(MaxProperty);
-                RawValueTracker.Update(textBox);
-            }
-        }
-
-        private static void OnCultureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = d as TextBox;
-            if (textBox != null && textBox.GetSourceValueType() != null)
-            {
-                RawValueTracker.Update(textBox);
-            }
-        }
-
-        private static object OnStringConvertersCoerce(DependencyObject d, object basevalue)
-        {
-            if (basevalue == null)
-            {
-                return null;
-            }
-            var type = d.GetSourceValueType();
-            if (type != null)
-            {
-                d.CoerceValue(StringConverterProperty);
-            }
-            return basevalue;
-        }
-
-        private static object OnStringConverterCoerce(DependencyObject d, object basevalue)
-        {
-            var stringConverters = d.GetStringConverters();
-            var type = d.GetSourceValueType();
-            if (basevalue == null && stringConverters != null && type != null)
-            {
-                basevalue = stringConverters.Get(type);
-            }
-            return basevalue;
-        }
-
-        private static object OnCoerceNumberStyles(DependencyObject d, object basevalue)
-        {
-            if (!Equals(basevalue, NumberStyles.None))
-            {
-                return basevalue;
-            }
-            var mapper = d.GetNumberStylesMapper();
-            if (mapper == null)
-            {
-                return NumberStyles.None;
-            }
-            var type = d.GetSourceValueType();
-            if (type == null)
-            {
-                return NumberStyles.None;
-            }
-            return mapper.Get(type);
         }
 
         private static object OnSourceValueTypeCoerce(DependencyObject d, object basevalue)

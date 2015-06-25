@@ -3,28 +3,14 @@
     using System;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
 
     using Gu.Wpf.Validation.Internals;
     using Gu.Wpf.Validation.StringConverters;
 
     public class DefaultFormatter : IFormatter
     {
-        protected static readonly PropertyPath IsKeyboardFocusedPath = new PropertyPath(UIElement.IsKeyboardFocusedProperty);
-        //protected static readonly PropertyPath DecimalDigitsPath = new PropertyPath(Input.DecimalDigitsProperty);
-        protected static readonly PropertyPath CulturePath = new PropertyPath(Input.CultureProperty);
-        protected static readonly PropertyPath RawTextPath = new PropertyPath(RawValueTracker.RawTextProperty);
-
-        protected static readonly DependencyProperty UpdateFormattingFlagsProperty = DependencyProperty.RegisterAttached(
-                "UpdateFormattingFlags",
-                typeof(Flags),
-                typeof(DefaultFormatter),
-                new PropertyMetadata(null, OnFlagsChanged));
-
-        protected static readonly FlagsConverter UpdateFormattingConverter = new FlagsConverter(DefaultFormatter.UpdateFormattingFlagsProperty);
-
-        private static readonly RoutedEventHandler OnLoadedHandler = new RoutedEventHandler(OnLoaded);
-        private static readonly RoutedEventHandler OnFormattingDirtyHandler = new RoutedEventHandler(OnFormattingDirty);
+        private static readonly RoutedEventHandler OnLoadedHandler = OnLoaded;
+        private static readonly RoutedEventHandler OnFormattingDirtyHandler = OnFormattingDirty;
 
         public virtual void Bind(TextBox textBox)
         {
@@ -34,8 +20,7 @@
             }
             if (textBox.IsLoaded)
             {
-                ClearBindings(textBox);
-                AddBinding(textBox);
+                AddHandlers(textBox);
             }
             else
             {
@@ -47,39 +32,35 @@
         /// Using a binding with converter to update formatting
         /// </summary>
         /// <param name="textBox"></param>
-        protected virtual void AddBinding(TextBox textBox)
+        protected virtual void AddHandlers(TextBox textBox)
         {
             textBox.UpdateHandler(Input.FormattingDirtyEvent, OnFormattingDirtyHandler);
-            var binding = new MultiBinding { Converter = UpdateFormattingConverter, ConverterParameter = textBox };
-            binding.Bindings.Add(CreateBinding(textBox, IsKeyboardFocusedPath));
-            //binding.Bindings.Add(CreateBinding(textBox, DecimalDigitsPath));
-            binding.Bindings.Add(CreateBinding(textBox, CulturePath));
-            binding.Bindings.Add(CreateBinding(textBox, RawTextPath));
-            BindingOperations.SetBinding(textBox, UpdateFormattingFlagsProperty, binding);
+            textBox.UpdateHandler(UIElement.LostKeyboardFocusEvent, OnFormattingDirtyHandler);
         }
 
-        protected virtual void ClearBindings(TextBox textBox)
+        protected virtual void RemoveHandlers(TextBox textBox)
         {
-            BindingOperations.ClearBinding(textBox, UpdateFormattingFlagsProperty);
+            textBox.RemoveHandler(Input.FormattingDirtyEvent, OnFormattingDirtyHandler);
+            textBox.RemoveHandler(UIElement.LostKeyboardFocusEvent, OnFormattingDirtyHandler);
         }
-
-        protected virtual Binding CreateBinding(
-            TextBox source,
-            PropertyPath path)
-        {
-            return new Binding
-            {
-                Path = path,
-                Source = source,
-                Mode = BindingMode.OneWay,
-                ConverterParameter = source,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            };
-        }
-
 
         protected virtual void UpdateFormatting(TextBox textBox)
         {
+            if (textBox.IsKeyboardFocused)
+            {
+                return;
+            }
+
+            if (textBox.GetIsReceivingUserInput())
+            {
+                return;
+            }
+
+            if (textBox.GetIsUpdating())
+            {
+                return;
+            }
+
             var converter = textBox.GetStringConverter();
             if (converter == null)
             {
@@ -122,25 +103,8 @@
             var formatter = textBox.GetFormatter() as DefaultFormatter;
             if (formatter != null)
             {
-                formatter.AddBinding(textBox);
+                formatter.AddHandlers(textBox);
             }
-        }
-
-        private static void OnFlagsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var textBox = (TextBox)d;
-            if (textBox.GetIsUpdating() || textBox.IsKeyboardFocused || textBox.GetIsReceivingUserInput())
-            {
-                return;
-            }
-
-            var converter = textBox.GetStringConverter();
-            if (converter == null)
-            {
-                return;
-            }
-
-            textBox.RaiseEvent(Input.FormattingDirtyArgs);
         }
 
         private static void OnFormattingDirty(object sender, RoutedEventArgs e)
