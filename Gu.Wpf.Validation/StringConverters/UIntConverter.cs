@@ -6,7 +6,8 @@ namespace Gu.Wpf.Validation.StringConverters
     {
         public override string ToFormattedString(uint value, TextBox textBox)
         {
-            return value.ToString(textBox.GetCulture());
+            var format = textBox.GetStringFormat();
+            return value.ToString(format, textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out uint result)

@@ -11,7 +11,7 @@
     public class DefaultFormatter : IFormatter
     {
         protected static readonly PropertyPath IsKeyboardFocusedPath = new PropertyPath(UIElement.IsKeyboardFocusedProperty);
-        protected static readonly PropertyPath DecimalDigitsPath = new PropertyPath(Input.DecimalDigitsProperty);
+        //protected static readonly PropertyPath DecimalDigitsPath = new PropertyPath(Input.DecimalDigitsProperty);
         protected static readonly PropertyPath CulturePath = new PropertyPath(Input.CultureProperty);
         protected static readonly PropertyPath RawTextPath = new PropertyPath(RawValueTracker.RawTextProperty);
 
@@ -25,8 +25,6 @@
 
         private static readonly RoutedEventHandler OnLoadedHandler = new RoutedEventHandler(OnLoaded);
         private static readonly RoutedEventHandler OnFormattingDirtyHandler = new RoutedEventHandler(OnFormattingDirty);
-
-        internal static readonly RoutedEventArgs FormattingDirtyArgs = new RoutedEventArgs(Input.FormattingDirtyEvent);
 
         public virtual void Bind(TextBox textBox)
         {
@@ -54,7 +52,7 @@
             textBox.UpdateHandler(Input.FormattingDirtyEvent, OnFormattingDirtyHandler);
             var binding = new MultiBinding { Converter = UpdateFormattingConverter, ConverterParameter = textBox };
             binding.Bindings.Add(CreateBinding(textBox, IsKeyboardFocusedPath));
-            binding.Bindings.Add(CreateBinding(textBox, DecimalDigitsPath));
+            //binding.Bindings.Add(CreateBinding(textBox, DecimalDigitsPath));
             binding.Bindings.Add(CreateBinding(textBox, CulturePath));
             binding.Bindings.Add(CreateBinding(textBox, RawTextPath));
             BindingOperations.SetBinding(textBox, UpdateFormattingFlagsProperty, binding);
@@ -142,7 +140,7 @@
                 return;
             }
 
-            textBox.RaiseEvent(FormattingDirtyArgs);
+            textBox.RaiseEvent(Input.FormattingDirtyArgs);
         }
 
         private static void OnFormattingDirty(object sender, RoutedEventArgs e)

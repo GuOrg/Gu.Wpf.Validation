@@ -1,6 +1,7 @@
 ﻿namespace Gu.Wpf.Validation
 {
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -122,7 +123,7 @@
 
         private static void OnKeyboardFocusSelectText(object sender, KeyboardFocusChangedEventArgs e)
         {
-            var box = e.OriginalSource as System.Windows.Controls.TextBox;
+            var box = e.OriginalSource as TextBox;
             if (box != null)
             {
                 box.SelectAll();

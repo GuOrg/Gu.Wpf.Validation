@@ -1,6 +1,7 @@
 namespace Gu.Wpf.Validation
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Windows;
@@ -12,6 +13,8 @@ namespace Gu.Wpf.Validation
 
     public static partial class Input
     {
+        public static readonly ConcurrentDictionary<int, string> Formats = new ConcurrentDictionary<int, string>();
+
         public static readonly RoutedEvent ValidationDirtyEvent = EventManager.RegisterRoutedEvent(
             "ValidationDirty",
             RoutingStrategy.Direct,
@@ -23,6 +26,8 @@ namespace Gu.Wpf.Validation
             RoutingStrategy.Direct,
             typeof(RoutedEventHandler),
             typeof(Input));
+
+        internal static readonly RoutedEventArgs FormattingDirtyArgs = new RoutedEventArgs(Input.FormattingDirtyEvent);
 
         /// <summary>
         /// This is used to get a notification when Value is bound even if the value is null.
@@ -53,11 +58,17 @@ namespace Gu.Wpf.Validation
             typeof(Input),
             new FrameworkPropertyMetadata(NumberStyles.None, FrameworkPropertyMetadataOptions.Inherits, null, OnCoerceNumberStyles));
 
+        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.RegisterAttached(
+            "StringFormat",
+            typeof(string),
+            typeof(Input),
+            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.Inherits, OnStringFormatChanged));
+
         public static readonly DependencyProperty DecimalDigitsProperty = DependencyProperty.RegisterAttached(
             "DecimalDigits",
             typeof(int?),
             typeof(Input),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnDecimalDigitsChanged));
 
         public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.RegisterAttached(
             "IsRequired",
@@ -200,6 +211,18 @@ namespace Gu.Wpf.Validation
         public static NumberStyles GetNumberStyles(this DependencyObject element)
         {
             return (NumberStyles)element.GetValue(NumberStylesProperty);
+        }
+
+        public static void SetStringFormat(this DependencyObject element, string value)
+        {
+            element.SetValue(StringFormatProperty, value);
+        }
+
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
+        [AttachedPropertyBrowsableForType(typeof(TextBox))]
+        public static string GetStringFormat(this DependencyObject element)
+        {
+            return (string)element.GetValue(StringFormatProperty);
         }
 
         public static void SetDecimalDigits(this DependencyObject element, int? value)
@@ -411,7 +434,7 @@ namespace Gu.Wpf.Validation
                     {
                         if (DesignMode.IsInDesignMode)
                         {
-                            var message = string.Format("Cannot figure out SourceValueType when binding with converter tat can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
+                            var message = String.Format("Cannot figure out SourceValueType when binding with converter tat can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
                             throw new ArgumentException(message);
                         }
                     }
@@ -433,6 +456,33 @@ namespace Gu.Wpf.Validation
                 d.CoerceValue(ValidationRulesProperty);
                 var textBox = (TextBox)d;
                 Setup(textBox); // rebind
+            }
+        }
+
+        private static void OnDecimalDigitsChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var digits = e.NewValue as int?;
+            if (digits != null)
+            {
+                if (digits < 0)
+                {
+                    var format = Formats.GetOrAdd(digits.Value, d => String.Format("0.{0}", new string('#', -1 * d)));
+                    o.SetStringFormat(format);
+                }
+                else
+                {
+                    var format = Formats.GetOrAdd(digits.Value, d => String.Format("F{0}", d));
+                    o.SetStringFormat(format);
+                }
+            }
+        }
+
+        private static void OnStringFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var textBox = d as TextBox;
+            if (textBox != null)
+            {
+                textBox.RaiseEvent(FormattingDirtyArgs);
             }
         }
 

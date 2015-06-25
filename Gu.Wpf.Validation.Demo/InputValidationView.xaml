@@ -14,8 +14,6 @@
     </UserControl.DataContext>
     <Grid validation:Input.Culture="{Binding SelectedItem,
                                              ElementName=Culture}"
-          validation:Input.DecimalDigits="{Binding Value,
-                                                   ElementName=Digits}"
           validation:Input.IsRequired="{Binding IsChecked,
                                                 ElementName=IsRequired}"
           >
@@ -56,10 +54,14 @@
             </ListBox.ItemContainerStyle>
             <GroupBox Header="double (lf)">
                 <StackPanel>
-                    <TextBox validation:Input.Max="{Binding Text,
+                    <TextBox validation:Input.DecimalDigits="{Binding Value,
+                                                                      ElementName=Digits}"
+                             validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=DoubleStringFormat}"
                              validation:Input.Value="{Binding DoubleValue}"
                              />
                     <TextBlock>
@@ -71,10 +73,14 @@
 
             <GroupBox Header="double (pc)">
                 <StackPanel>
-                    <TextBox validation:Input.Max="{Binding Text,
+                    <TextBox validation:Input.DecimalDigits="{Binding Value,
+                                                                      ElementName=Digits}"
+                             validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=DoubleStringFormat}"
                              validation:Input.Value="{Binding DoubleValue,
                                                               UpdateSourceTrigger=PropertyChanged}"
                              />
@@ -87,10 +93,14 @@
 
             <GroupBox Header="double? (lf)">
                 <StackPanel>
-                    <TextBox validation:Input.Max="{Binding Text,
+                    <TextBox validation:Input.DecimalDigits="{Binding Value,
+                                                                      ElementName=Digits}"
+                             validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=DoubleStringFormat}"
                              validation:Input.Value="{Binding NullableDoubleValue}"
                              />
                     <TextBlock>
@@ -113,10 +123,14 @@
 
             <GroupBox Header="double? (pc)">
                 <StackPanel>
-                    <TextBox validation:Input.Max="{Binding Text,
+                    <TextBox validation:Input.DecimalDigits="{Binding Value,
+                                                                      ElementName=Digits}"
+                             validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=DoubleStringFormat}"
                              validation:Input.Value="{Binding NullableDoubleValue,
                                                               UpdateSourceTrigger=PropertyChanged}"
                              />
@@ -133,6 +147,8 @@
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=IntStringFormat}"
                              validation:Input.Value="{Binding IntValue}"
                              />
                     <TextBlock>
@@ -148,6 +164,8 @@
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=IntStringFormat}"
                              validation:Input.Value="{Binding IntValue,
                                                               UpdateSourceTrigger=PropertyChanged}"
                              />
@@ -164,6 +182,8 @@
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=IntStringFormat}"
                              validation:Input.Value="{Binding NullableIntValue}"
                              />
                     <TextBlock>
@@ -179,6 +199,9 @@
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.SourceValueType="{x:Static validation:SourceValueTypes.Int32}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=IntStringFormat}"
                              validation:Input.Value="{Binding StringIntValue,
                                                               Converter={StaticResource StringToIntConverter}}"
                              />
@@ -195,6 +218,9 @@
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
+                             validation:Input.SourceValueType="{x:Static validation:SourceValueTypes.NullableInt32}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=IntStringFormat}"
                              validation:Input.Value="{Binding StringIntValue,
                                                               Converter={StaticResource StringToNullableIntConverter}}"
                              />
@@ -207,12 +233,16 @@
 
             <GroupBox Header="converted struct">
                 <StackPanel>
-                    <TextBox validation:Input.IsRequired="True"
+                    <TextBox validation:Input.DecimalDigits="{Binding Value,
+                                                                      ElementName=Digits}"
+                             validation:Input.IsRequired="True"
                              validation:Input.Max="{Binding Text,
                                                             ElementName=Max}"
                              validation:Input.Min="{Binding Text,
                                                             ElementName=Min}"
                              validation:Input.SourceValueType="{x:Static validation:SourceValueTypes.NullableDouble}"
+                             validation:Input.StringFormat="{Binding Text,
+                                                                     ElementName=DoubleStringFormat}"
                              validation:Input.Value="{Binding SampleStruct,
                                                               Converter={StaticResource SampleStructToNullableDoubleConverter},
                                                               UpdateSourceTrigger=PropertyChanged}"
@@ -249,11 +279,19 @@
                                   />
                     </HeaderedContentControl>
 
+                    <HeaderedContentControl Header="DoubleStringFormat">
+                        <TextBox x:Name="DoubleStringFormat" />
+                    </HeaderedContentControl>
+
+                    <HeaderedContentControl Header="IntStringFormat">
+                        <TextBox x:Name="IntStringFormat" />
+                    </HeaderedContentControl>
+                    
                     <HeaderedContentControl Header="Digits">
                         <Slider x:Name="Digits"
                                 IsSnapToTickEnabled="True"
                                 Maximum="17"
-                                Minimum="-1"
+                                Minimum="-17"
                                 TickFrequency="1"
                                 Value="2"
                                 />
@@ -333,6 +371,12 @@
                                Content="{Binding Path=(validation:Input.NumberStyles)}"
                                Padding="0"
                                />
+                    </HeaderedContentControl>
+
+                    <HeaderedContentControl Header="StringFormat">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding Path=(validation:Input.StringFormat)}"
+                                   />
                     </HeaderedContentControl>
 
                     <HeaderedContentControl Header="Digits">

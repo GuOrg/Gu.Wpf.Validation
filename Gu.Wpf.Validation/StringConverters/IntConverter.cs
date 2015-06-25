@@ -6,7 +6,8 @@
     {
         public override string ToFormattedString(int value, TextBox textBox)
         {
-            return value.ToString(textBox.GetCulture());
+            var format = textBox.GetStringFormat();
+            return value.ToString(format, textBox.GetCulture());
         }
 
         public override bool TryParse(string s, TextBox textBox, out int result)
