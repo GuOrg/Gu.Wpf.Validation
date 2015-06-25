@@ -11,7 +11,7 @@
     {
         internal static readonly DependencyProperty UpdateValidationFlagsProperty = DependencyProperty.RegisterAttached(
             "UpdateValidationFlags",
-            typeof(UpdateValidationFlags),
+            typeof(Flags),
             typeof(DefaultValidator),
             new PropertyMetadata(null, OnUpdateValidationFlagsChanged));
 
@@ -27,7 +27,7 @@
         protected static readonly PropertyPath RawTextPath = new PropertyPath(RawValueTracker.RawTextProperty);
         protected static readonly PropertyPath UpdateValidationFlagsPath = new PropertyPath(UpdateValidationFlagsProperty);
         protected static readonly TextToValueConverter TextToValueConverter = new TextToValueConverter();
-        protected static readonly UpdateValidationConverter UpdateValidationConverter = new UpdateValidationConverter();
+        protected static readonly FlagsConverter FlagsConverter = new FlagsConverter(DefaultValidator.UpdateValidationFlagsProperty);
 
         private static readonly RoutedEventHandler OnLoadedHandler = new RoutedEventHandler(OnLoaded);
         private static readonly RoutedEventHandler OnValidationDirtyHandler = new RoutedEventHandler(OnValidationDirty);
@@ -94,7 +94,7 @@
             binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MinPath));
             binding.Bindings.Add(CreateBinding(textBox, BindingMode.OneWay, MaxPath));
             binding.ConverterParameter = textBox;
-            binding.Converter = UpdateValidationConverter;
+            binding.Converter = FlagsConverter;
             BindingOperations.SetBinding(textBox, UpdateValidationFlagsProperty, binding);
         }
 

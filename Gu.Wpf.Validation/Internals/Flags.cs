@@ -3,11 +3,11 @@ namespace Gu.Wpf.Validation.Internals
     using System.Collections.Generic;
     using System.Linq;
 
-    public class UpdateValidationFlags
+    public class Flags
     {
         private readonly IReadOnlyList<object> _triggerValues;
 
-        public UpdateValidationFlags(object[] triggerValues)
+        public Flags(object[] triggerValues)
         {
             if (triggerValues != null)
             {
@@ -19,17 +19,17 @@ namespace Gu.Wpf.Validation.Internals
             }
         }
 
-        public UpdateValidationFlags Update(object[] triggerValues)
+        public Flags Update(object[] triggerValues)
         {
             if (_triggerValues.Count != triggerValues.Length)
             {
-                return new UpdateValidationFlags(triggerValues);
+                return new Flags(triggerValues);
             }
             for (int i = 0; i < triggerValues.Length; i++)
             {
                 if (!Equals(_triggerValues[i], triggerValues[i]))
                 {
-                    return new UpdateValidationFlags(triggerValues);
+                    return new Flags(triggerValues);
                 }
             }
             return this;

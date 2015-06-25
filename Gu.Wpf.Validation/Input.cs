@@ -18,6 +18,12 @@ namespace Gu.Wpf.Validation
             typeof(RoutedEventHandler),
             typeof(Input));
 
+        public static readonly RoutedEvent FormattingDirtyEvent = EventManager.RegisterRoutedEvent(
+            "FormattingDirty",
+            RoutingStrategy.Direct,
+            typeof(RoutedEventHandler),
+            typeof(Input));
+
         /// <summary>
         /// This is used to get a notification when Value is bound even if the value is null.
         /// </summary>
@@ -140,11 +146,6 @@ namespace Gu.Wpf.Validation
             typeof(Input),
             new PropertyMetadata(default(Type), OnSourceValueTypeChanged, OnSourceValueTypeCoerce));
 
-        public static void SetValue(this TextBox element, object value)
-        {
-            element.SetValue(ValueProperty, value);
-        }
-
         public static void AddValidationDirtyHandler(this UIElement o, RoutedEventHandler handler)
         {
             o.AddHandler(ValidationDirtyEvent, handler);
@@ -153,6 +154,21 @@ namespace Gu.Wpf.Validation
         public static void RemoveValidationDirtyHandler(this UIElement o, RoutedEventHandler handler)
         {
             o.RemoveHandler(ValidationDirtyEvent, handler);
+        }
+
+        public static void AddFormattingDirtyHandler(this UIElement o, RoutedEventHandler handler)
+        {
+            o.AddHandler(FormattingDirtyEvent, handler);
+        }
+
+        public static void RemoveFormattingDirtyHandler(this UIElement o, RoutedEventHandler handler)
+        {
+            o.RemoveHandler(FormattingDirtyEvent, handler);
+        }
+
+        public static void SetValue(this TextBox element, object value)
+        {
+            element.SetValue(ValueProperty, value);
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
