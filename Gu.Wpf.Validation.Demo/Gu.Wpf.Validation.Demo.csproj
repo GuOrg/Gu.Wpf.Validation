@@ -71,13 +71,16 @@
     <Compile Include="NavigationDebugViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Converters\TextBoxChildConverter.cs" />
-    <Compile Include="StartegyVm.cs" />
+    <Compile Include="StrategyVm.cs" />
     <Compile Include="ValidationRule.cs" />
     <Compile Include="ValidationScopeView.xaml.cs">
       <DependentUpon>ValidationScopeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationScopeViewModel.cs">
       <DependentUpon>ValidationScopeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WatermarkView.xaml.cs">
+      <DependentUpon>WatermarkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wpf\ValidationTemplateSelector.cs" />
     <Compile Include="Wpf\SharedSizeGroups.cs" />
@@ -102,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ValidationScopeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WatermarkView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

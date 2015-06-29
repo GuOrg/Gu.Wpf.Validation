@@ -9,8 +9,6 @@
 
     public class DefaultValidator : IValidator
     {
-        protected static readonly PropertyPath ValuePath = new PropertyPath(Input.ValueProperty);
-        protected static readonly PropertyPath TextPath = new PropertyPath(TextBox.TextProperty);
         protected static readonly TextToValueConverter TextToValueConverter = new TextToValueConverter();
 
         protected static readonly RoutedEventHandler OnLoadedHandler = OnLoaded;
@@ -52,7 +50,7 @@
                 textBox,
                 BindingMode.TwoWay,
                 textBox.GetValidationTrigger(),
-                ValuePath,
+                Input.ValueProperty,
                 TextToValueConverter);
             var rules = textBox.GetValidationRules();
             foreach (var rule in rules)

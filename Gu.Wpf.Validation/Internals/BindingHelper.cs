@@ -1,60 +1,99 @@
 ﻿namespace Gu.Wpf.Validation.Internals
 {
+    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
 
-    public class BindingHelper
+    internal class BindingHelper
     {
-        public static Binding CreateBinding(
-            TextBox source,
-            BindingMode mode,
-            PropertyPath path,
-            IValueConverter converter)
+        private static readonly Dictionary<DependencyProperty, PropertyPath> PropertyPaths =
+            new Dictionary<DependencyProperty, PropertyPath>();
+
+
+        internal static BindingExpression Bind(
+            DependencyObject target,
+            DependencyProperty targetProperty,
+            object source,
+            DependencyProperty sourceProperty)
         {
-            return CreateBinding(source, mode, UpdateSourceTrigger.PropertyChanged, path, converter);
+            return Bind(target, targetProperty, source, GetPath(sourceProperty));
         }
 
-        public static Binding CreateBinding(
+
+        internal static BindingExpression Bind(
+            DependencyObject target,
+            DependencyProperty targetProperty,
+            object source,
+            PropertyPath path)
+        {
+            var binding = new Binding
+                              {
+                                  Path = path,
+                                  Source = source,
+                                  Mode = BindingMode.OneWay,
+                                  UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                              };
+            return (BindingExpression)BindingOperations.SetBinding(target, targetProperty, binding);
+        }
+
+        internal static Binding CreateBinding(
+            TextBox source,
+            BindingMode mode,
+            DependencyProperty property,
+            IValueConverter converter)
+        {
+            return CreateBinding(source, mode, UpdateSourceTrigger.PropertyChanged, property, converter);
+        }
+
+        internal static Binding CreateBinding(
             TextBox source,
             BindingMode mode,
             UpdateSourceTrigger trigger,
-            PropertyPath path,
+            DependencyProperty property,
             IValueConverter converter)
         {
             return new Binding
-            {
-                Path = path,
-                Source = source,
-                Mode = mode,
-                UpdateSourceTrigger = trigger,
-                Converter = converter,
-                ConverterParameter = source
-            };
+                       {
+                           Path = GetPath(property),
+                           Source = source,
+                           Mode = mode,
+                           UpdateSourceTrigger = trigger,
+                           Converter = converter,
+                           ConverterParameter = source
+                       };
         }
 
-        public static Binding CreateBinding(
-            TextBox source,
-            BindingMode mode,
-            PropertyPath path)
+        internal static Binding CreateBinding(TextBox source, BindingMode mode, DependencyProperty property)
         {
-            return CreateBinding(source, mode, UpdateSourceTrigger.PropertyChanged, path);
+            return CreateBinding(source, mode, UpdateSourceTrigger.PropertyChanged, property);
         }
 
-        public static Binding CreateBinding(
+        internal static Binding CreateBinding(
             TextBox source,
             BindingMode mode,
             UpdateSourceTrigger updateSourceTrigger,
-            PropertyPath path)
+            DependencyProperty property)
         {
             return new Binding
+                       {
+                           Path = GetPath(property),
+                           Source = source,
+                           Mode = mode,
+                           ConverterParameter = source,
+                           UpdateSourceTrigger = updateSourceTrigger
+                       };
+        }
+
+        internal static PropertyPath GetPath(DependencyProperty property)
+        {
+            PropertyPath path;
+            if (!PropertyPaths.TryGetValue(property, out path))
             {
-                Path = path,
-                Source = source,
-                Mode = mode,
-                ConverterParameter = source,
-                UpdateSourceTrigger = updateSourceTrigger
-            };
+                path = new PropertyPath(property);
+                PropertyPaths[property] = path;
+            }
+            return path;
         }
     }
 }

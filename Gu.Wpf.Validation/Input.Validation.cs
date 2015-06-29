@@ -274,7 +274,7 @@ namespace Gu.Wpf.Validation
                     {
                         if (DesignMode.IsInDesignMode)
                         {
-                            var message = String.Format("Cannot figure out SourceValueType when binding with converter tat can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
+                            var message = String.Format("Cannot figure out SourceValueType when binding with converter that can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
                             throw new ArgumentException(message);
                         }
                     }

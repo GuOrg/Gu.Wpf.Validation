@@ -9,6 +9,7 @@ namespace Gu.Wpf.Validation
         ResetValueOnError = 1 << 0,
         UpdateSourceOnError = 1 << 1,
         UpdateSourceOnSuccess = 1 << 2,
+        AlwaysUpdateSource = UpdateSourceOnSuccess | UpdateSourceOnError,
         Default = ResetValueOnError | UpdateSourceOnSuccess
     }
 }

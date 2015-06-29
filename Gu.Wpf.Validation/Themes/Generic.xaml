@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:validation="clr-namespace:Gu.Wpf.Validation"
+                    >
+    <Style TargetType="{x:Type validation:WatermarkAdorner}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Opacity" Value="0.5" />
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{x:Static validation:WatermarkVisibilityConverter.Default}">
+                    <Binding Path="TextBox"
+                             RelativeSource="{RelativeSource Self}"
+                             />
+                    <Binding Path="TextBox.IsVisible"
+                             RelativeSource="{RelativeSource Self}"
+                             />
+                    <Binding Path="TextBox.Text"
+                             RelativeSource="{RelativeSource Self}"
+                             />
+                    <Binding Path="TextBox.IsKeyboardFocused"
+                             RelativeSource="{RelativeSource Self}"
+                             />
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="{Binding TextBox.Padding, RelativeSource={RelativeSource Self}}" />
+    </Style>
+</ResourceDictionary>

@@ -11,6 +11,10 @@
             <demo:InputValidationView />
         </TabItem>
 
+        <TabItem Header="Watermark">
+            <demo:WatermarkView />
+        </TabItem>
+        
         <TabItem Header="Scope">
             <demo:ValidationScopeView />
         </TabItem>
