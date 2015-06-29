@@ -21,7 +21,7 @@ namespace Gu.Wpf.Validation
         /// <summary>
         /// This is used to get a notification when Value is bound even if the value is null.
         /// </summary>
-        private static readonly object Unset = "Input.Unset";
+        internal static readonly object Unset = "Input.Unset";
         public static readonly DependencyProperty ValueProperty = DependencyProperty.RegisterAttached(
             "Value",
             typeof(object),

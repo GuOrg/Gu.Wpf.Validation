@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
 
@@ -10,6 +11,10 @@
     {
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == Input.Unset)
+            {
+                return DependencyProperty.UnsetValue;
+            }
             Debug.Write(string.Format(@"{0}.Convert({1}) -> ", GetType().PrettyName(), value.ToDebugString()));
             var textBox = (TextBox)parameter;
             if (textBox.GetIsUpdating())

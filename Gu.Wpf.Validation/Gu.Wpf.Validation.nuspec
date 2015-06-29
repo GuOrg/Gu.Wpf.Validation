@@ -14,6 +14,6 @@
     <files>
       <file src="\bin\CreateNugetPackage\Gu.Wpf.Validation.dll" target="lib\net45" />
       <file src="\bin\CreateNugetPackage\Gu.Wpf.Validation.pdb" target="lib\net45" />
-      <file src="\bin\CreateNugetPackage\Gu.Wpf.Validation.XML" target="lib\net45" />
+      <file src="\bin\CreateNugetPackage\Gu.Wpf.Validation.xml" target="lib\net45" />
     </files>
 </package>
