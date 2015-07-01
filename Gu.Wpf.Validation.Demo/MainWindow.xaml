@@ -6,8 +6,16 @@
         Title="MainWindow"
         Width="525"
         Height="350">
+    <Window.Resources>
+        <ResourceDictionary Source="/Gu.Wpf.Validation.Demo;component/Resources/AllResources.xaml" />
+    </Window.Resources>
+    
     <TabControl>
         <TabItem Header="Validation">
+            <demo:SampleView />
+        </TabItem>
+        
+        <!--<TabItem Header="Validation">
             <demo:InputValidationView />
         </TabItem>
 
@@ -21,6 +29,6 @@
 
         <TabItem Header="Navigation">
             <demo:NavigationDebugView />
-        </TabItem>
+        </TabItem>-->
     </TabControl>
 </Window>

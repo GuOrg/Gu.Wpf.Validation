@@ -16,7 +16,7 @@
             {
                 return Visibility.Collapsed;
             }
-            var visibleWhen = textBox.GetVisibleWhen();
+            var visibleWhen = textBox.GetWatermarkVisibleWhen();
             switch (visibleWhen)
             {
                 case WatermarkVisibility.WhenEmpty:

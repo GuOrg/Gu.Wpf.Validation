@@ -51,6 +51,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PropertyGrid\PropertyGrid.cs" />
+    <Compile Include="PropertyGrid\SettingStyleSelector.cs" />
+    <Compile Include="PropertyGrid\SharedSizeGroups.cs" />
+    <Compile Include="PropertyGrid\Keys.cs" />
+    <Compile Include="PropertyGrid\ValidationTemplateSelector.cs" />
     <Compile Include="Watermark\WatermarkVisibility.cs" />
     <Compile Include="Watermark\ContentAdorner.cs" />
     <Compile Include="Input.Watermark.cs" />
@@ -132,7 +137,15 @@
     <Compile Include="Input.Misc.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Gemometry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\PropertyGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -8,6 +8,9 @@
              d:DesignWidth="300"
              mc:Ignorable="d"
              >
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Gu.Wpf.Validation.Demo;component/Resources/AllResources.xaml" />
+    </UserControl.Resources>
     <AdornerDecorator>
         <Grid>
             <Grid.RowDefinitions>
@@ -17,31 +20,31 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0"
-                 validation:Input.VisibleWhen="{Binding SelectedItem,
-                                                        ElementName=VisibleWhen}"
-                 validation:Input.WatermarkText="{Binding Text,
-                                                          ElementName=WatermarkText}"
-                 />
+                     validation:Input.WatermarkVisibleWhen="{Binding SelectedItem,
+                                                            ElementName=VisibleWhen}"
+                     validation:Input.WatermarkText="{Binding Text,
+                                                              ElementName=WatermarkText}"
+                     />
             <TextBox Grid.Row="1"
-                 validation:Input.VisibleWhen="{Binding SelectedItem,
-                                                        ElementName=VisibleWhen}"
-                 validation:Input.WatermarkText="{Binding Text,
-                                                          ElementName=WatermarkText}"
-                 />
+                     validation:Input.WatermarkVisibleWhen="{Binding SelectedItem,
+                                                            ElementName=VisibleWhen}"
+                     validation:Input.WatermarkText="{Binding Text,
+                                                              ElementName=WatermarkText}"
+                     />
 
             <TextBox Grid.Row="2"
-                 validation:Input.VisibleWhen="WhenEmpty"
-                 validation:Input.WatermarkText="Skriv söktext här..."
-                 />
+                     validation:Input.WatermarkVisibleWhen="WhenEmpty"
+                     validation:Input.WatermarkText="Skriv söktext här..."
+                     />
             <GroupBox Grid.Row="3"
-                  Header="Settings"
-                  >
-                <ItemsControl Style="{StaticResource SettingsListStyle}">
+                      Header="Settings"
+                      >
+                <ItemsControl Style="{StaticResource {x:Static validation:Keys.SettingsListStyleKey}}">
 
                     <HeaderedContentControl Header="VisibleWhen">
                         <ComboBox x:Name="VisibleWhen"
-                              SelectedIndex="0"
-                              >
+                                  SelectedIndex="0"
+                                  >
                             <validation:WatermarkVisibility>WhenEmpty</validation:WatermarkVisibility>
                             <validation:WatermarkVisibility>WhenNotKeyboardFocused</validation:WatermarkVisibility>
                         </ComboBox>
@@ -49,8 +52,8 @@
 
                     <HeaderedContentControl Header="WatermarkText">
                         <TextBox x:Name="WatermarkText"
-                             Text="Type something here..."
-                             />
+                                 Text="Type something here..."
+                                 />
                     </HeaderedContentControl>
                 </ItemsControl>
             </GroupBox>

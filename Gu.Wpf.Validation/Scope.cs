@@ -53,14 +53,14 @@
 
         public static readonly DependencyProperty ErrorsProperty = ErrorsPropertyKey.DependencyProperty;
 
-        public static void AddErrorHandler(DependencyObject o, RoutedEventHandler handler)
+        public static void AddErrorHandler(UIElement element, RoutedEventHandler handler)
         {
-            ((UIElement)o).AddHandler(ErrorEvent, handler);
+            element.AddHandler(ErrorEvent, handler);
         }
 
-        public static void RemoveErrorHandler(DependencyObject o, RoutedEventHandler handler)
+        public static void RemoveErrorHandler(UIElement element, RoutedEventHandler handler)
         {
-            ((UIElement)o).RemoveHandler(ErrorEvent, handler);
+            element.RemoveHandler(ErrorEvent, handler);
         }
 
         public static void SetIsValidationScope(this FrameworkElement element, bool? value)
@@ -122,7 +122,7 @@
 
                 var proxyCollection = new ErrorProxyCollection();
                 d.SetErrorProxies(proxyCollection);
-                AddErrorHandler(d, OnError);
+                AddErrorHandler(fe, OnError);
             }
             else
             {
@@ -137,7 +137,7 @@
                     collection.Dispose();
                 }
                 d.SetErrorProxies(null);
-                RemoveErrorHandler(d, OnError);
+                RemoveErrorHandler(fe, OnError);
             }
         }
 

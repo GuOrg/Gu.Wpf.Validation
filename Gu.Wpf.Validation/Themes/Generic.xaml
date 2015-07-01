@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:validation="clr-namespace:Gu.Wpf.Validation"
                     >
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Gu.Wpf.Validation;component/Themes/Gemometry.xaml" />
+        <ResourceDictionary Source="/Gu.Wpf.Validation;component/Themes/PropertyGrid.xaml" />
+    </ResourceDictionary.MergedDictionaries>
     <Style TargetType="{x:Type validation:WatermarkAdorner}">
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Opacity" Value="0.5" />

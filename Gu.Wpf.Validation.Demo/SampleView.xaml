@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Gu.Wpf.Validation.Demo.SampleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:demo="clr-namespace:Gu.Wpf.Validation.Demo"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:validation="http://gu.se/Validation"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             >
+    <UserControl.DataContext>
+        <demo:SampleVm />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Sample ui with massive feature bloat. Styles intentionally plain for happy copy-pasting." />
+        <ItemsControl Grid.Row="1"
+                      Style="{StaticResource {x:Static validation:Keys.SettingsListStyleKey}}"
+                      validation:PropertyGrid.ShowErrorText="True"
+                      validation:PropertyGrid.ShowHelpText="True"
+                      validation:PropertyGrid.ShowSymbols="True"
+                      >
+            <TextBlock Text="About you:" />
+            <HeaderedContentControl Header="Age"
+                                    validation:Input.HelpText="Your age in years"
+                                    >
+                <TextBox validation:Input.HelpText="This is helptext for age."
+                         validation:Input.IsRequired="True"
+                         validation:Input.Max="120"
+                         validation:Input.Min="0"
+                         validation:Input.Value="{Binding Age}"
+                         validation:Input.WatermarkText="Your age*"
+                         validation:Input.WatermarkVisibleWhen="WhenEmpty"
+                         />
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Name srg"
+                                    validation:Input.HelpText="Type your name here ex: Johan Larsson"
+                                    >
+                <TextBox validation:Input.IsRequired="True"
+                         validation:Input.Pattern="\w+ \w+"
+                         validation:Input.Value="{Binding Name}"
+                         validation:Input.WatermarkText="Your name*"
+                         validation:Input.WatermarkVisibleWhen="WhenEmpty"
+                         />
+            </HeaderedContentControl>
+
+            <TextBlock Text="Contact info:" />
+            <ItemsControl Style="{StaticResource {x:Static validation:Keys.NestedListStyleKey}}">
+                <HeaderedContentControl Header="Mail"
+                                        validation:Input.HelpText="Your email"
+                                        >
+                    <TextBox validation:Input.IsRequired="True"
+                             validation:Input.Pattern="\w+@\w+"
+                             validation:Input.Value="{Binding Email}"
+                             validation:Input.WatermarkText="Your email*"
+                             validation:Input.WatermarkVisibleWhen="WhenEmpty"
+                             />
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Header="Phone"
+                                        validation:Input.HelpText="Your phone number"
+                                        validation:PropertyGrid.ShowSymbols="False"
+                                        >
+                    <TextBox validation:Input.IsRequired="False"
+                             validation:Input.Value="{Binding Phone}"
+                             />
+                </HeaderedContentControl>
+            </ItemsControl>
+
+        </ItemsControl>
+    </Grid>
+</UserControl>

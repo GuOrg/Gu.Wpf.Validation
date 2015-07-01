@@ -36,6 +36,7 @@
         {
             RawValueTracker.TrackUserInput(textBox);
             textBox.UpdateHandler(Input.ValidationDirtyEvent, OnValidationDirtyHandler);
+            textBox.UpdateHandler(FrameworkElement.LoadedEvent, OnValidationDirtyHandler);
             BindTextToValue(textBox);
         }
 

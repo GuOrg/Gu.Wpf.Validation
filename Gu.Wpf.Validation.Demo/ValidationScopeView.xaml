@@ -12,6 +12,9 @@
     <UserControl.DataContext>
         <demo:ValidationScopeViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Gu.Wpf.Validation.Demo;component/Resources/AllResources.xaml" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -40,7 +43,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static validation:SharedSizeGroups.LabelColumn}" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -83,7 +86,7 @@
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         Header="Symbols"
-                                        Style="{StaticResource SymbolHeaderedSettingStyle}">
+                                        Style="{StaticResource {x:Static validation:Keys.SettingStyleKey}}">
                     <TextBox Grid.Row="2"
                              Grid.Column="1"
                              Tag="HeaderedPropertyChanged">
@@ -100,7 +103,7 @@
                 <Button Grid.Row="4"
                         Grid.Column="1"
                         Content="Enabled when scope has error"
-                        IsEnabled="{Binding (validation:Scope.HasError),
+                        IsEnabled="{Binding Path=(validation:Scope.HasError),
                                             ElementName=Scope}" />
 
             </Grid>
@@ -133,5 +136,4 @@
             </GroupBox>
         </Grid>
     </Grid>
-
 </UserControl>

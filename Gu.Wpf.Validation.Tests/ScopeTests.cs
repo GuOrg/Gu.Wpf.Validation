@@ -41,7 +41,7 @@
         }
 
         [Test]
-        public void AggregatesChildrenErrors()
+        public void AggregatesChildErrors()
         {
             CollectionAssert.IsEmpty(Scope.GetErrors(_grid));
             _doubleBox.WriteText("abc");

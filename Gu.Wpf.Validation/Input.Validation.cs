@@ -274,7 +274,12 @@ namespace Gu.Wpf.Validation
                     {
                         if (DesignMode.IsInDesignMode)
                         {
-                            var message = String.Format("Cannot figure out SourceValueType when binding with converter that can produce null.{0}Provide explicit SourceValueType", Environment.NewLine);
+                            var message =
+                                string.Format("Cannot figure out SourceValueType when binding with converter.{0}Provide explicit SourceValueType.{0}The textbox is named: {1}{0}It is bound to property: {2}{0}With converter {3}",
+                                    Environment.NewLine,
+                                    textBox.Name,
+                                    ValueProperty.Name,
+                                    converter.GetType().Name);
                             throw new ArgumentException(message);
                         }
                     }

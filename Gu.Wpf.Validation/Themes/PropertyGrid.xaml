@@ -1,0 +1,417 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:wpf="clr-namespace:Gu.Wpf.Validation"
+                    >
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <Style x:Key="{x:Static wpf:Keys.SymbolPathStyleKey}"
+           TargetType="{x:Type Path}"
+           >
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Margin" Value="4" />
+    </Style>
+
+    <wpf:ValidationTemplateSelector x:Key="{x:Static wpf:Keys.SymbolTemplateSelectorKey}">
+        <wpf:ValidationTemplateSelector.SuccessTemplate>
+            <DataTemplate>
+                <Path Data="{DynamicResource {x:Static wpf:Keys.CheckmarkGeometryKey}}"
+                      Fill="GreenYellow"
+                      Style="{DynamicResource {x:Static wpf:Keys.SymbolPathStyleKey}}"
+                      />
+            </DataTemplate>
+        </wpf:ValidationTemplateSelector.SuccessTemplate>
+
+        <wpf:ValidationTemplateSelector.RequiredButMissingTemplate>
+            <DataTemplate>
+                <Path Width="6"
+                      Height="6"
+                      Margin="3,1,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Data="{DynamicResource {x:Static wpf:Keys.RequiredGeometryKey}}"
+                      Fill="Red"
+                      />
+            </DataTemplate>
+        </wpf:ValidationTemplateSelector.RequiredButMissingTemplate>
+
+        <wpf:ValidationTemplateSelector.ErrorsTemplate>
+            <DataTemplate>
+                <Path Data="{DynamicResource {x:Static wpf:Keys.ErrorGeometryKey}}"
+                      Fill="Red"
+                      Style="{DynamicResource {x:Static wpf:Keys.SymbolPathStyleKey}}"
+                      />
+            </DataTemplate>
+        </wpf:ValidationTemplateSelector.ErrorsTemplate>
+    </wpf:ValidationTemplateSelector>
+
+    <ControlTemplate x:Key="{x:Static wpf:Keys.PlainTemplateKey}"
+                     TargetType="{x:Type HeaderedContentControl}"
+                     >
+        <Grid Margin="{TemplateBinding Padding}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                  />
+                <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ContentPresenter Grid.Column="0"
+                              ContentSource="Header"
+                              />
+
+            <ContentPresenter Grid.Column="2"
+                              ContentSource="Content"
+                              />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static wpf:Keys.HelpTextTemplateKey}"
+                     TargetType="{x:Type HeaderedContentControl}"
+                     >
+        <Grid Margin="{TemplateBinding Padding}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                  />
+                <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       Opacity="0.5"
+                       Text="{Binding Path=(wpf:Input.HelpText),
+                                      RelativeSource={RelativeSource TemplatedParent}}"
+                       Visibility="{Binding IsKeyboardFocusWithin,
+                                            Converter={StaticResource BooleanToVisibilityConverter},
+                                            RelativeSource={RelativeSource TemplatedParent}}"
+                       />
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="0"
+                              ContentSource="Header"
+                              />
+
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="2"
+                              ContentSource="Content"
+                              />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static wpf:Keys.SymbolTemplateKey}"
+                     TargetType="{x:Type HeaderedContentControl}"
+                     x:Shared="False"
+                     >
+        <Grid Margin="{TemplateBinding Padding}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                  />
+                <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <ContentPresenter Grid.Column="0"
+                              ContentSource="Header"
+                              />
+
+            <ContentPresenter x:Name="ValuePresenter"
+                              Grid.Column="2"
+                              ContentSource="Content"
+                              />
+
+            <ContentPresenter Grid.Column="3"
+                              Content="{Binding Path=(wpf:Scope.Errors),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static wpf:Keys.HelpTextAndSymbolTemplateKey}"
+                     TargetType="{x:Type HeaderedContentControl}"
+                     x:Shared="False"
+                     >
+        <Grid Margin="{TemplateBinding Padding}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                  />
+                <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       Opacity="0.5"
+                       Text="{Binding Path=(wpf:Input.HelpText),
+                                      RelativeSource={RelativeSource TemplatedParent}}"
+                       Visibility="{Binding IsKeyboardFocusWithin,
+                                            Converter={StaticResource BooleanToVisibilityConverter},
+                                            RelativeSource={RelativeSource TemplatedParent}}"
+                       />
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="0"
+                              ContentSource="Header"
+                              />
+
+            <ContentPresenter x:Name="ValuePresenter"
+                              Grid.Row="1"
+                              Grid.Column="2"
+                              ContentSource="Content"
+                              />
+
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="3"
+                              Content="{Binding Path=(wpf:Scope.Errors),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              />
+        </Grid>
+    </ControlTemplate>
+
+
+    <ControlTemplate x:Key="{x:Static wpf:Keys.ErrorTextAndSymbolTemplateKey}"
+                     TargetType="{x:Type HeaderedContentControl}"
+                     x:Shared="False"
+                     >
+        <Grid Margin="{TemplateBinding Padding}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                  />
+                <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl Grid.Row="0"
+                          Grid.Column="2"
+                          ItemsSource="{Binding Path=(wpf:Scope.Errors),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                          Visibility="{Binding IsKeyboardFocusWithin,
+                                               Converter={StaticResource BooleanToVisibilityConverter},
+                                               RelativeSource={RelativeSource TemplatedParent}}"
+                          >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type ValidationError}">
+                        <Label Content="{Binding ErrorContent}"
+                               Foreground="Red"
+                               />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="0"
+                              ContentSource="Header"
+                              />
+
+            <ContentPresenter x:Name="ValuePresenter"
+                              Grid.Row="1"
+                              Grid.Column="2"
+                              ContentSource="Content"
+                              />
+
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="3"
+                              Content="{Binding Path=(wpf:Scope.Errors),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static wpf:Keys.HelpErrorTextAndSymbolTemplateKey}"
+                     TargetType="{x:Type HeaderedContentControl}"
+                     x:Shared="False"
+                     >
+        <Grid Margin="{TemplateBinding Padding}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                  />
+                <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0"
+                        Grid.Column="2"
+                        Visibility="{Binding IsKeyboardFocusWithin,
+                                             Converter={StaticResource BooleanToVisibilityConverter},
+                                             RelativeSource={RelativeSource TemplatedParent}}"
+                        >
+                <TextBlock Opacity="0.5"
+                           Text="{Binding Path=(wpf:Input.HelpText),
+                                          RelativeSource={RelativeSource TemplatedParent}}"
+                           />
+                <ItemsControl ItemsSource="{Binding Path=(wpf:Scope.Errors), RelativeSource={RelativeSource TemplatedParent}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type ValidationError}">
+                            <Label Content="{Binding ErrorContent}"
+                                   Foreground="Red"
+                                   />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="0"
+                              ContentSource="Header"
+                              />
+
+            <ContentPresenter x:Name="ValuePresenter"
+                              Grid.Row="1"
+                              Grid.Column="2"
+                              ContentSource="Content"
+                              />
+
+            <ContentPresenter Grid.Row="1"
+                              Grid.Column="3"
+                              Content="{Binding Path=(wpf:Scope.Errors),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              />
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Static wpf:Keys.SettingStyleKey}"
+           TargetType="{x:Type HeaderedContentControl}"
+           >
+        <Setter Property="Padding" Value="{Binding Path=(wpf:PropertyGrid.RowMargin), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template" Value="{StaticResource {x:Static wpf:Keys.PlainTemplateKey}}" />
+        <Setter Property="wpf:PropertyGrid.ContentMargin" Value="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="wpf:Scope.IsValidationScope" Value="True" />
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding}"
+                               />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowSymbols), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowErrorText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.HelpErrorTextAndSymbolTemplateKey}}" />
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowSymbols), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowErrorText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.SymbolTemplateKey}}" />
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowSymbols), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowErrorText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.HelpTextAndSymbolTemplateKey}}" />
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowSymbols), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowErrorText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.ErrorTextAndSymbolTemplateKey}}" />
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowSymbols), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowErrorText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
+                    <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.SymbolTemplateKey}}" />
+            </MultiDataTrigger>
+
+
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Static wpf:Keys.HeaderStyleKey}"
+           TargetType="{x:Type TextBlock}"
+           >
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <wpf:SettingStyleSelector x:Key="{x:Static wpf:Keys.SettingStyleSelectorKey}"
+                              HeaderedContentControlStyle="{StaticResource {x:Static wpf:Keys.SettingStyleKey}}"
+                              TextBlockStyle="{StaticResource {x:Static wpf:Keys.HeaderStyleKey}}"
+                              />
+
+    <Style x:Key="{x:Static wpf:Keys.SettingsListStyleKey}"
+           TargetType="{x:Type ItemsControl}"
+           >
+        <Setter Property="Grid.IsSharedSizeScope" Value="True" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+        <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
+        <Setter Property="wpf:PropertyGrid.ShowErrorText" Value="True" />
+        <Setter Property="wpf:PropertyGrid.ShowSymbols" Value="True" />
+        <Setter Property="wpf:PropertyGrid.ShowHelpText" Value="True" />
+        <Setter Property="wpf:PropertyGrid.RowMargin" Value="0,2" />
+        <Setter Property="wpf:PropertyGrid.ContentMargin" Value="8" />
+        <Setter Property="ItemContainerStyleSelector" Value="{DynamicResource {x:Static wpf:Keys.SettingStyleSelectorKey}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"
+                                              SharedSizeGroup="{x:Static wpf:SharedSizeGroups.LabelColumn}"
+                                              />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Grid.IsSharedSizeScope="True"
+                                    IsItemsHost="True"
+                                    />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Static wpf:Keys.NestedListStyleKey}"
+           BasedOn="{StaticResource {x:Static wpf:Keys.SettingsListStyleKey}}"
+           TargetType="{x:Type ItemsControl}"
+           >
+        <Setter Property="Grid.IsSharedSizeScope" Value="False" />
+        <Setter Property="ItemContainerStyleSelector" Value="{DynamicResource {x:Static wpf:Keys.SettingStyleSelectorKey}}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Continue" />
+    </Style>
+</ResourceDictionary>

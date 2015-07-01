@@ -21,7 +21,8 @@
             {
                 if (DesignerProperties.GetIsInDesignMode(textBox))
                 {
-                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).PrettyName()), "o", e);
+                    var message = string.Format(@"StringConverter<{0}> could not convert {1} to type {0}", typeof(T).PrettyName(), o);
+                    throw new ArgumentException(message, "o", e);
                 }
                 return o != null ? o.ToString() : "";
             }
@@ -39,7 +40,8 @@
             {
                 if (DesignerProperties.GetIsInDesignMode(textBox))
                 {
-                    throw new ArgumentException(string.Format("Could not convert {0} to type {1}", o, typeof(T).PrettyName()), "o", e);
+                    var message = string.Format(@"StringConverter<{0}> could not convert {1} to type {0}", typeof(T).PrettyName(), o);
+                    throw new ArgumentException(message, "o", e);
                 }
                 return o != null ? o.ToString() : "";
             }

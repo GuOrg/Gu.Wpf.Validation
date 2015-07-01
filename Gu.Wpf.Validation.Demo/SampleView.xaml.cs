@@ -3,11 +3,11 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for WatermarkView.xaml
+    /// Interaction logic for SampleView.xaml
     /// </summary>
-    public partial class WatermarkView : UserControl
+    public partial class SampleView : UserControl
     {
-        public WatermarkView()
+        public SampleView()
         {
             InitializeComponent();
         }

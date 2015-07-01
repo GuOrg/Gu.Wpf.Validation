@@ -1,4 +1,4 @@
-﻿namespace Gu.Wpf.Validation.Demo.Wpf
+﻿namespace Gu.Wpf.Validation
 {
     public static class SharedSizeGroups
     {

@@ -16,8 +16,8 @@
             typeof(Input),
             new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.Inherits, OnWatermarkTextChanged));
 
-        public static readonly DependencyProperty VisibleWhenProperty = DependencyProperty.RegisterAttached(
-            "VisibleWhen",
+        public static readonly DependencyProperty WatermarkVisibleWhenProperty = DependencyProperty.RegisterAttached(
+            "WatermarkVisibleWhen",
             typeof(WatermarkVisibility),
             typeof(Input),
             new PropertyMetadata(WatermarkVisibility.WhenEmpty));
@@ -42,16 +42,16 @@
             return (string)element.GetValue(WatermarkTextProperty);
         }
 
-        public static void SetVisibleWhen(this DependencyObject element, WatermarkVisibility value)
+        public static void SetWatermarkVisibleWhen(this DependencyObject element, WatermarkVisibility value)
         {
-            element.SetValue(VisibleWhenProperty, value);
+            element.SetValue(WatermarkVisibleWhenProperty, value);
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
         [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
-        public static WatermarkVisibility GetVisibleWhen(this DependencyObject element)
+        public static WatermarkVisibility GetWatermarkVisibleWhen(this DependencyObject element)
         {
-            return (WatermarkVisibility)element.GetValue(VisibleWhenProperty);
+            return (WatermarkVisibility)element.GetValue(WatermarkVisibleWhenProperty);
         }
 
         private static void SetWatermarkAdorner(this DependencyObject element, ContentAdorner value)

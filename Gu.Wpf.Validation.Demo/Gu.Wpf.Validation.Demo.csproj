@@ -71,6 +71,10 @@
     <Compile Include="NavigationDebugViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Converters\TextBoxChildConverter.cs" />
+    <Compile Include="SampleView.xaml.cs">
+      <DependentUpon>SampleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleVm.cs" />
     <Compile Include="StrategyVm.cs" />
     <Compile Include="ValidationRule.cs" />
     <Compile Include="ValidationScopeView.xaml.cs">
@@ -83,7 +87,10 @@
       <DependentUpon>WatermarkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wpf\ValidationTemplateSelector.cs" />
-    <Compile Include="Wpf\SharedSizeGroups.cs" />
+    <Page Include="Resources\AllResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="InputValidationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,6 +108,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NavigationDebugView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Misc.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SampleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -148,6 +163,9 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>taskkill /f /fi "pid gt 0" /im xdesproc.exe</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
