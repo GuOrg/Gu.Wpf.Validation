@@ -33,9 +33,9 @@
                       >
             <TextBlock Text="About you:" />
             <HeaderedContentControl Header="Age"
-                                    validation:Input.HelpText="Your age in years"
+                                    validation:Input.HelpContent="Your age in years"
                                     >
-                <TextBox validation:Input.HelpText="This is helptext for age."
+                <TextBox validation:Input.HelpContent="This is helptext for age."
                          validation:Input.IsRequired="True"
                          validation:Input.Max="120"
                          validation:Input.Min="0"
@@ -46,7 +46,7 @@
             </HeaderedContentControl>
 
             <HeaderedContentControl Header="Name srg"
-                                    validation:Input.HelpText="Type your name here ex: Johan Larsson"
+                                    validation:Input.HelpContent="Type your name here ex: Johan Larsson"
                                     >
                 <TextBox validation:Input.IsRequired="True"
                          validation:Input.Pattern="\w+ \w+"
@@ -59,7 +59,7 @@
             <TextBlock Text="Contact info:" />
             <ItemsControl Style="{StaticResource {x:Static validation:Keys.NestedListStyleKey}}">
                 <HeaderedContentControl Header="Mail"
-                                        validation:Input.HelpText="Your email"
+                                        validation:Input.HelpContent="Your email"
                                         >
                     <TextBox validation:Input.IsRequired="True"
                              validation:Input.Pattern="\w+@\w+"
@@ -70,7 +70,7 @@
                 </HeaderedContentControl>
 
                 <HeaderedContentControl Header="Phone"
-                                        validation:Input.HelpText="Your phone number"
+                                        validation:Input.HelpContent="Your phone number"
                                         validation:PropertyGrid.ShowSymbols="False"
                                         >
                     <TextBox validation:Input.IsRequired="False"

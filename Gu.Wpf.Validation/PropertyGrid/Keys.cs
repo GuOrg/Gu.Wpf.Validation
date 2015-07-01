@@ -26,11 +26,11 @@
         
         public static object HelpErrorTextAndSymbolTemplateKey { get { return Get(); } }
         
-        public static object HelpTextTemplateKey { get { return Get(); } }
+        public static object HelpTemplateKey { get { return Get(); } }
 
         public static ResourceKey SettingStyleSelectorKey { get { return Get(); } }
 
-        public static ResourceKey SymbolTemplateSelectorKey { get { return Get(); } }
+        public static ResourceKey ErrorSymbolTemplateSelectorKey { get { return Get(); } }
         
         public static ResourceKey CheckmarkGeometryKey { get { return Get(); } }
         
@@ -39,7 +39,12 @@
         public static ResourceKey RequiredGeometryKey { get { return Get(); } }
         
         public static ResourceKey QuestionGeometryKey { get { return Get(); } }
+        
         public static object ErrorTextAndSymbolTemplateKey { get { return Get(); } }
+
+        public static object ErrorTemplateSelectorKey { get { return Get(); } }
+        
+        public static object ErrorTemplateKey { get { return Get(); } }
 
         private static ComponentResourceKey Get([CallerMemberName] string caller = null)
         {

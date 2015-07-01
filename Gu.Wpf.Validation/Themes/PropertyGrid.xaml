@@ -10,8 +10,20 @@
         <Setter Property="Stretch" Value="Uniform" />
         <Setter Property="Margin" Value="4" />
     </Style>
+    
+    <DataTemplate x:Key="{x:Static wpf:Keys.ErrorTemplateKey}" DataType="{x:Type ValidationError}">
+        <Label Content="{Binding ErrorContent}"
+                       Foreground="Red"
+                       />
+    </DataTemplate>
+    
+    <wpf:ValidationTemplateSelector x:Key="{x:Static wpf:Keys.ErrorTemplateSelectorKey}"
+                                    ErrorsTemplate="{StaticResource {x:Static wpf:Keys.ErrorTemplateKey}}"
+                                    RequiredButMissingTemplate="{StaticResource {x:Static wpf:Keys.ErrorTemplateKey}}"
+                                    >
+    </wpf:ValidationTemplateSelector>
 
-    <wpf:ValidationTemplateSelector x:Key="{x:Static wpf:Keys.SymbolTemplateSelectorKey}">
+    <wpf:ValidationTemplateSelector x:Key="{x:Static wpf:Keys.ErrorSymbolTemplateSelectorKey}">
         <wpf:ValidationTemplateSelector.SuccessTemplate>
             <DataTemplate>
                 <Path Data="{DynamicResource {x:Static wpf:Keys.CheckmarkGeometryKey}}"
@@ -65,7 +77,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="{x:Static wpf:Keys.HelpTextTemplateKey}"
+    <ControlTemplate x:Key="{x:Static wpf:Keys.HelpTemplateKey}"
                      TargetType="{x:Type HeaderedContentControl}"
                      >
         <Grid Margin="{TemplateBinding Padding}">
@@ -80,15 +92,19 @@
                 <ColumnDefinition Width="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource TemplatedParent}}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="2"
-                       Opacity="0.5"
-                       Text="{Binding Path=(wpf:Input.HelpText),
-                                      RelativeSource={RelativeSource TemplatedParent}}"
-                       Visibility="{Binding IsKeyboardFocusWithin,
-                                            Converter={StaticResource BooleanToVisibilityConverter},
-                                            RelativeSource={RelativeSource TemplatedParent}}"
-                       />
+            <ContentPresenter Grid.Row="0"
+                              Grid.Column="2"
+                              Content="{Binding Path=(wpf:Input.HelpContent),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplate="{Binding Path=(wpf:Input.HelpTemplate),
+                                                        RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplateSelector="{Binding Path=(wpf:Input.HelpTemplateSelector),
+                                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              Opacity="0.5"
+                              Visibility="{Binding IsKeyboardFocusWithin,
+                                                   Converter={StaticResource BooleanToVisibilityConverter},
+                                                   RelativeSource={RelativeSource TemplatedParent}}"
+                              />
             <ContentPresenter Grid.Row="1"
                               Grid.Column="0"
                               ContentSource="Header"
@@ -126,7 +142,7 @@
             <ContentPresenter Grid.Column="3"
                               Content="{Binding Path=(wpf:Scope.Errors),
                                                 RelativeSource={RelativeSource TemplatedParent}}"
-                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.ErrorSymbolTemplateSelectorKey}}"
                               />
         </Grid>
     </ControlTemplate>
@@ -148,15 +164,19 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="2"
-                       Opacity="0.5"
-                       Text="{Binding Path=(wpf:Input.HelpText),
-                                      RelativeSource={RelativeSource TemplatedParent}}"
-                       Visibility="{Binding IsKeyboardFocusWithin,
-                                            Converter={StaticResource BooleanToVisibilityConverter},
-                                            RelativeSource={RelativeSource TemplatedParent}}"
-                       />
+            <ContentPresenter Grid.Row="0"
+                              Grid.Column="2"
+                              Content="{Binding Path=(wpf:Input.HelpContent),
+                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplate="{Binding Path=(wpf:Input.HelpTemplate),
+                                                        RelativeSource={RelativeSource TemplatedParent}}"
+                              ContentTemplateSelector="{Binding Path=(wpf:Input.HelpTemplateSelector),
+                                                                RelativeSource={RelativeSource TemplatedParent}}"
+                              Opacity="0.5"
+                              Visibility="{Binding IsKeyboardFocusWithin,
+                                                   Converter={StaticResource BooleanToVisibilityConverter},
+                                                   RelativeSource={RelativeSource TemplatedParent}}"
+                              />
             <ContentPresenter Grid.Row="1"
                               Grid.Column="0"
                               ContentSource="Header"
@@ -172,11 +192,10 @@
                               Grid.Column="3"
                               Content="{Binding Path=(wpf:Scope.Errors),
                                                 RelativeSource={RelativeSource TemplatedParent}}"
-                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.ErrorSymbolTemplateSelectorKey}}"
                               />
         </Grid>
     </ControlTemplate>
-
 
     <ControlTemplate x:Key="{x:Static wpf:Keys.ErrorTextAndSymbolTemplateKey}"
                      TargetType="{x:Type HeaderedContentControl}"
@@ -203,14 +222,10 @@
                           Visibility="{Binding IsKeyboardFocusWithin,
                                                Converter={StaticResource BooleanToVisibilityConverter},
                                                RelativeSource={RelativeSource TemplatedParent}}"
+                                                        ItemTemplate="{Binding Path=(wpf:Input.ErrorTemplate),
+                                                             RelativeSource={RelativeSource TemplatedParent}}"
+                          ItemTemplateSelector="{Binding Path=(wpf:Input.HelpTemplateSelector),RelativeSource={RelativeSource TemplatedParent}}"
                           >
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type ValidationError}">
-                        <Label Content="{Binding ErrorContent}"
-                               Foreground="Red"
-                               />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
             </ItemsControl>
 
             <ContentPresenter Grid.Row="1"
@@ -228,7 +243,7 @@
                               Grid.Column="3"
                               Content="{Binding Path=(wpf:Scope.Errors),
                                                 RelativeSource={RelativeSource TemplatedParent}}"
-                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.ErrorSymbolTemplateSelectorKey}}"
                               />
         </Grid>
     </ControlTemplate>
@@ -256,19 +271,21 @@
                                              Converter={StaticResource BooleanToVisibilityConverter},
                                              RelativeSource={RelativeSource TemplatedParent}}"
                         >
-                <TextBlock Opacity="0.5"
-                           Text="{Binding Path=(wpf:Input.HelpText),
-                                          RelativeSource={RelativeSource TemplatedParent}}"
-                           />
-                <ItemsControl ItemsSource="{Binding Path=(wpf:Scope.Errors), RelativeSource={RelativeSource TemplatedParent}}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type ValidationError}">
-                            <Label Content="{Binding ErrorContent}"
-                                   Foreground="Red"
-                                   />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <ContentPresenter Content="{Binding Path=(wpf:Input.HelpContent),
+                                                    RelativeSource={RelativeSource TemplatedParent}}"
+                                  ContentTemplate="{Binding Path=(wpf:Input.HelpTemplate),
+                                                            RelativeSource={RelativeSource TemplatedParent}}"
+                                  ContentTemplateSelector="{Binding Path=(wpf:Input.HelpTemplateSelector),
+                                                                    RelativeSource={RelativeSource TemplatedParent}}"
+                                  Opacity="0.5"
+                                  />
+                <ItemsControl ItemTemplateSelector="{Binding Path=(wpf:Input.ErrorTemplateSelector),
+                                                             RelativeSource={RelativeSource TemplatedParent}}"
+                              ItemTemplate="{Binding Path=(wpf:Input.ErrorTemplate),
+                                                             RelativeSource={RelativeSource TemplatedParent}}"
+                              ItemsSource="{Binding Path=(wpf:Scope.Errors),
+                                                    RelativeSource={RelativeSource TemplatedParent}}"
+                              />
             </StackPanel>
 
             <ContentPresenter Grid.Row="1"
@@ -286,7 +303,8 @@
                               Grid.Column="3"
                               Content="{Binding Path=(wpf:Scope.Errors),
                                                 RelativeSource={RelativeSource TemplatedParent}}"
-                              ContentTemplateSelector="{DynamicResource {x:Static wpf:Keys.SymbolTemplateSelectorKey}}"
+                              ContentTemplateSelector="{Binding Path=(wpf:Input.ErrorSymbolTemplateSelector),
+                                                                RelativeSource={RelativeSource TemplatedParent}}"
                               />
         </Grid>
     </ControlTemplate>
@@ -298,7 +316,9 @@
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template" Value="{StaticResource {x:Static wpf:Keys.PlainTemplateKey}}" />
         <Setter Property="wpf:PropertyGrid.ContentMargin" Value="{Binding Path=(wpf:PropertyGrid.ContentMargin), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="wpf:Scope.IsValidationScope" Value="True" />
+        <Setter Property="wpf:Scope.IsValidationScope" Value="False" />
+        <Setter Property="wpf:Input.ErrorSymbolTemplateSelector" Value="{DynamicResource {x:Static wpf:Keys.ErrorSymbolTemplateSelectorKey}}" />
+        <Setter Property="wpf:Input.ErrorTemplate" Value="{DynamicResource {x:Static wpf:Keys.ErrorTemplateKey}}" />
         <Setter Property="HeaderTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -316,6 +336,7 @@
                     <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.HelpErrorTextAndSymbolTemplateKey}}" />
+                <Setter Property="wpf:Scope.IsValidationScope" Value="True" />
             </MultiDataTrigger>
 
             <MultiDataTrigger>
@@ -325,6 +346,7 @@
                     <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.SymbolTemplateKey}}" />
+                <Setter Property="wpf:Scope.IsValidationScope" Value="True" />
             </MultiDataTrigger>
 
             <MultiDataTrigger>
@@ -334,6 +356,7 @@
                     <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.HelpTextAndSymbolTemplateKey}}" />
+                <Setter Property="wpf:Scope.IsValidationScope" Value="True" />
             </MultiDataTrigger>
 
             <MultiDataTrigger>
@@ -343,6 +366,7 @@
                     <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.ErrorTextAndSymbolTemplateKey}}" />
+                <Setter Property="wpf:Scope.IsValidationScope" Value="True" />
             </MultiDataTrigger>
 
             <MultiDataTrigger>
@@ -351,7 +375,7 @@
                     <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowErrorText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="False" />
                     <Condition Binding="{Binding Path=(wpf:PropertyGrid.ShowHelpText), RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True" />
                 </MultiDataTrigger.Conditions>
-                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.SymbolTemplateKey}}" />
+                <Setter Property="Template" Value="{DynamicResource {x:Static wpf:Keys.HelpTemplateKey}}" />
             </MultiDataTrigger>
 
 
@@ -382,6 +406,8 @@
         <Setter Property="wpf:PropertyGrid.ShowHelpText" Value="True" />
         <Setter Property="wpf:PropertyGrid.RowMargin" Value="0,2" />
         <Setter Property="wpf:PropertyGrid.ContentMargin" Value="8" />
+        <Setter Property="wpf:Input.ErrorSymbolTemplateSelector" Value="{DynamicResource {x:Static wpf:Keys.ErrorSymbolTemplateSelectorKey}}" />
+        <Setter Property="wpf:Input.ErrorTemplate" Value="{DynamicResource {x:Static wpf:Keys.ErrorTemplateKey}}" />
         <Setter Property="ItemContainerStyleSelector" Value="{DynamicResource {x:Static wpf:Keys.SettingStyleSelectorKey}}" />
         <Setter Property="Template">
             <Setter.Value>
